@@ -1,4 +1,4 @@
-package com.iua.ecom.project.business.exception;
+package com.edu.iua.tpintegrador.business.exception;
 
 public class BusinessException extends Exception {
 

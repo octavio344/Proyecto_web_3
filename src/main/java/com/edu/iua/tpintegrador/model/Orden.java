@@ -1,5 +1,7 @@
 package com.edu.iua.tpintegrador.model;
 
+import java.util.Date;
+
 public class Orden {
 
 	
@@ -13,19 +15,19 @@ public class Orden {
 	
 	private Long idProducto;
 	
-	//private Date fechaRecepcion;
+	private Date fechaRecepcion;
 	
-	//private Date fechaRecepcionPesajeI;
+	private Date fechaRecepcionPesajeI;
 	
-	//private Date fechaIProcesoCarga;
+	private Date fechaIProcesoCarga;
 	
-	//private Date fechaFProcesoCarga;
+	private Date fechaFProcesoCarga;
 	
-	//private Date fechaRecepcionPesajeF;
+	private Date fechaRecepcionPesajeF;
 	
 	private Double preset;
 	
-	private DatosCarga carga;
+	//private DatosCarga carga;
 	
 	private int estado;
 	
