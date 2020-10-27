@@ -22,17 +22,6 @@ public class Camion implements Serializable {
 	
 	//Metodo para calcular el total del cisternado
 	
-	public Double getTotalCisternado(){
-		
-		Double total = 0.0;
-		
-		for(int i=0;i < cisternado.size();i++){
-			total += cisternado.get(i); 
-		}
-		
-		return total;
-		
-	}
 	
 	//Constructores
 	

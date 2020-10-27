@@ -1,4 +1,4 @@
-package com.edu.iua.tpintegrador.rest;
+package com.edu.iua.tpintegrador.controller;
 
 import java.util.List;
 
