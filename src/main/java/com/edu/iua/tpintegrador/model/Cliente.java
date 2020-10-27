@@ -1,13 +1,18 @@
 package com.edu.iua.tpintegrador.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "clientes")
@@ -28,6 +33,22 @@ public class Cliente implements Serializable {
 	@Column(length = 100)
 	private String contacto;
 	
+	@OneToMany(targetEntity=Orden.class, mappedBy="clientes", fetch = FetchType.LAZY)
+	@JsonBackReference
+	private List<Orden> ordenList;
+	
+	public List<Orden> getOrdenList() {
+		return ordenList;
+	}
+
+	public void setOrdenList(List<Orden> ordenList) {
+		this.ordenList = ordenList;
+	}
+
+	public void setNumTelefono(Long numTelefono) {
+		this.numTelefono = numTelefono;
+	}
+
 	private Long numTelefono;
 
 	public Long getIdCliente() {
