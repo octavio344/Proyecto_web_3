@@ -1,14 +1,34 @@
 package com.edu.iua.tpintegrador.model;
 
-public class Cliente {
+import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "clientes")
+public class Cliente implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8624349707200492059L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idCliente;
 	
+	@Column(length = 60)
 	private String razonSocial;
 	
+	@Column(length = 100)
 	private String contacto;
 	
-	private long numTelefono;
+	private Long numTelefono;
 
 	public Long getIdCliente() {
 		return idCliente;
@@ -34,7 +54,7 @@ public class Cliente {
 		this.contacto = contacto;
 	}
 
-	public long getNumTelefono() {
+	public Long getNumTelefono() {
 		return numTelefono;
 	}
 

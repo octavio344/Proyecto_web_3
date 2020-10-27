@@ -47,6 +47,7 @@ public class Camion {
 	
 	public Double getTotalCisternado(){
 		
+		@SuppressWarnings("deprecation")
 		Double total = new Double(0);
 		
 		for(int i=0;i < cisternado.size();i++){
