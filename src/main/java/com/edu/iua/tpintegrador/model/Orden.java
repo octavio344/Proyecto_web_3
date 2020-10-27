@@ -32,4 +32,5 @@ public class Orden {
 	private int estado;
 	
 	private int psswd;
+	
 }
