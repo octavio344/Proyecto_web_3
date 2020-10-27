@@ -1,0 +1,12 @@
+package com.edu.iua.tpintegrador.controller;
+
+public class Constantes {
+	
+	public static final String URL_API = "/api";
+	public static final String URL_API_VERSION = "/v1";
+	public static final String URL_BASE = URL_API + URL_API_VERSION;
+
+	public static final String URL_CAMIONES = URL_BASE + "/camiones";
+    public static final String URL_CHOFERES = URL_BASE + "/choferes";
+
+}

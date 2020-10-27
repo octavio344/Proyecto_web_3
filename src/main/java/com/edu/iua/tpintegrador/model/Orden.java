@@ -27,7 +27,7 @@ public class Orden {
 	
 	private Double preset;
 	
-	private DatosCarga carga;
+	//private DatosCarga carga;
 	
 	private int estado;
 	

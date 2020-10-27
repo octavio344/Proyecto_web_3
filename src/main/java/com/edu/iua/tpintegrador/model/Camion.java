@@ -1,14 +1,53 @@
 package com.edu.iua.tpintegrador.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Camion {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "camiones")
+
+public class Camion implements Serializable {
 	
+	private static final long serialVersionUID = -5085577829256392612L;
+	
+	@Id
 	private String patente;
 	
+	@Column(length = 100)
 	private String descripcion;
 	
 	private ArrayList<Double> cisternado;
+	
+	//Metodo para calcular el total del cisternado
+	
+	public Double getTotalCisternado(){
+		
+		Double total = 0.0;
+		
+		for(int i=0;i < cisternado.size();i++){
+			total += cisternado.get(i); 
+		}
+		
+		return total;
+		
+	}
+	
+	//Constructores
+	
+	public Camion(String patente, String descripcion, ArrayList<Double> cisternado) {
+		super();
+		this.patente = patente;
+		this.descripcion = descripcion;
+		this.cisternado = cisternado;
+	}
+
+	public Camion() {
+		super();
+	}
+	
+	//Getters y Setters
 
 	public String getPatente() {
 		return patente;
@@ -33,17 +72,6 @@ public class Camion {
 	public void setCisternado(ArrayList<Double> cisternado) {
 		this.cisternado = cisternado;
 	}
-
-	public Camion(String patente, String descripcion, ArrayList<Double> cisternado) {
-		super();
-		this.patente = patente;
-		this.descripcion = descripcion;
-		this.cisternado = cisternado;
-	}
-
-	public Camion() {
-		super();
-	}
 	
 	public Double getTotalCisternado(){
 		
@@ -57,5 +85,6 @@ public class Camion {
 		return total;
 		
 	}
+
 	
 }
