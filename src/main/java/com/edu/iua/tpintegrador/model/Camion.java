@@ -2,8 +2,13 @@ package com.edu.iua.tpintegrador.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+
 
 @Entity
 @Table(name = "camiones")
@@ -20,6 +25,10 @@ public class Camion implements Serializable {
 	
 	private ArrayList<Double> cisternado;
 	
+	@OneToMany(targetEntity=Orden.class, mappedBy="camiones", fetch = FetchType.LAZY)
+	@JsonBackReference
+	private List<Orden> ordenList;
+	
 	//Metodo para calcular el total del cisternado
 	
 	
@@ -30,6 +39,14 @@ public class Camion implements Serializable {
 		this.patente = patente;
 		this.descripcion = descripcion;
 		this.cisternado = cisternado;
+	}
+
+	public List<Orden> getOrdenList() {
+		return ordenList;
+	}
+
+	public void setOrdenList(List<Orden> ordenList) {
+		this.ordenList = ordenList;
 	}
 
 	public Camion() {
