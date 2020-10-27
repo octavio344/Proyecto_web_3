@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 @SpringBootApplication
 @ComponentScan("com.edu.iua.tpintegrador")
 
-public class TrabajoPracticoIntegradorApplication extends SpringBootServletInitializer implements CommandLineRunner{
+public class TrabajoPracticoIntegradorApplication{
 
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -31,9 +31,6 @@ public class TrabajoPracticoIntegradorApplication extends SpringBootServletIniti
 	@Value("${spring.datasource.url}")
 	private String springDatasourceUrl;
 
-	@Override
-	public void run(String... args) throws Exception {
-		log.info("DataSource URL: {}", springDatasourceUrl);
-	}
+	
 
 }
