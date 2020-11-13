@@ -20,4 +20,5 @@ public interface IProductoBusiness {
 	Producto update(Producto p) throws BusinessException, NotFoundException;
 
 	Producto findByCodigoExterno(String p)throws NotFoundException, BusinessException;
+
 }

@@ -99,7 +99,7 @@ public class OrdenRestController {
 		
 	}
 	
-	//Endpoint Nro 3
+	//Endpoint Nro 3 - Funciona OK
 	
 	@PutMapping(value = "/actualizarDetalle", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateDetalle(@RequestBody Orden orden) {
@@ -117,21 +117,37 @@ public class OrdenRestController {
 	}
 	
 	
-	//Endpoint Nro 4
+	//Endpoint Nro 4 - Funciona OK
 	
-		@PutMapping(value = "/cerrar", produces = MediaType.APPLICATION_JSON_VALUE)
-		public ResponseEntity<String> cerrarOrden(@RequestBody Orden orden) {
+	@PutMapping(value = "/cerrar", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> cerrarOrden(@RequestBody Orden orden) {
+		try {
+			ordenBusiness.cerrarOrden(orden);	
+			return new ResponseEntity<String>(HttpStatus.OK);
+		} catch (BusinessException e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}catch (WrongStateException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	//Endpoint Nro 5
+
+		@PutMapping(value = "/pesajeFinal", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<String> finalizar(@RequestBody Orden orden) {
 			try {
-				ordenBusiness.setearPesajeInicial(orden);	
+				ordenBusiness.finalizar(orden);	
 				return new ResponseEntity<String>(HttpStatus.OK);
 			} catch (BusinessException e) {
 				return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 			} catch (NotFoundException e) {
 				return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-			}catch (WrongStateException e) {
+			}	catch (WrongStateException e) {
 				return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 			}
-			
 			
 		}
 	

@@ -221,10 +221,10 @@ public class OrdenBusiness implements IOrdenBusiness {
 	@Override
 	public Orden cerrarOrden(Orden o) throws BusinessException, NotFoundException, WrongStateException {
 	
-		Optional<Orden> optional = ordenDAO.findById(o.getNroOrden());
+		Optional<Orden> optional = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
 		
 		if(!optional.isPresent()) {
-			throw new NotFoundException("No se encontro la orden con un Nro de orden: "+o.getNroOrden());
+			throw new NotFoundException("No se encontro la orden con el código externo: "+o.getCodigoExterno());
 		}
 			
 		Orden or = optional.get();
@@ -232,7 +232,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 		if(or.getEstado()==2) {
 			
 			or.setEstado(3);
-			
+			or.setFechaFProcesoCarga(new Date());
 			return ordenDAO.save(or);
 			
 		}else {
@@ -245,19 +245,21 @@ public class OrdenBusiness implements IOrdenBusiness {
 	public ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException, WrongStateException {
 		// TODO Auto-generated method stub
 
-		Optional<Orden> op = ordenDAO.findById(o.getNroOrden());
+		Optional<Orden> op = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
 		
 		if(!op.isPresent()) {
-			throw new NotFoundException("No se encontro la orden con un Nro de orden: "+o.getNroOrden());
+			throw new NotFoundException("No se encontro la orden con codigo externo: "+o.getCodigoExterno());
 		}
 		
 		Orden or= op.get(); 
 		
-		if(or.getEstado()==3) {
+		if(or.getEstado()==3 && o.getPesajeFinal()!=null && o.getPesajeFinal()>or.getPesajeInicial()) {
 			
 			or.setPesajeFinal(o.getPesajeFinal());
 			
 			or.setEstado(4);
+			
+			or.setFechaRecepcionPesajeF(new Date());
 			
 			ordenDAO.save(or);
 			
@@ -268,18 +270,6 @@ public class OrdenBusiness implements IOrdenBusiness {
 		}
 
 	}
-
-
-	private Orden verificarEstado1(Orden o) throws NotFoundException, BusinessException {
-		Orden or= findById(o.getNroOrden());
-		
-		if(or==null) {
-			throw new NotFoundException("No se encontro la orden con el Nro de orden: "+o.getNroOrden());
-		}
-		// Poner todos los malditos ifs
-		return null;
-	}
-	
 	
 	private ConciliacionDTO generarConciliacion(Orden or) {
 		
@@ -316,6 +306,24 @@ public class OrdenBusiness implements IOrdenBusiness {
 		}
 		
 		return op.get();
+	}
+	
+	@Override public ConciliacionDTO getConciliacion(Orden o) throws BusinessException, NotFoundException, WrongStateException{
+		
+		Optional<Orden> op=ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		
+		if(!op.isPresent()) {
+			throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
+		}
+		
+		Orden or = op.get();
+		
+		if(or.getEstado()!=4) {
+			throw new WrongStateException("La orden debe estar en estado 4 para utilizar este servicio");
+		}
+		
+		return getConciliacion(or);
+		
 	}
 
 }
