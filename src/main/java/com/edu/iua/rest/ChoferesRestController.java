@@ -45,6 +45,18 @@ public class ChoferesRestController extends BaseRestController {
 		}
 	}
 	
+	@GetMapping(path = "/ce/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<com.edu.iua.model.Chofer> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
+		try {
+			return new ResponseEntity<Chofer>(choferBusiness.findByCodigoExterno(codigoExterno),HttpStatus.OK);
+		} catch (BusinessException e) {
+			log.error(e.getMessage(), e);
+			return new ResponseEntity<Chofer>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<Chofer>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Chofer>> list() {
 		try {

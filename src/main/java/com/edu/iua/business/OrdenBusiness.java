@@ -1,5 +1,6 @@
 package com.edu.iua.business;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -114,7 +115,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 			o.setCliente(opCliente.get());
 			o.setProducto(opProducto.get());
 			o.setChofer(opChofer.get());
-			
+			o.setFechaRecepcion(new Date());
 			return ordenDAO.save(o);
 		}catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException(e);
@@ -279,6 +280,18 @@ public class OrdenBusiness implements IOrdenBusiness {
 		densidadPromedio /= tamano;
 		
 		return new ConciliacionDTO(or.getPesajeInicial(),or.getPesajeFinal(),or.getMasaAcumulada(),tempPromedio,caudalPromedio,densidadPromedio); 
+	}
+	
+	@Override
+	public Orden findByCodigoExterno(String c) throws NotFoundException, BusinessException {
+		
+		Optional<Orden> op=ordenDAO.findByCodigoExterno(c);
+		
+		if(!op.isPresent()) {
+			throw new NotFoundException("No se encuentra la orden con el codigo externo =" + c);
+		}
+		
+		return op.get();
 	}
 
 }

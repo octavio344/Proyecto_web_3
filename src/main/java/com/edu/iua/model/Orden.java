@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,9 @@ public class Orden {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long nroOrden;
+	
+	@Column(length = 100)
+	private String codigoExterno;
 	
 	@ManyToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name = "camion_id")

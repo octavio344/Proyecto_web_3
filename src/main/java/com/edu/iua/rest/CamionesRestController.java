@@ -33,9 +33,21 @@ public class CamionesRestController extends BaseRestController {
 	private ICamionBusiness camionBusiness;
 	
 	@GetMapping(value = { "/{id}" }, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<com.edu.iua.model.Camion> load(@PathVariable("patente") Long id) {
+	public ResponseEntity<com.edu.iua.model.Camion> load(@PathVariable("id") Long id) {
 		try {
 			return new ResponseEntity<Camion>(camionBusiness.load(id),HttpStatus.OK);
+		} catch (BusinessException e) {
+			log.error(e.getMessage(), e);
+			return new ResponseEntity<Camion>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<Camion>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping(value = { "/ce/{codigoExterno}" }, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<com.edu.iua.model.Camion> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
+		try {
+			return new ResponseEntity<Camion>(camionBusiness.findByCodigoExterno(codigoExterno),HttpStatus.OK);
 		} catch (BusinessException e) {
 			log.error(e.getMessage(), e);
 			return new ResponseEntity<Camion>(HttpStatus.INTERNAL_SERVER_ERROR);

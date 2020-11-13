@@ -43,6 +43,19 @@ public class OrdenRestController {
 		
 	}
 	
+	@GetMapping(value = "/ce/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Orden> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
+		
+		try {
+			return new ResponseEntity<Orden>(ordenBusiness.findByCodigoExterno(codigoExterno),HttpStatus.OK); 
+		}catch (NotFoundException e) {
+			return new ResponseEntity<Orden>(HttpStatus.NOT_FOUND);
+		}catch (BusinessException e) {
+			return new ResponseEntity<Orden>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Orden>> list(){
 		try {

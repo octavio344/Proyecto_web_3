@@ -43,6 +43,19 @@ public class ClienteRestController {
 		
 	}
 	
+	@GetMapping(value = "/ce/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Cliente> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
+		
+		try {
+			return new ResponseEntity<Cliente>(clienteBusiness.findByCodigoExterno(codigoExterno),HttpStatus.OK); 
+		}catch (NotFoundException e) {
+			return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);
+		}catch (BusinessException e) {
+			return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cliente>> list(){
 		
