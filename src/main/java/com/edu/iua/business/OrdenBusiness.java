@@ -129,28 +129,31 @@ public class OrdenBusiness implements IOrdenBusiness {
 	// Tirar exc si los datos estan mal
 	
 	@Override
-	public Orden update(Orden o) throws BusinessException, NotFoundException, WrongStateException {
+	public Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException, WrongStateException {
 		
-		if(o.getEstado()==1) {
-			if(o.getPesajeInicial()!= null || o.getPesajeInicial()>0) {
-				o.setEstado(2);
-				o.generatePsswd(); // Mostralo con logger en info del servidor
-			}
+		Optional<Orden> opOrden = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		
+		if(!opOrden.isPresent()) {
+			throw new NotFoundException("No se ha encontrado la orden con código externo "+o.getCodigoExterno());
 		}else {
-			throw new WrongStateException("La orden debe estar en estado 1 para utilizar este servicio");
-		}
-		
-		
-		Orden or = verificarEstado1(o);
-		
-		if(or!=null) {
-			try {
-				or = ordenDAO.save(o);
-			}catch (Exception e) {
-				throw new BusinessException(e);
+			Orden or = opOrden.get();
+			if(or.getEstado()==1) {
+				if(o.getPesajeInicial()!= null || o.getPesajeInicial()>0) {
+					or.setPesajeInicial(o.getPesajeInicial());
+					or.setEstado(2);
+					or.generatePsswd(); // Mostralo con logger en info del servidor
+				}
+				
+				ordenDAO.save(or);
+				
+				return or;
+				
+			}else {
+				
+				throw new WrongStateException("La orden debe estar en estado 1 para utilizar este endpoint.");
 			}
 		}
-		return or;
+		
 	}
 
 	@Override

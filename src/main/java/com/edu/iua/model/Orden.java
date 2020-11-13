@@ -250,6 +250,15 @@ public class Orden {
 		this.caudal = caudal;
 	}
 
+
+	public String getCodigoExterno() {
+		return codigoExterno;
+	}
+
+	public void setCodigoExterno(String codigoExterno) {
+		this.codigoExterno = codigoExterno;
+	}
+
 	public Orden(Long nroOrden, Camion camion, Chofer chofer, Cliente cliente, Producto producto, Date fechaRecepcion,
 			Date fechaRecepcionPesajeI, Date fechaIProcesoCarga, Date fechaFProcesoCarga, Date fechaRecepcionPesajeF,
 			Double preset, DetalleOrden carga, int estado, String psswd) {

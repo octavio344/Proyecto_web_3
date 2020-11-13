@@ -87,7 +87,7 @@ public class OrdenRestController {
 	@PutMapping(value = "/pesajeInicial", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> pesajeInicial(@RequestBody Orden orden) {
 		try {
-			ordenBusiness.update(orden);	
+			ordenBusiness.setearPesajeInicial(orden);	
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -104,7 +104,7 @@ public class OrdenRestController {
 	@PutMapping(value = "/actualizar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> actualizarDetalle(@RequestBody Orden orden) {
 		try {
-			ordenBusiness.update(orden);	
+			ordenBusiness.setearPesajeInicial(orden);	
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -122,7 +122,7 @@ public class OrdenRestController {
 		@PutMapping(value = "/cerrar", produces = MediaType.APPLICATION_JSON_VALUE)
 		public ResponseEntity<String> cerrarOrden(@RequestBody Orden orden) {
 			try {
-				ordenBusiness.update(orden);	
+				ordenBusiness.setearPesajeInicial(orden);	
 				return new ResponseEntity<String>(HttpStatus.OK);
 			} catch (BusinessException e) {
 				return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -18,7 +18,7 @@ public interface IOrdenBusiness {
 	
 	Orden add(Orden o) throws BusinessException, IllegalArgumentException;
 	
-	Orden update(Orden o) throws BusinessException, NotFoundException,WrongStateException;
+	Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException,WrongStateException;
 	
 	Orden updateDetalle(Orden o) throws BusinessException, NotFoundException,WrongStateException;
 	
