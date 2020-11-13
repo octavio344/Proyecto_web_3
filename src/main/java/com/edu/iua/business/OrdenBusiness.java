@@ -158,43 +158,64 @@ public class OrdenBusiness implements IOrdenBusiness {
 
 	@Override
 	public Orden updateDetalle(Orden o) throws BusinessException, NotFoundException, WrongStateException {
+		
+		o.setFechaUltimoAlmacenamiento(new Date());
+		
+		if(o.getDensidad()==null || o.getDensidad()<0 || o.getDensidad() >1)
+			throw new BusinessException("La densidad ingresada debe ser un valor entre 0 y 1.");
+		if(o.getTemperatura()==null || o.getTemperatura() <0)
+			throw new BusinessException("La temperatura ingresada es incorrecta.");
+		if(o.getCaudal()==null || o.getCaudal() <0)
+			throw new BusinessException("El caudal ingresado es incorrecto.");
+		
 		Optional<Orden> op;
-		op= ordenDAO.findById(o.getNroOrden());
-		
-		Orden or = op.get();
-		
-		if(or.getEstado()==2) {
-			long diffInMillies = Math.abs(o.getFechaUltimoAlmacenamiento().getTime() - or.getFechaUltimoAlmacenamiento().getTime());
-		    long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		op= ordenDAO.findByCodigoExterno(o.getCodigoExterno());
 			
-		    if(!op.isPresent()) {
-		    	throw new NotFoundException("No se encontro la orden con un Nro de orden: "+o.getNroOrden());
-		    }  
-		    
-			try {
-				if(diff > Constantes.PERIODO_ALMACENAMIENTO) {
-					detalleDAO.save(new DetalleOrden(o,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal()));
-					or.setFechaUltimoAlmacenamiento(o.getFechaUltimoAlmacenamiento());
-				}
-				
-				or.setCaudal(o.getCaudal());
-				or.setTemperatura(o.getTemperatura());
-				or.setMasaAcumulada(o.getMasaAcumulada());
-				or.setDensidad(o.getDensidad());
-				
-				if(or.getMasaAcumulada()>= or.getPreset()) {
-					or.setEstado(3);
-				}
-				
-				ordenDAO.save(or);
-			}catch (Exception e) {
-				throw new BusinessException(e);
+	    if(!op.isPresent()) {
+	    	throw new NotFoundException("No se encontro la orden con codigo externo: "+o.getCodigoExterno());
+	    }  
+	    
+	    else try {
+	    	Orden or = op.get();
+	    	
+	    	if(or.getEstado()!=2) {
+	    		throw new WrongStateException("La orden debe estar en estado 2 para utilizar este servicio");
+	    	}
+	    	
+	    	if(o.getMasaAcumulada()==null || o.getMasaAcumulada()<or.getMasaAcumulada())
+	    		throw new BusinessException("La masa acumulada ingresada no puede ser menor a la anterior.");
+	    	
+	    	if(or.getMasaAcumulada()==0.0) {
+	    		or.setFechaIProcesoCarga(new Date());
+	    		or.setFechaUltimoAlmacenamiento(new Date());
+				detalleDAO.save(new DetalleOrden(or,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal()));
+	    	}	    	
+	    	
+	    	or.setCaudal(o.getCaudal());
+			or.setTemperatura(o.getTemperatura());
+			or.setMasaAcumulada(o.getMasaAcumulada());
+			or.setDensidad(o.getDensidad());
+	    	
+	    	long diffInMillies = Math.abs(o.getFechaUltimoAlmacenamiento().getTime() - or.getFechaUltimoAlmacenamiento().getTime());
+		    long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+	    	
+			if(diff > Constantes.PERIODO_ALMACENAMIENTO) {
+				detalleDAO.save(new DetalleOrden(or,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal()));
+				or.setFechaUltimoAlmacenamiento(o.getFechaUltimoAlmacenamiento());
 			}
-		}else {
-			throw new WrongStateException("La orden debe estar en estado 2 para utilizar este servicio");
+			
+			if(or.getMasaAcumulada()> or.getPreset()) {
+				or.setMasaAcumulada(or.getPreset());
+				or.setEstado(3);
+				or.setFechaFProcesoCarga(new Date());
+			}
+			
+			ordenDAO.save(or);
+			return or;
+			
+		}catch (Exception e) {
+			throw new BusinessException(e);
 		}
-		
-		return or;
 	}
 
 	@Override

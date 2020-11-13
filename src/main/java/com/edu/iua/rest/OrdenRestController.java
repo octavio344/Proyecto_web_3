@@ -66,7 +66,7 @@ public class OrdenRestController {
 	}
     
 	
-	//Endpoint Nro 1
+	//Endpoint Nro 1 - Funciona OK
 	
 	@PostMapping(value = "/crear", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> abrirOrden(@RequestBody Orden p){
@@ -82,7 +82,7 @@ public class OrdenRestController {
 		}
 	}
 	
-	//Endpoint Nro 2
+	//Endpoint Nro 2 - Funciona OK
 
 	@PutMapping(value = "/pesajeInicial", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> pesajeInicial(@RequestBody Orden orden) {
@@ -101,10 +101,10 @@ public class OrdenRestController {
 	
 	//Endpoint Nro 3
 	
-	@PutMapping(value = "/actualizar", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> actualizarDetalle(@RequestBody Orden orden) {
+	@PutMapping(value = "/actualizarDetalle", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateDetalle(@RequestBody Orden orden) {
 		try {
-			ordenBusiness.setearPesajeInicial(orden);	
+			ordenBusiness.updateDetalle(orden);	
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
