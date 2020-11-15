@@ -19,16 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edu.iua.business.IClienteBusiness;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
+import com.edu.iua.model.Camion;
 import com.edu.iua.model.Cliente;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 
 @RestController
 @RequestMapping(value = Constantes.URL_CLIENTES)
+@Api(value = "Clientes", description = "Operaciones relacionadas con los clientes", tags = { "Clientes" })
 public class ClienteRestController {
 
 	
 	@Autowired
 	private IClienteBusiness clienteBusiness;
+	
+	@ApiOperation(value="Obtener un cliente mediante su ID", response = Cliente.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el cliente"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Cliente> load(@PathVariable("id") Long id) {
@@ -43,6 +58,14 @@ public class ClienteRestController {
 		
 	}
 	
+	@ApiOperation(value="Obtener un cliente mediante su Código Externo", response = Cliente.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el cliente"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = "/ce/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Cliente> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
 		
@@ -56,6 +79,13 @@ public class ClienteRestController {
 		
 	}
 	
+	@ApiOperation(value="Obtener todos los clientes almacenados en la base de datos", response = Cliente.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cliente>> list(){
 		
@@ -66,6 +96,13 @@ public class ClienteRestController {
 		}
 	}
     
+	@ApiOperation(value="Guardar un nuevo cliente en la base de datos", response = Cliente.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@RequestBody Cliente c){
@@ -81,6 +118,14 @@ public class ClienteRestController {
 		}
 	}
 	
+	@ApiOperation(value="Actualizar los datos de un cliente", response = Cliente.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el cliente"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> update(@RequestBody Cliente cliente) {
 		try {
@@ -92,6 +137,14 @@ public class ClienteRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@ApiOperation(value="Borrar un cliente indicando su ID", response = Cliente.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el cliente"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {

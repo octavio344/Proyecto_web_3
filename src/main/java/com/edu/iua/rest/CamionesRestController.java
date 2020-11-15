@@ -23,14 +23,28 @@ import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.model.Camion;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping(value = Constantes.URL_CAMIONES)
+@Api(value = "Camiones", description = "Operaciones relacionadas con los camiones", tags = { "Camiones" })
 public class CamionesRestController extends BaseRestController {
 	
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private ICamionBusiness camionBusiness;
+	
+	@ApiOperation(value="Obtener un camión mediante su ID", response = Camion.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el camión"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@GetMapping(value = { "/{id}" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<com.edu.iua.model.Camion> load(@PathVariable("id") Long id) {
@@ -44,6 +58,14 @@ public class CamionesRestController extends BaseRestController {
 		}
 	}
 	
+	@ApiOperation(value="Obtener un camión mediante su Código Externo", response = Camion.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el camión"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = { "/ce/{codigoExterno}" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<com.edu.iua.model.Camion> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
 		try {
@@ -56,6 +78,13 @@ public class CamionesRestController extends BaseRestController {
 		}
 	}
 	
+	@ApiOperation(value="Obtener todos los camiones almacenados en la base de datos", response = Camion.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = { "" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Camion>> list() {
 		try {
@@ -65,6 +94,14 @@ public class CamionesRestController extends BaseRestController {
 			return new ResponseEntity<List<Camion>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@ApiOperation(value="Guardar un nuevo camión en la base de datos", response = Camion.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PostMapping(value = { "" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@RequestBody Camion camion) {
@@ -81,6 +118,14 @@ public class CamionesRestController extends BaseRestController {
 		}
 	}
 	
+	@ApiOperation(value="Actualizar los datos de un camión", response = Camion.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el camión"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@PutMapping(value = { "" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> update(@RequestBody Camion camion) {
 		try {
@@ -91,6 +136,14 @@ public class CamionesRestController extends BaseRestController {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@ApiOperation(value="Borrar un camión indicando su ID", response = Camion.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el camión"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@DeleteMapping(value = { "/{id}" }, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {

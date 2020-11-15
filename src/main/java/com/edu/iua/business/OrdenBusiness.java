@@ -188,7 +188,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	    	if(or.getMasaAcumulada()==0.0) {
 	    		or.setFechaIProcesoCarga(new Date());
 	    		or.setFechaUltimoAlmacenamiento(new Date());
-				detalleDAO.save(new DetalleOrden(or,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal()));
+				detalleDAO.save(new DetalleOrden(or,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal(), new Date()));
 	    	}	    	
 	    	
 	    	or.setCaudal(o.getCaudal());
@@ -200,7 +200,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 		    long diff = TimeUnit.SECONDS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 	    	
 			if(diff > Constantes.PERIODO_ALMACENAMIENTO) {
-				detalleDAO.save(new DetalleOrden(or,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal()));
+				detalleDAO.save(new DetalleOrden(or,o.getMasaAcumulada(),o.getDensidad(),o.getTemperatura(),o.getCaudal(), new Date()));
 				or.setFechaUltimoAlmacenamiento(o.getFechaUltimoAlmacenamiento());
 			}
 			
@@ -322,7 +322,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 			throw new WrongStateException("La orden debe estar en estado 4 para utilizar este servicio");
 		}
 		
-		return getConciliacion(or);
+		return generarConciliacion(o);
 		
 	}
 

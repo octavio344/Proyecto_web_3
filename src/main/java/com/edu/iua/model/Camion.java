@@ -11,34 +11,43 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 
 
 @Entity
 @Table(name = "camiones")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="idCamion")
+@ApiModel(value = "Camion", description = "Modelo del camión utilizado para las ordenes")
 public class Camion implements Serializable {
 	
 	private static final long serialVersionUID = -5085577829256392612L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(notes = "Identificador del camión, generado automáticamente", required = true)
 	private Long idCamion;
 	
 	@Column(columnDefinition="varchar(10)" ,nullable = false,unique = true)
+	@ApiModelProperty(notes = "Patente del camión, ingresada manualmente", required = true)
 	private String patente;
 
 	
 	@Column(length = 100)
+	@ApiModelProperty(notes = "Codigo externo del camión para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
 	@Column(length = 100)
+	@ApiModelProperty(notes = "Descripción del camión, ingresada manualmente", required = false)
 	private String descripcion;
 	
 	private ArrayList<Double> cisternado;
 	
 	@OneToMany(targetEntity=Orden.class, mappedBy="camion", fetch = FetchType.LAZY)
 	@JsonBackReference
+	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se utilizó el camión", required = false)
 	private List<Orden> ordenList;
 	
 	//Metodo para calcular el total del cisternado

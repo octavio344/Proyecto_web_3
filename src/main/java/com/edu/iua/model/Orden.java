@@ -16,66 +16,90 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "ordenes")
-
+@ApiModel(value = "Orden", description = "Modelo de la orden realizada")
 public class Orden {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(notes = "Identificador de la orden, generado automáticamente", required = true)
 	private Long nroOrden;
 	
 	@Column(length = 100)
+	@ApiModelProperty(notes = "Codigo externo de la orden para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
 	@ManyToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name = "camion_id")
+	@ApiModelProperty(notes = "Camión utilizado para la orden, se ingresa manualmente su código externo", required = true)
 	private Camion camion;
 	
 	@ManyToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name = "chofer_id")
+	@ApiModelProperty(notes = "Chofer contratado para llevar la orden, se ingresa manualmente su código externo", required = true)
 	private Chofer chofer;
 	
 	@ManyToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name = "cliente_id")
+	@ApiModelProperty(notes = "Cliente que realizó la orden, se ingresa manualmente su código externo", required = true)
 	private Cliente cliente;
 	
 	@ManyToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name = "producto_id")
+	@ApiModelProperty(notes = "Producto adquirido en la orden, se ingresa manualmente su código externo", required = true)
 	private Producto producto;
 	
 	@OneToMany(targetEntity=DetalleOrden.class, mappedBy="ordenAsociada", fetch = FetchType.LAZY)
+	@ApiModelProperty(notes = "Lista de detalles asociados al proceso de carga del camión.", required = true)
 	private List<DetalleOrden> detalleOrdenList;
 
-	
+	@ApiModelProperty(notes = "Fecha en la que se recibe la orden", required = true)
 	private Date fechaRecepcion;
 	
+	@ApiModelProperty(notes = "Fecha en la que el camión arribará a la planta para su pesaje inicial", required = true)
 	private Date fechaRecepcionPesajeI;
 	
+	@ApiModelProperty(notes = "Fecha en la que inicia el proceso de carga del camión", required = true)
 	private Date fechaIProcesoCarga;
 	
+	@ApiModelProperty(notes = "Fecha en la que finaliza el proceso de carga del camión", required = true)
 	private Date fechaFProcesoCarga;
 	
+	@ApiModelProperty(notes = "Fecha en la que se realiza el pesaje final antes de retirarse de la planta", required = true)
 	private Date fechaRecepcionPesajeF;
 	
+	@ApiModelProperty(notes = "Fecha del último almacenamiento de un detalle de la carga", required = true)
 	private Date fechaUltimoAlmacenamiento;
 	
+	@ApiModelProperty(notes = "Cantidad del producto a cargar durante la orden", required = true, allowableValues = "Mayor a cero")
 	private Double preset;
 	
+	@ApiModelProperty(notes = "Valor del pesaje inicial del camión al arribar a la planta", required = true, allowableValues = "Mayor a cero")
 	private Double pesajeInicial;
 	
+	@ApiModelProperty(notes = "Valor del pesaje final del camión al retirarse de la planta", required = true, allowableValues = "Mayor al pesaje inicial")
 	private Double pesajeFinal;
 	
+	@ApiModelProperty(notes = "Masa acumulada del producto durante la carga ", required = true, allowableValues = "Mayor a cero")
 	private Double masaAcumulada = 0.0;
 	
+	@ApiModelProperty(notes = "Densidad del producto durante la carga", required = true, allowableValues="range[0, 1]")
 	private Double densidad = 0.0;
 	
+	@ApiModelProperty(notes = "Temperatura del producto durante la carga", required = true, allowableValues= "Mayor a Cero")
 	private Double temperatura = 0.0;
 	
+	@ApiModelProperty(notes = "Caudal de carga del producto", required = true, allowableValues="Mayor a Cero")
 	private Double caudal = 0.0;  
 
+	@ApiModelProperty(notes = "Estado de la orden, comienza en uno y llega hasta cuatro", required = true, allowableValues="range[1, 4]")
 	private int estado = 1;
 	
+	@ApiModelProperty(notes = "Clave de identificación del sistema externo", required = true)
 	private String psswd;
 
 	public Long getNroOrden() {

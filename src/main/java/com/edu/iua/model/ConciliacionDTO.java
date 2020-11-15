@@ -2,27 +2,36 @@ package com.edu.iua.model;
 
 import java.io.Serializable;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "DTO de la conciliación", description = "DTO para enviar los datos requeridos por la conciliación")
 public class ConciliacionDTO implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1877055914099271387L;
 
+	@ApiModelProperty(notes = "Valor del pesaje inicial del camión al arribar a la planta", required = true, allowableValues = "Mayor a cero")
 	private Double pesajeInicial;
 	
+	@ApiModelProperty(notes = "Valor del pesaje final del camión al retirarse de la planta", required = true, allowableValues = "Mayor a cero")
 	private Double pesajeFinal;
 	
+	@ApiModelProperty(notes = "Masa acumulada del producto al finalizar la carga ", required = true, allowableValues = "Mayor a cero")
 	private Double productoAcumulado;
 	
+	@ApiModelProperty(notes = "Valor neto por balanza del producto calculado restando el pesaje inicial del pesaje final", required = true, allowableValues = "Mayor a cero")
 	private Double netoPorBalanza;
 	
+	@ApiModelProperty(notes = "Diferencia entre la balanza y el caudalímetro, calculada restando la masa acumulada del neto por balanza.", required = true, allowableValues = "Mayor a cero")
 	private Double difBalyCaud;
 	
+	@ApiModelProperty(notes = "Temperatura promedio del producto durante la carga ", required = true, allowableValues = "Mayor a cero")
 	private Double promedioTemp;
 	
+	@ApiModelProperty(notes = "Caudal promedio del producto durante la carga ", required = true, allowableValues = "Mayor a cero")
 	private Double promedioCaudal;
 	
+	@ApiModelProperty(notes = "Densidad promedio del producto durante la carga ", required = true, allowableValues = "Mayor a cero")
 	private Double promedioDensidad;
 
 	public ConciliacionDTO(Double pesajeInicial, Double pesajeFinal, Double productoAcumulado, Double promedioTemp,
