@@ -1,5 +1,6 @@
 package com.edu.iua.business;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,13 +11,18 @@ import org.springframework.stereotype.Service;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.model.Camion;
+import com.edu.iua.model.Cisterna;
 import com.edu.iua.model.persistence.CamionRepository;
+import com.edu.iua.model.persistence.CisternaRepository;
 
 @Service
 public class CamionBusiness implements ICamionBusiness{
 
 	@Autowired
 	private CamionRepository camionDAO;
+	
+	@Autowired 
+	private CisternaRepository cisternaDAO;
 	
 	@Override
 	public Camion load(Long id) throws BusinessException, NotFoundException {
@@ -44,6 +50,19 @@ public class CamionBusiness implements ICamionBusiness{
 	@Override
 	public Camion save(Camion camion) throws BusinessException {
 		try {
+			List<Cisterna> cisternasRecibidas = camion.getCisternado();
+			List<Cisterna> cisternas = new ArrayList<Cisterna>();
+			for(Cisterna c: cisternasRecibidas) {
+				Optional<Cisterna> opCisterna = cisternaDAO.findByCodigoExterno(c.getCodigoExterno());
+				if(!opCisterna.isPresent())
+					if(c.getCapacidad()==null) {
+						throw new NotFoundException("No se encuentra la cisterna con el código externo"+ c.getCodigoExterno());
+					}else {
+						cisternas.add(cisternaDAO.save(new Cisterna(c.getCapacidad(),c.getCodigoExterno())));
+					}
+				else cisternas.add(opCisterna.get());	
+			}
+			camion.setCisternado(cisternas);
 			return camionDAO.save(camion);
 		} catch (Exception e) {
 			throw new BusinessException(e);

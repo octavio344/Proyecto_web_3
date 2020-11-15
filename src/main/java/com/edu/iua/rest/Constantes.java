@@ -11,6 +11,7 @@ public class Constantes {
 	public static final String URL_CLIENTES = URL_BASE + "/clientes";
     public static final String URL_PRODUCTOS = URL_BASE + "/productos";
     public static final String URL_ORDENES = URL_BASE + "/ordenes";
+    public static final String URL_CISTERNAS = URL_BASE + "/cisternas";
     
     public static final Integer PERIODO_ALMACENAMIENTO = 10;
 }

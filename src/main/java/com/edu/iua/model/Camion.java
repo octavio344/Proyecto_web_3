@@ -1,7 +1,7 @@
 package com.edu.iua.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.List;
 
 import javax.persistence.*;
@@ -43,7 +43,11 @@ public class Camion implements Serializable {
 	@ApiModelProperty(notes = "Descripción del camión, ingresada manualmente", required = false)
 	private String descripcion;
 	
-	private ArrayList<Double> cisternado;
+	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "camiones_cisternas",
+	        joinColumns = @JoinColumn(name = "id_camion", referencedColumnName="idCamion"),
+	        inverseJoinColumns = @JoinColumn(name = "id_cisterna", referencedColumnName="idCisterna"))
+	private List<Cisterna> cisternadoList;
 	
 	@OneToMany(targetEntity=Orden.class, mappedBy="camion", fetch = FetchType.LAZY)
 	@JsonBackReference
@@ -55,22 +59,22 @@ public class Camion implements Serializable {
 	
 	//Constructores
 	
-	public Camion(String patente, String descripcion, ArrayList<Double> cisternado) {
+	public Camion(String patente, String descripcion, List<Cisterna> cisternado) {
 		super();
 		this.patente = patente;
 		this.descripcion = descripcion;
-		this.cisternado = cisternado;
+		this.cisternadoList = cisternado;
 	}
 
 	
 	
 	
-	public Camion(String patente, String codigoExterno, String descripcion, ArrayList<Double> cisternado) {
+	public Camion(String patente, String codigoExterno, String descripcion, List<Cisterna> cisternado) {
 		super();
 		this.patente = patente;
 		this.codigoExterno = codigoExterno;
 		this.descripcion = descripcion;
-		this.cisternado = cisternado;
+		this.cisternadoList = cisternado;
 	}
 
 
@@ -134,12 +138,12 @@ public class Camion implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public ArrayList<Double> getCisternado() {
-		return cisternado;
+	public List<Cisterna> getCisternado() {
+		return cisternadoList;
 	}
 
-	public void setCisternado(ArrayList<Double> cisternado) {
-		this.cisternado = cisternado;
+	public void setCisternado(List<Cisterna> cisternado) {
+		this.cisternadoList = cisternado;
 	}
 	
 	public Double getTotalCisternado(){
@@ -147,8 +151,8 @@ public class Camion implements Serializable {
 		@SuppressWarnings("deprecation")
 		Double total = new Double(0);
 		
-		for(int i=0;i < cisternado.size();i++){
-			total += cisternado.get(i); 
+		for(int i=0;i < cisternadoList.size();i++){
+			total += cisternadoList.get(i).getCapacidad(); 
 		}
 		
 		return total;
@@ -161,7 +165,7 @@ public class Camion implements Serializable {
 	@Override
 	public String toString() {
 		return "Camion [idCamion=" + idCamion + ", patente=" + patente + ", codigoExterno=" + codigoExterno
-				+ ", descripcion=" + descripcion + ", cisternado=" + cisternado + ", ordenList=" + ordenList + "]";
+				+ ", descripcion=" + descripcion + ", cisternado=" + cisternadoList + ", ordenList=" + ordenList + "]";
 	}
 
 	
