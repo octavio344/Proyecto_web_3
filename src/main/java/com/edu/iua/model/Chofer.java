@@ -4,6 +4,10 @@ package com.edu.iua.model;
 import java.io.Serializable;
 import java.util.List;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,30 +25,37 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "choferes")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="idChofer")
+@ApiModel(value = "Chofer", description = "Modelo del chofer contratado para las ordenes")
 public class Chofer implements Serializable {
 
 	private static final long serialVersionUID = 8777321664336516570L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(notes = "Identificador del chofer, generado automáticamente", required = true)
 	private Long idChofer;
 	
 	
 	@Column(nullable = false,unique = true)
+	@ApiModelProperty(notes = "DNI del chofer, ingresado manualmente", required = true)
 	private Long dni;
 	
 	
 	@Column(length = 100)
+	@ApiModelProperty(notes = "Codigo externo del camión para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
 	@Column(length = 100,nullable = false)
+	@ApiModelProperty(notes = "Nombre del chofer, ingresado manualmente", required = true)
 	private String nombre;
 	
 	@Column(length = 100,nullable = false)
+	@ApiModelProperty(notes = "Apellido del chofer, ingresado manualmente", required = true)
 	private String apellido;
 	
 	@OneToMany(targetEntity=Orden.class, mappedBy="chofer", fetch = FetchType.LAZY)
 	@JsonBackReference
+	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se contrató al chofer", required = false)
 	private List<Orden> ordenList;
 	
 	//Constructores

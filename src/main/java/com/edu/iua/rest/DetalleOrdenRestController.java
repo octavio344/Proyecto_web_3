@@ -20,13 +20,18 @@ import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.model.DetalleOrden;
 
+import io.swagger.annotations.Api;
+
 
 @RestController
 @RequestMapping(value = "/api/v1/detalles-ordenes")
+@Api(value = "Detalles de las ordenes", description = "Operaciones relacionadas con los detalles de las ordenes", tags = { "DetalleOrden" })
 public class DetalleOrdenRestController {
 
 	@Autowired
 	private IDetalleOrdenBusiness detalleBusiness;
+	
+	
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DetalleOrden> load(@PathVariable("id") Long id) {

@@ -17,10 +17,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "productos")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="idProducto")
+@ApiModel(value = "Producto", description = "Productos transportados durante las ordenes")
 public class Producto implements Serializable {
 
 	/**
@@ -31,20 +35,25 @@ public class Producto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true,nullable = false)
+	@ApiModelProperty(notes = "Identificador del producto, generado automáticamente", required = true)
 	private Long idProducto;
 	
 	
 	@Column(length = 100)
+	@ApiModelProperty(notes = "Codigo externo del producto para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
 	@Column(length = 60,nullable = false)
+	@ApiModelProperty(notes = "Nombre del producto, ingresado manualmente", required = true)
 	private String nombre;
 	
 	@Column(length = 140,nullable = false)
+	@ApiModelProperty(notes = "Descripción del producto, ingresada manualmente", required = true)
 	private String descripcion;
 	
 	@OneToMany(targetEntity=Orden.class, mappedBy="producto", fetch = FetchType.LAZY)
 	@JsonBackReference
+	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se adquirió el producto", required = false)
 	private List<Orden> ordenList;
 	
 	

@@ -20,10 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edu.iua.business.IProductoBusiness;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
+import com.edu.iua.model.Camion;
 import com.edu.iua.model.Producto;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = "/api/v1/productos")
+@Api(value = "Productos", description = "Operaciones relacionadas con los productos", tags = { "Productos" })
 public class ProductoRestController {
 
 	//private Logger log = LoggerFactory.getLogger(this.getClass());
@@ -31,6 +38,14 @@ public class ProductoRestController {
 	
 	@Autowired
 	private IProductoBusiness productoBusiness;
+	
+	@ApiOperation(value="Obtener un producto mediante su ID", response = Producto.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el producto"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Producto> load(@PathVariable("id") Long id) {
@@ -45,6 +60,14 @@ public class ProductoRestController {
 		
 	}
 	
+	@ApiOperation(value="Obtener un producto mediante su Código Externo", response = Producto.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el producto"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = "/ce/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Producto> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
 		
@@ -58,6 +81,12 @@ public class ProductoRestController {
 		
 	}
 	
+	@ApiOperation(value="Obtener todos los productos almacenados en la base de datos", response = Producto.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Producto>> list(){
@@ -69,6 +98,13 @@ public class ProductoRestController {
 		}
 	}
     
+	@ApiOperation(value="Guardar un nuevo producto en la base de datos", response = Producto.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})	
 	
 	@PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@RequestBody Producto p){
@@ -84,6 +120,14 @@ public class ProductoRestController {
 		}
 	}
 	
+	@ApiOperation(value="Actualizar los datos de un producto", response = Producto.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el producto"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> update(@RequestBody Producto producto) {
 		try {
@@ -95,6 +139,14 @@ public class ProductoRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@ApiOperation(value="Borrar un producto indicando su ID", response = Producto.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el producto"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {

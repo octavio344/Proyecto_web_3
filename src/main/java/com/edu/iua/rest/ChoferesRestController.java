@@ -21,10 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edu.iua.business.IChoferBusiness;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
+import com.edu.iua.model.Camion;
 import com.edu.iua.model.Chofer;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = Constantes.URL_CHOFERES)
+@Api(value = "Choferes", description = "Operaciones relacionadas con los choferes", tags = { "Choferes" })
 public class ChoferesRestController extends BaseRestController {
 	
 	
@@ -32,6 +39,14 @@ public class ChoferesRestController extends BaseRestController {
 	
 	@Autowired
 	private IChoferBusiness choferBusiness;
+	
+	@ApiOperation(value="Obtener un chofer mediante su ID", response = Chofer.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el chofer"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<com.edu.iua.model.Chofer> load(@PathVariable("id") Long id) {
@@ -45,6 +60,14 @@ public class ChoferesRestController extends BaseRestController {
 		}
 	}
 	
+	@ApiOperation(value="Obtener un chofer mediante su Código Externo", response = Chofer.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el chofer"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(path = "/ce/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<com.edu.iua.model.Chofer> findByCodigoExterno(@PathVariable("codigoExterno") String codigoExterno) {
 		try {
@@ -57,6 +80,13 @@ public class ChoferesRestController extends BaseRestController {
 		}
 	}
 	
+	@ApiOperation(value="Obtener todos los choferes almacenados en la base de datos", response = Chofer.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Chofer>> list() {
 		try {
@@ -66,6 +96,14 @@ public class ChoferesRestController extends BaseRestController {
 			return new ResponseEntity<List<Chofer>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@ApiOperation(value="Guardar un nuevo chofer en la base de datos", response = Chofer.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> add(@RequestBody Chofer chofer) {
@@ -82,6 +120,14 @@ public class ChoferesRestController extends BaseRestController {
 		}
 	}
 	
+	@ApiOperation(value="Actualizar los datos de un chofer", response = Chofer.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el chofer"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@PutMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> update(@RequestBody Chofer chofer) {
 		try {
@@ -92,6 +138,14 @@ public class ChoferesRestController extends BaseRestController {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@ApiOperation(value="Borrar un chofer indicando su ID", response = Chofer.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra el chofer"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@DeleteMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
