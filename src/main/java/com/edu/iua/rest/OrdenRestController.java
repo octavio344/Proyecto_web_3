@@ -21,6 +21,7 @@ import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
 import com.edu.iua.model.Camion;
+import com.edu.iua.model.ConciliacionDTO;
 import com.edu.iua.model.Orden;
 
 import io.swagger.annotations.Api;
@@ -243,6 +244,30 @@ public class OrdenRestController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@ApiOperation(value="Obtener la conciliación de una orden", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
+	@GetMapping(value = "/conciliacion/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("codigoExterno") String codigoExterno) {
+		
+		try {
+			return new ResponseEntity<ConciliacionDTO>(ordenBusiness.getConciliacion(codigoExterno),HttpStatus.OK); 
+		}catch (NotFoundException e) {
+			return new ResponseEntity<ConciliacionDTO>(HttpStatus.NOT_FOUND);
+		}catch (BusinessException e) {
+			return new ResponseEntity<ConciliacionDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}catch (WrongStateException e) {
+			return new ResponseEntity<ConciliacionDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 }
