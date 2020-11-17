@@ -308,12 +308,12 @@ public class OrdenBusiness implements IOrdenBusiness {
 		return op.get();
 	}
 	
-	@Override public ConciliacionDTO getConciliacion(Orden o) throws BusinessException, NotFoundException, WrongStateException{
+	@Override public ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException{
 		
-		Optional<Orden> op=ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		Optional<Orden> op=ordenDAO.findByCodigoExterno(codigoExterno);
 		
 		if(!op.isPresent()) {
-			throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
+			throw new NotFoundException("No se encuentra la orden con el codigo externo =" + codigoExterno);
 		}
 		
 		Orden or = op.get();
@@ -322,7 +322,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 			throw new WrongStateException("La orden debe estar en estado 4 para utilizar este servicio");
 		}
 		
-		return generarConciliacion(o);
+		return generarConciliacion(or);
 		
 	}
 
