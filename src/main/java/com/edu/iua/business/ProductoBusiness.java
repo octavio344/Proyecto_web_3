@@ -54,6 +54,7 @@ public class ProductoBusiness implements IProductoBusiness {
 				throw new NotFoundException("No se encuentra el producto con el identificador:" + id);
 				}
 			catch(Exception e) {
+				e.printStackTrace();
 				throw new BusinessException(e);
 			}
 	}

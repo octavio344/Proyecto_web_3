@@ -114,6 +114,7 @@ public class OrdenRestController {
 			responseHeaders.set("location", Constantes.URL_ORDENES + "/" +p.getNroOrden());
 			return new ResponseEntity<String>(responseHeaders,HttpStatus.CREATED);
 		}catch (BusinessException e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (IllegalArgumentException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
@@ -254,7 +255,7 @@ public class OrdenRestController {
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})
 	
-	@GetMapping(value = "/conciliacion/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/conciliacion/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("id") Long id) {
 		
 		try {
@@ -269,7 +270,7 @@ public class OrdenRestController {
 		
 	}
 	
-	@GetMapping(value = "/conciliacion/{ce}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/conciliacion/ce/{ce}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("ce") String ce) {
 		
 		try {

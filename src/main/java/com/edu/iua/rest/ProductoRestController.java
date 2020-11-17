@@ -150,6 +150,7 @@ public class ProductoRestController {
 	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
 		try {
+			
 			productoBusiness.delete(id);
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (BusinessException e) {
