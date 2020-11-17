@@ -17,4 +17,5 @@ public interface ICisternaBusiness {
 	 void delete(Long id) throws BusinessException, NotFoundException;
 	
 	 Cisterna findByCodigoExterno(String c)throws NotFoundException, BusinessException;
+	 
 }

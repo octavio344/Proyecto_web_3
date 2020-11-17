@@ -3,6 +3,7 @@ package com.edu.iua.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +13,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import io.swagger.annotations.ApiModel;
@@ -35,12 +35,18 @@ public class Cisterna implements Serializable {
 	private Double capacidad;
 	
 	@ApiModelProperty(notes = "Codigo externo del camión para identificación desde el sistema externo, ingresado manualmente", required = true)
+	@Column(length = 50,unique = true)
 	private String codigoExterno;
 	
 	@ManyToMany(mappedBy = "cisternadoList")
 	@JsonBackReference
 	private List<Camion> camionesList;
 
+	public Cisterna(Cisterna c) {
+		this.codigoExterno= c.getCodigoExterno();
+		this.capacidad = c.getCapacidad();
+	}
+	
 	public Cisterna(Double capacidad, String codigoExterno) {
 		super();
 		this.capacidad = capacidad;

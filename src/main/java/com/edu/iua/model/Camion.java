@@ -2,7 +2,6 @@ package com.edu.iua.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -35,7 +34,7 @@ public class Camion implements Serializable {
 	private String patente;
 
 	
-	@Column(length = 100)
+	@Column(length = 100,unique = true)
 	@ApiModelProperty(notes = "Codigo externo del camión para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
@@ -54,10 +53,14 @@ public class Camion implements Serializable {
 	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se utilizó el camión", required = false)
 	private List<Orden> ordenList;
 	
-	//Metodo para calcular el total del cisternado
 	
 	
 	//Constructores
+
+	public Camion(Camion c) {
+		this.codigoExterno = c.getCodigoExterno();
+		this.patente = c.getPatente();
+	}
 	
 	public Camion(String patente, String descripcion, List<Cisterna> cisternado) {
 		super();
@@ -66,9 +69,7 @@ public class Camion implements Serializable {
 		this.cisternadoList = cisternado;
 	}
 
-	
-	
-	
+
 	public Camion(String patente, String codigoExterno, String descripcion, List<Cisterna> cisternado) {
 		super();
 		this.patente = patente;

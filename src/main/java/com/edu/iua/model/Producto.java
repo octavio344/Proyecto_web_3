@@ -39,7 +39,7 @@ public class Producto implements Serializable {
 	private Long idProducto;
 	
 	
-	@Column(length = 100)
+	@Column(length = 100,unique = true)
 	@ApiModelProperty(notes = "Codigo externo del producto para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
@@ -56,7 +56,12 @@ public class Producto implements Serializable {
 	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se adquirió el producto", required = false)
 	private List<Orden> ordenList;
 	
-	
+	public Producto(Producto p) {
+		this.codigoExterno = p.getCodigoExterno();
+		this.nombre = p.getNombre();
+		this.descripcion = p.getDescripcion();
+		this.precio = p.getPrecio();
+	}
 	
 	public Producto(Long id, String codigoExterno, String nombre, String descripcion,
 			Long precio) {

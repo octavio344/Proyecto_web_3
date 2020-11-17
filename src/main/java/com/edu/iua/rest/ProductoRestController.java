@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edu.iua.business.IProductoBusiness;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
-import com.edu.iua.model.Camion;
 import com.edu.iua.model.Producto;
 
 import io.swagger.annotations.Api;

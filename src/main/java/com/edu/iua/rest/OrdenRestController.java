@@ -20,7 +20,6 @@ import com.edu.iua.business.IOrdenBusiness;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
-import com.edu.iua.model.Camion;
 import com.edu.iua.model.ConciliacionDTO;
 import com.edu.iua.model.Orden;
 

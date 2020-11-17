@@ -41,7 +41,7 @@ public class Chofer implements Serializable {
 	private Long dni;
 	
 	
-	@Column(length = 100)
+	@Column(length = 100,unique = true)
 	@ApiModelProperty(notes = "Codigo externo del camión para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
@@ -59,15 +59,12 @@ public class Chofer implements Serializable {
 	private List<Orden> ordenList;
 	
 	//Constructores
+	public Chofer(Chofer c) {
+		this.codigoExterno= c.getCodigoExterno();
+		this.apellido = c.getApellido();
+		this.nombre = c.getNombre();
+	}
 	
-	public List<Orden> getOrdenList() {
-		return ordenList;
-	}
-
-	public void setOrdenList(List<Orden> ordenList) {
-		this.ordenList = ordenList;
-	}
-
 	public Chofer(Long dni, String nombre, String apellido) {
 		super();
 		this.dni = dni;
@@ -90,7 +87,14 @@ public class Chofer implements Serializable {
 	
 	//Getters y Setters
 
-	
+	public List<Orden> getOrdenList() {
+		return ordenList;
+	}
+
+	public void setOrdenList(List<Orden> ordenList) {
+		this.ordenList = ordenList;
+	}
+
 	
 	public Long getDni() {
 		return dni;

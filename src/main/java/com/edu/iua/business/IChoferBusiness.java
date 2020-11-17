@@ -19,4 +19,5 @@ public interface IChoferBusiness {
 	 void delete(Long id) throws BusinessException, NotFoundException;
 	
 	 Chofer findByCodigoExterno(String c)throws NotFoundException, BusinessException;
+
 }

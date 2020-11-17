@@ -18,4 +18,5 @@ public interface ICamionBusiness {
 	 void delete(Long id) throws BusinessException, NotFoundException;
 	
 	 Camion findByCodigoExterno(String c)throws NotFoundException, BusinessException;
+	 
 }

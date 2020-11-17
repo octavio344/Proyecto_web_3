@@ -35,7 +35,7 @@ public class Cliente implements Serializable {
 	private Long idCliente;
 	
 	
-	@Column(length = 100)
+	@Column(length = 100,unique = true)
 	@ApiModelProperty(notes = "Codigo externo del cliente para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
@@ -61,7 +61,11 @@ public class Cliente implements Serializable {
 	}
 
 	
-	
+	public Cliente(Cliente c) {
+		this.codigoExterno = c.getCodigoExterno();
+		this.contacto = c.getContacto();
+		this.razonSocial = c.getRazonSocial();
+	}
 	
 	
 	
