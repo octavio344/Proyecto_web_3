@@ -1,0 +1,974 @@
+{
+	"info": {
+		"_postman_id": "67030896-3981-4cb6-b5be-54a45c52ec65",
+		"name": "Proyecto Integrador Web 3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POSTs y PUTs para los Endpoints",
+			"item": [
+				{
+					"name": "Endpoint 1 - Crear Nueva Orden pasando secundarias por CE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtF\",\n    \"camion\":{\"codigoExterno\":\"c3svZYkLJF\"},\n    \"chofer\":{\"codigoExterno\":\"zdgy2xpHlZ\"},\n    \"cliente\":{\"codigoExterno\":\"rSDQMmUYaL\"},\n    \"producto\":{\"codigoExterno\":\"6A7iBCfLQE\"},\n    \"preset\":550,\n    \"fechaRecepcionPesajeI\":\"2020-11-13T18:56:56.447+00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Endpoint 1 - Crear Nueva Orden pasando secundarias por ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtF\",\n    \"camion\":{\"idCamion\":\"3\"},\n    \"chofer\":{\"idChofer\":\"1\"},\n    \"cliente\":{\"idCliente\":\"1\"},\n    \"producto\":{\"id\":\"1\"},\n    \"preset\":550,\n    \"fechaRecepcionPesajeI\":\"2020-11-13T18:56:56.447+00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Endpoint 2 - Establecer Pesaje Inicial",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\",\n    \"pesajeInicial\":\"1200\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/pesajeInicial",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"pesajeInicial"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Endpoint 3 - Guardar nuevo detalle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\",\n    \"masaAcumulada\":270,\n    \"densidad\":0.8,\n    \"temperatura\":38,\n    \"caudal\":25\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/actualizarDetalle",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"actualizarDetalle"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Endpoint 4 - Cerrar Orden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/cerrar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"cerrar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Endpoint 5 - Ingresar pesaje final y finalizar Orden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\",\n    \"pesajeFinal\":1500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/pesajeFinal",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"pesajeFinal"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4dd49a72-7251-4ed9-aacf-a520d9350278",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4e50f4e5-2da8-4080-9658-d16a61ddcd4a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GETs para la orden",
+			"item": [
+				{
+					"name": "Obtener todas las ordenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener orden por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener orden por Codigo Externo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/ce/d6PbHPmKtg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"ce",
+								"d6PbHPmKtg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener conciliación por CE de la orden",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"6A7iBCfLQ7\",\n    \"nombre\":\"Gas Butano\",\n    \"descripcion\":\"Gas Butano para llenado de tanques a domicilio.\",\n    \"precio\":1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/conciliacion/ce/d6PbHPmKtg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"conciliacion",
+								"ce",
+								"d6PbHPmKtg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener conciliación por ID de la orden",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"6A7iBCfLQ7\",\n    \"nombre\":\"Gas Butano\",\n    \"descripcion\":\"Gas Butano para llenado de tanques a domicilio.\",\n    \"precio\":1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/conciliacion/id/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"conciliacion",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "POSTs de Clases Secundarias",
+			"item": [
+				{
+					"name": "Insertar un camión",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"patente\":\"FLQ324\",\n    \"codigoExterno\":\"c3svZYkLJF\",\n    \"descripcion\":\"Camion Ford\",\n    \"cisternado\":[{\"codigoExterno\":\"fyHGuO7XBh\"}, {\"codigoExterno\":\"LgsSbx1UJd\"}]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/camiones",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"camiones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insertar un chofer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dni\": \"26874369\",\n    \"codigoExterno\": \"zdgy2xpHlZ\",\n    \"nombre\": \"Ernesto\",\n    \"apellido\": \"Martinez\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/choferes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"choferes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insertar un cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"rSDQMmUYaL\",\n    \"razonSocial\":\"Tito SRL\",\n    \"contacto\":\"tito@titosrl.com.ar\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/clientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insertar un producto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"6A7iBCfLQ7\",\n    \"nombre\":\"Gas Butano\",\n    \"descripcion\":\"Gas Butano para llenado de tanques a domicilio.\",\n    \"precio\":1000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insertar una cisterna",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigoExterno\":\"fyHGuO7XBh\",\n    \"capacidad\":500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/cisternas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"cisternas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Posts para poblar la BD.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a57e38aa-173e-4c61-ba65-c975cff16d01",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "db45256a-ae60-4fca-9f6d-b2bdc3479563",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GETs de Clases Secundarias",
+			"item": [
+				{
+					"name": "Obtener todos",
+					"item": [
+						{
+							"name": "Obtener todos los camiones",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/camiones",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"camiones"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener todos los choferes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/choferes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"choferes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener todas las cisternas",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"codigoExterno\":\"fyHGuO7XBh\",\n    \"capacidad\":500\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/cisternas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"cisternas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener todos los clientes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/clientes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"clientes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener todos los productos",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"codigoExterno\":\"6A7iBCfLQE\",\n    \"nombre\":\"Gas Butano\",\n    \"descripcion\":\"Gas Butano para llenado de tanques a domicilio.\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/productos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"productos"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Obtener por ID",
+					"item": [
+						{
+							"name": "Obtener camion por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/camiones/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"camiones",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener chofer por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/choferes/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"choferes",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener cisterna por ID",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"codigoExterno\":\"fyHGuO7XBh\",\n    \"capacidad\":500\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/cisternas/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"cisternas",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener cliente por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/clientes/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"clientes",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener producto por ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/productos/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"productos",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Obtener por Codigo Externo",
+					"item": [
+						{
+							"name": "Obtener camion por Codigo Externo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/camiones/ce/c3svZYkLJF",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"camiones",
+										"ce",
+										"c3svZYkLJF"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener chofer por Codigo Externo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/choferes/ce/zdgy2xpHlZ",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"choferes",
+										"ce",
+										"zdgy2xpHlZ"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener cliente por Codigo Externo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/clientes/ce/rSDQMmUYaL",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"clientes",
+										"ce",
+										"rSDQMmUYaL"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener producto por Codigo Externo",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/productos/ce/6A7iBCfLQE",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"productos",
+										"ce",
+										"6A7iBCfLQE"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtener cisterna por Codigo Externo",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"codigoExterno\":\"fyHGuO7XBh\",\n    \"capacidad\":500\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/cisternas/ce/fyHGuO7XBh",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"cisternas",
+										"ce",
+										"fyHGuO7XBh"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3c58aa2e-4868-4b5d-a7fe-5d8a072112f2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "358c9977-8cf9-4c2e-943b-d1ad585bec52",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
