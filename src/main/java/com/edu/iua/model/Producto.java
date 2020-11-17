@@ -55,6 +55,9 @@ public class Producto implements Serializable {
 	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se adquirió el producto", required = false)
 	private List<Orden> ordenList;
 	
+	@Column(nullable = false)
+	private Long precio;
+	
 	public Producto(Producto p) {
 		this.codigoExterno = p.getCodigoExterno();
 		this.nombre = p.getNombre();
@@ -79,8 +82,6 @@ public class Producto implements Serializable {
 	public void setOrdenList(List<Orden> ordenList) {
 		this.ordenList = ordenList;
 	}
-
-	private Long precio;
 
 	public Long getPrecio() {
 		return precio;
