@@ -53,12 +53,19 @@ public class CamionBusiness implements ICamionBusiness{
 			List<Cisterna> cisternasRecibidas = camion.getCisternado();
 			List<Cisterna> cisternas = new ArrayList<Cisterna>();
 			for(Cisterna c: cisternasRecibidas) {
-				Optional<Cisterna> opCisterna = cisternaDAO.findByCodigoExterno(c.getCodigoExterno());
+				Optional<Cisterna> opCisterna;
+				if(c.getCodigoExterno()!=null)
+					opCisterna = cisternaDAO.findByCodigoExterno(c.getCodigoExterno());
+				else
+					opCisterna = cisternaDAO.findById(c.getIdCisterna());
 				if(!opCisterna.isPresent())
 					if(c.getCapacidad()==null) {
-						throw new NotFoundException("No se encuentra la cisterna con el código externo"+ c.getCodigoExterno());
+						if(c.getCodigoExterno()!=null)
+							throw new NotFoundException("No se encuentra la cisterna con el código externo"+ c.getCodigoExterno());
+						else throw new NotFoundException("No se encuentra la cisterna con el ID"+ c.getIdCisterna());
 					}else {
-						cisternas.add(cisternaDAO.save(new Cisterna(c.getCapacidad(),c.getCodigoExterno())));
+						if(c.getCodigoExterno()!=null || c.getIdCisterna()!=null)
+							cisternas.add(c);
 					}
 				else cisternas.add(opCisterna.get());	
 			}

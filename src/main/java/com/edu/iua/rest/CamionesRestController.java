@@ -98,7 +98,7 @@ public class CamionesRestController extends BaseRestController {
 	@ApiOperation(value="Guardar un nuevo camión en la base de datos", response = Camion.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 201, message = "Camión creado exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})

@@ -99,7 +99,7 @@ public class CisternaRestController extends BaseRestController {
 	@ApiOperation(value="Guardar un nuevo cisterna en la base de datos", response = Cisterna.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 201, message = "Cisterna creada exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})

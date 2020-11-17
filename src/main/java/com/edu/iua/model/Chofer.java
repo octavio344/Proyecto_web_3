@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Table(name = "choferes")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="idChofer")
 @ApiModel(value = "Chofer", description = "Modelo del chofer contratado para las ordenes")
 public class Chofer implements Serializable {
 

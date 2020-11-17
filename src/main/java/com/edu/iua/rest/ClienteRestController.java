@@ -98,7 +98,7 @@ public class ClienteRestController {
 	@ApiOperation(value="Guardar un nuevo cliente en la base de datos", response = Cliente.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 201, message = "Cliente creado exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})
@@ -109,7 +109,7 @@ public class ClienteRestController {
 			clienteBusiness.add(c);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("location", Constantes.URL_PRODUCTOS + "/" +c.getIdCliente());
-			return new ResponseEntity<String>(responseHeaders,HttpStatus.OK);
+			return new ResponseEntity<String>(responseHeaders,HttpStatus.CREATED);
 		}catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (IllegalArgumentException e) {

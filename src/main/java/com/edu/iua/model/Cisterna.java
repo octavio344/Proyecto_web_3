@@ -20,7 +20,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "cisternas")
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="idCisterna")
 @ApiModel(value = "Cisterna", description = "Cisternas transportadas por los camiones")
 public class Cisterna implements Serializable {
 

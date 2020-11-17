@@ -100,7 +100,7 @@ public class ProductoRestController {
 	@ApiOperation(value="Guardar un nuevo producto en la base de datos", response = Producto.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 200, message = "Producto creado exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})	
@@ -111,7 +111,7 @@ public class ProductoRestController {
 			productoBusiness.add(p);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("location", Constantes.URL_PRODUCTOS + "/" +p.getId());
-			return new ResponseEntity<String>(responseHeaders,HttpStatus.OK);
+			return new ResponseEntity<String>(responseHeaders,HttpStatus.CREATED);
 		}catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (IllegalArgumentException e) {

@@ -99,7 +99,7 @@ public class ChoferesRestController extends BaseRestController {
 	@ApiOperation(value="Guardar un nuevo chofer en la base de datos", response = Chofer.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 201, message = "Chofer creado exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})

@@ -62,7 +62,7 @@ public class DetalleOrdenRestController {
 			detalleBusiness.add(p);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("location", Constantes.URL_ORDENES + "/" +p.getIdDetalle());
-			return new ResponseEntity<String>(responseHeaders,HttpStatus.OK);
+			return new ResponseEntity<String>(responseHeaders,HttpStatus.CREATED);
 		}catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
