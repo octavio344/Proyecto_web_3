@@ -90,10 +90,25 @@ public class OrdenBusiness implements IOrdenBusiness {
 	@Override
 	public Orden add(Orden o) throws BusinessException,IllegalArgumentException {
 		try {
-			Optional<Chofer> opChofer = choferDAO.findByCodigoExterno(o.getChofer().getCodigoExterno());
-			Optional<Cliente> opCliente = clienteDAO.findByCodigoExterno(o.getCliente().getCodigoExterno());
-			Optional<Camion> opCamion = camionDAO.findByCodigoExterno(o.getCamion().getCodigoExterno());
-			Optional<Producto> opProducto = productoDAO.findByCodigoExterno(o.getProducto().getCodigoExterno());
+			Optional<Chofer> opChofer;
+			if(o.getChofer().getCodigoExterno()!=null)
+				opChofer= choferDAO.findByCodigoExterno(o.getChofer().getCodigoExterno());
+			else opChofer = choferDAO.findById(o.getChofer().getIdChofer());
+			
+			Optional<Cliente> opCliente;
+			if(o.getCliente().getCodigoExterno()!=null)
+				opCliente = clienteDAO.findByCodigoExterno(o.getCliente().getCodigoExterno());
+			else opCliente = clienteDAO.findById(o.getCliente().getIdCliente());
+			
+			Optional<Camion> opCamion;
+			if(o.getCamion().getCodigoExterno()!=null)
+				opCamion = camionDAO.findByCodigoExterno(o.getCamion().getCodigoExterno());
+			else opCamion = camionDAO.findById(o.getCamion().getIdCamion());
+			
+			Optional<Producto> opProducto;
+			if(o.getProducto().getCodigoExterno()!=null)
+				opProducto = productoDAO.findByCodigoExterno(o.getProducto().getCodigoExterno());
+			else opProducto = productoDAO.findById(o.getProducto().getId());
 			
 			if(!opChofer.isPresent()) {
 				choferDAO.save(o.getChofer());
@@ -116,6 +131,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 			o.setProducto(opProducto.get());
 			o.setChofer(opChofer.get());
 			o.setFechaRecepcion(new Date());
+			
 			return ordenDAO.save(o);
 		}catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException(e);
@@ -131,10 +147,15 @@ public class OrdenBusiness implements IOrdenBusiness {
 	@Override
 	public Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException, WrongStateException {
 		
-		Optional<Orden> opOrden = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		Optional<Orden> opOrden;
+		if(o.getCodigoExterno()!=null)
+			opOrden = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		else opOrden = ordenDAO.findById(o.getNroOrden());
 		
 		if(!opOrden.isPresent()) {
-			throw new NotFoundException("No se ha encontrado la orden con código externo "+o.getCodigoExterno());
+			if(o.getCodigoExterno()!=null)
+				throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
+			else throw new NotFoundException("No se encuentra la orden con el ID = " + o.getNroOrden());
 		}else {
 			Orden or = opOrden.get();
 			if(or.getEstado()==1) {
@@ -169,10 +190,14 @@ public class OrdenBusiness implements IOrdenBusiness {
 			throw new BusinessException("El caudal ingresado es incorrecto.");
 		
 		Optional<Orden> op;
-		op= ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		if(o.getCodigoExterno()!=null)
+			op = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		else op = ordenDAO.findById(o.getNroOrden());
 			
 	    if(!op.isPresent()) {
-	    	throw new NotFoundException("No se encontro la orden con codigo externo: "+o.getCodigoExterno());
+	    	if(o.getCodigoExterno()!=null)
+				throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
+			else throw new NotFoundException("No se encuentra la orden con el ID = " + o.getNroOrden());
 	    }  
 	    
 	    else try {
@@ -221,10 +246,15 @@ public class OrdenBusiness implements IOrdenBusiness {
 	@Override
 	public Orden cerrarOrden(Orden o) throws BusinessException, NotFoundException, WrongStateException {
 	
-		Optional<Orden> optional = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		Optional<Orden> optional;
+		if(o.getCodigoExterno()!=null)
+			optional = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		else optional = ordenDAO.findById(o.getNroOrden());
 		
 		if(!optional.isPresent()) {
-			throw new NotFoundException("No se encontro la orden con el código externo: "+o.getCodigoExterno());
+			if(o.getCodigoExterno()!=null)
+				throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
+			else throw new NotFoundException("No se encuentra la orden con el ID = " + o.getNroOrden());
 		}
 			
 		Orden or = optional.get();
@@ -245,10 +275,15 @@ public class OrdenBusiness implements IOrdenBusiness {
 	public ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException, WrongStateException {
 		// TODO Auto-generated method stub
 
-		Optional<Orden> op = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		Optional<Orden> op;
+		if(o.getCodigoExterno()!=null)	
+			op = ordenDAO.findByCodigoExterno(o.getCodigoExterno());
+		else op = ordenDAO.findById(o.getNroOrden());
 		
 		if(!op.isPresent()) {
-			throw new NotFoundException("No se encontro la orden con codigo externo: "+o.getCodigoExterno());
+			if(o.getCodigoExterno()!=null)
+				throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
+			else throw new NotFoundException("No se encuentra la orden con el ID = " + o.getNroOrden());
 		}
 		
 		Orden or= op.get(); 
@@ -308,12 +343,32 @@ public class OrdenBusiness implements IOrdenBusiness {
 		return op.get();
 	}
 	
-	@Override public ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException{
+	@Override public ConciliacionDTO getConciliacion(Long id) throws BusinessException, NotFoundException, WrongStateException{
 		
-		Optional<Orden> op=ordenDAO.findByCodigoExterno(codigoExterno);
-		
+		Optional<Orden> op;
+		op = ordenDAO.findById(id);
+			
 		if(!op.isPresent()) {
-			throw new NotFoundException("No se encuentra la orden con el codigo externo =" + codigoExterno);
+			throw new NotFoundException("No se encuentra la orden con el ID = " + id);
+		}
+		
+		Orden or = op.get();
+		
+		if(or.getEstado()!=4) {
+			throw new WrongStateException("La orden debe estar en estado 4 para utilizar este servicio");
+		}
+		
+		return generarConciliacion(or);
+		
+	}
+	
+@Override public ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException{
+		
+		Optional<Orden> op;
+		op = ordenDAO.findByCodigoExterno(codigoExterno);
+			
+		if(!op.isPresent()) {
+			throw new NotFoundException("No se encuentra la orden con el Codigo Externo = " + codigoExterno);
 		}
 		
 		Orden or = op.get();

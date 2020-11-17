@@ -28,6 +28,7 @@ public interface IOrdenBusiness {
 	
 	Orden findByCodigoExterno(String p)throws NotFoundException, BusinessException;
 	
-	ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException;
+	ConciliacionDTO getConciliacion(Long id) throws BusinessException, NotFoundException, WrongStateException;
 	
+	ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException;
 }

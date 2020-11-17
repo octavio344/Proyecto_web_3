@@ -23,7 +23,6 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "productos")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-@JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="idProducto")
 @ApiModel(value = "Producto", description = "Productos transportados durante las ordenes")
 public class Producto implements Serializable {
 

@@ -101,7 +101,7 @@ public class OrdenRestController {
 	@ApiOperation(value="Endpoint 1: Generar una nueva orden en la base de datos.", response = Orden.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 201, message = "Orden creada exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})
@@ -112,7 +112,7 @@ public class OrdenRestController {
 			ordenBusiness.add(p);
 			HttpHeaders responseHeaders = new HttpHeaders();
 			responseHeaders.set("location", Constantes.URL_ORDENES + "/" +p.getNroOrden());
-			return new ResponseEntity<String>(responseHeaders,HttpStatus.OK);
+			return new ResponseEntity<String>(responseHeaders,HttpStatus.CREATED);
 		}catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (IllegalArgumentException e) {
@@ -254,11 +254,11 @@ public class OrdenRestController {
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})
 	
-	@GetMapping(value = "/conciliacion/{codigoExterno}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("codigoExterno") String codigoExterno) {
+	@GetMapping(value = "/conciliacion/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("id") Long id) {
 		
 		try {
-			return new ResponseEntity<ConciliacionDTO>(ordenBusiness.getConciliacion(codigoExterno),HttpStatus.OK); 
+			return new ResponseEntity<ConciliacionDTO>(ordenBusiness.getConciliacion(id),HttpStatus.OK); 
 		}catch (NotFoundException e) {
 			return new ResponseEntity<ConciliacionDTO>(HttpStatus.NOT_FOUND);
 		}catch (BusinessException e) {
@@ -268,5 +268,21 @@ public class OrdenRestController {
 		}
 		
 	}
+	
+	@GetMapping(value = "/conciliacion/{ce}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("ce") String ce) {
+		
+		try {
+			return new ResponseEntity<ConciliacionDTO>(ordenBusiness.getConciliacion(ce),HttpStatus.OK); 
+		}catch (NotFoundException e) {
+			return new ResponseEntity<ConciliacionDTO>(HttpStatus.NOT_FOUND);
+		}catch (BusinessException e) {
+			return new ResponseEntity<ConciliacionDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}catch (WrongStateException e) {
+			return new ResponseEntity<ConciliacionDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
 	
 }
