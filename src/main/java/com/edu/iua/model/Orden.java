@@ -33,22 +33,22 @@ public class Orden {
 	@ApiModelProperty(notes = "Codigo externo de la orden para identificación desde el sistema externo, ingresado manualmente", required = true)
 	private String codigoExterno;
 	
-	@ManyToOne(cascade= CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name = "camion_id")
 	@ApiModelProperty(notes = "Camión utilizado para la orden, se ingresa manualmente su código externo", required = true)
 	private Camion camion;
 	
-	@ManyToOne(cascade= CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name = "chofer_id")
 	@ApiModelProperty(notes = "Chofer contratado para llevar la orden, se ingresa manualmente su código externo", required = true)
 	private Chofer chofer;
 	
-	@ManyToOne(cascade= CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name = "cliente_id")
 	@ApiModelProperty(notes = "Cliente que realizó la orden, se ingresa manualmente su código externo", required = true)
 	private Cliente cliente;
 	
-	@ManyToOne(cascade= CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name = "producto_id")
 	@ApiModelProperty(notes = "Producto adquirido en la orden, se ingresa manualmente su código externo", required = true)
 	private Producto producto;
