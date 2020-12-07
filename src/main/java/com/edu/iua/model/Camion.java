@@ -41,7 +41,7 @@ public class Camion implements Serializable {
 	@ApiModelProperty(notes = "Descripción del camión, ingresada manualmente", required = false)
 	private String descripcion;
 	
-	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	@JoinTable(name = "camiones_cisternas",
 	        joinColumns = @JoinColumn(name = "id_camion", referencedColumnName="idCamion"),
 	        inverseJoinColumns = @JoinColumn(name = "id_cisterna", referencedColumnName="idCisterna"))

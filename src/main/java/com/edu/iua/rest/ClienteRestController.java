@@ -108,7 +108,7 @@ public class ClienteRestController {
 		try {
 			clienteBusiness.add(c);
 			HttpHeaders responseHeaders = new HttpHeaders();
-			responseHeaders.set("location", Constantes.URL_PRODUCTOS + "/" +c.getIdCliente());
+			responseHeaders.set("location", Constantes.URL_CLIENTES + "/" +c.getIdCliente());
 			return new ResponseEntity<String>(responseHeaders,HttpStatus.CREATED);
 		}catch (BusinessException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);

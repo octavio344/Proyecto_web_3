@@ -23,7 +23,7 @@ public class DetalleOrden {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDetalle;
 	
-	@ManyToOne(cascade= CascadeType.ALL)
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name = "orden_id")
 	@ApiModelProperty(notes = "Orden a la que pertenece el detalle", required = true)
 	private Orden ordenAsociada;
