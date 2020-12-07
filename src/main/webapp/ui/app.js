@@ -1,0 +1,122 @@
+let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp'])
+
+    .constant('URL_API_BASE', 'http://localhost:8080/api/v1/')
+    .constant('URL_BASE', 'http://localhost:8080/')
+    .constant('URL_WS', '/api/v1/ws')
+
+
+moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp){
+
+    $rootScope.stomp = $stomp;
+
+    $scope.titulo = "Pedidos realizados:";
+
+    $scope.pedidosPorPagina = 5;
+
+    $scope.mostrarPedidos = true;
+    $scope.mostrarConciliacion = false;
+    $scope.idConciliacion = 0;
+
+    $scope.cargarPedidos = function (){
+        pedidosService.cargar().then(
+            function(resp){
+                $scope.data=resp.data;
+                $scope.totalDeItems = $scope.data.length;
+            },
+            function(err){}
+        );
+    }
+
+    $scope.mostrarPaginaPedidos = function(){
+        $scope.mostrarPedidos = true;
+        $scope.mostrarConciliacion = false;
+    }
+
+    $scope.cargarConciliacion = function (idPedido){
+
+        pedidosService.cargarConc(idPedido).then(
+            function(resp){
+                $scope.mostrarPedidos = false;
+                $scope.mostrarConciliacion = true;
+                console.log($scope.mostrarConciliacion);
+                $scope.idConciliacion = idPedido;
+                $scope.dataConc=resp.data;
+            },
+            function(err){}
+        );
+    }
+
+    $scope.cargarPedidos();
+
+    $scope.iniciaWS = function() {
+        $log.log("iniciandoWS");
+        wsService.initStompClient('/iw3/data', function(payload,
+                                                                 headers, res) {
+            //console.log(payload);
+            //$log.log(payload);
+            //$scope.notificar(payload.payload.label,payload.payload.value);
+            //$scope.$apply();
+        });
+    }
+
+   //$scope.iniciaWS();
+
+
+    $scope.$on("$destroy", function() {
+        wsService.stopStompClient();
+    });
+
+});
+
+moduloPedidos.factory('pedidosService',
+    function($http, URL_API_BASE) {
+        return {
+            cargar: function() {
+                return $http.get(URL_API_BASE + "ordenes");
+            },
+            cargarConc: function(idPedido) {
+                return $http.get(URL_API_BASE + "ordenes/conciliacion/id/" + idPedido);
+            }
+        }
+    }
+);
+
+moduloPedidos.factory('wsService',
+    function($rootScope, URL_WS, $timeout, $interval, $log, $localStorage) {
+
+        var fnConfig = function(stomp, topic, cb) {
+            $log.info("Stomp: suscribiendo a " + topic);
+            stomp.subscribe(topic, function(payload, headers, res) {
+                cb(payload, headers, res);
+            });
+        };
+        return {
+            initStompClient : function(topic, cb) {
+
+                /*$rootScope.stomp.setDebug(function(args) {
+                    //$log.log(args);
+                    if($rootScope.stomp.sock.readyState > 1) {
+
+                        $log.info("Intentando reconexión con WSocket");
+                        fnConnect();
+                    }
+                });*/
+                var fnConnect = function() {
+                    //if ($localStorage.logged && $localStorage.userdata) {
+                        $rootScope.stomp.connect(URL_WS/*+"?xauthtoken="+$localStorage.userdata.authtoken*/).then(function(frame) {
+                            $log.info("Stomp: conectado a " + URL_WS);
+                            fnConfig($rootScope.stomp, topic, cb);
+                        });
+                    /*} else {
+                        $log.log("No existen credenciales para presentar en WS")
+                    }*/
+                };
+                fnConnect();
+            },
+            stopStompClient: function() {
+                if($rootScope.stomp)
+                    $rootScope.stomp.disconnect();
+            }
+        }
+
+} );

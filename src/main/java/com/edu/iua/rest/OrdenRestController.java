@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.edu.iua.business.IOrdenBusiness;
 import com.edu.iua.business.exception.BusinessException;
@@ -31,6 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value = "/api/v1/ordenes")
 @Api(value = "Ordenes", description = "Operaciones relacionadas con las ordenes", tags = { "Ordenes" })
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class OrdenRestController {
 
 	

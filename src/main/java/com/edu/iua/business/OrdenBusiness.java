@@ -6,12 +6,14 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
+import com.edu.iua.eventos.OrdenEvent;
 import com.edu.iua.model.Camion;
 import com.edu.iua.model.Chofer;
 import com.edu.iua.model.Cliente;
@@ -47,6 +49,8 @@ public class OrdenBusiness implements IOrdenBusiness {
 	
 	@Autowired
 	private CamionRepository camionDAO;
+	
+	private int temperaturaMaxima = 80;
 	
 	@Override
 	public List<Orden> listAll() throws BusinessException {
@@ -229,10 +233,16 @@ public class OrdenBusiness implements IOrdenBusiness {
 				or.setFechaUltimoAlmacenamiento(o.getFechaUltimoAlmacenamiento());
 			}
 			
+			
+			
 			if(or.getMasaAcumulada()> or.getPreset()) {
 				or.setMasaAcumulada(or.getPreset());
 				or.setEstado(3);
 				or.setFechaFProcesoCarga(new Date());
+			}
+			
+			if (o.getTemperatura()>temperaturaMaxima) {
+				generaEvento(o, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
 			}
 			
 			ordenDAO.save(or);
@@ -363,7 +373,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 		
 	}
 	
-@Override public ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException{
+	@Override public ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException{
 		
 		Optional<Orden> op;
 		op = ordenDAO.findByCodigoExterno(codigoExterno);
@@ -380,6 +390,13 @@ public class OrdenBusiness implements IOrdenBusiness {
 		
 		return generarConciliacion(or);
 		
+	}
+	
+	@Autowired
+	private ApplicationEventPublisher appEventPublisher;
+
+	private void generaEvento(Orden orden, OrdenEvent.Tipo tipo) {
+		appEventPublisher.publishEvent(new OrdenEvent(orden, tipo));
 	}
 
 }
