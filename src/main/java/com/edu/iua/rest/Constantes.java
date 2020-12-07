@@ -14,4 +14,7 @@ public class Constantes {
     public static final String URL_CISTERNAS = URL_BASE + "/cisternas";
     
     public static final Integer PERIODO_ALMACENAMIENTO = 10;
+    
+    public static final String TOPIC_SEND_WEBSOCKET_GRAPH="/iw3/data";
+    public static final String URL_WEBSOCKET_ENPOINT=URL_BASE + "/ws";
 }

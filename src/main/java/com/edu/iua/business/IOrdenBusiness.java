@@ -31,4 +31,5 @@ public interface IOrdenBusiness {
 	ConciliacionDTO getConciliacion(Long id) throws BusinessException, NotFoundException, WrongStateException;
 	
 	ConciliacionDTO getConciliacion(String codigoExterno) throws BusinessException, NotFoundException, WrongStateException;
+	
 }
