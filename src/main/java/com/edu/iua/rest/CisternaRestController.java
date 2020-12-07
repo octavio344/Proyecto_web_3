@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping(value = Constantes.URL_CISTERNAS)
-@Api(value = "Cisternaes", description = "Operaciones relacionadas con los cisternaes", tags = { "Cisternaes" })
+@Api(value = "Cisternas", description = "Operaciones relacionadas con los cisternaes", tags = { "Cisternaes" })
 public class CisternaRestController extends BaseRestController {
 	
 	

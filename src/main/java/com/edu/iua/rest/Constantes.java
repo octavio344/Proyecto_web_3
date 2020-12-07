@@ -14,4 +14,12 @@ public class Constantes {
     public static final String URL_CISTERNAS = URL_BASE + "/cisternas";
     
     public static final Integer PERIODO_ALMACENAMIENTO = 10;
+    
+    public static final String URL_AUTH_INFO = "/auth-info";
+
+	public static final String URL_LOGOUT = "/logout-token";
+
+	public static final String URL_AUTH = URL_BASE + "/auth";
+	
+	public static final String URL_USER = URL_BASE + "/users";
 }

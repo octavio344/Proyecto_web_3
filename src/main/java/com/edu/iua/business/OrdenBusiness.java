@@ -343,7 +343,8 @@ public class OrdenBusiness implements IOrdenBusiness {
 		return op.get();
 	}
 	
-	@Override public ConciliacionDTO getConciliacion(Long id) throws BusinessException, NotFoundException, WrongStateException{
+		@Override 
+		public ConciliacionDTO getConciliacion(Long id) throws BusinessException, NotFoundException, WrongStateException{
 		
 		Optional<Orden> op;
 		op = ordenDAO.findById(id);

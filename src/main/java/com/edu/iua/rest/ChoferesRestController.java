@@ -109,7 +109,7 @@ public class ChoferesRestController extends BaseRestController {
 		try {
 			choferBusiness.save(chofer);
 			HttpHeaders responseHeaders = new HttpHeaders();
-			responseHeaders.set("location", Constantes.URL_CAMIONES + "/" + chofer.getDni());
+			responseHeaders.set("location", Constantes.URL_CHOFERES + "/" + chofer.getDni());
 			return new ResponseEntity<String>(responseHeaders, HttpStatus.CREATED);
 		} catch (BusinessException e) {
 			log.error(e.getMessage(), e);
