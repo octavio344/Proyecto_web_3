@@ -7,7 +7,12 @@ let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp'])
 
 moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp){
 
+
+    if($localStorage.logged!=true)
+        window.location.replace("/login.html");
+
     $rootScope.stomp = $stomp;
+
 
     $scope.titulo = "Pedidos realizados:";
 
@@ -16,15 +21,16 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     $scope.mostrarPedidos = true;
     $scope.mostrarConciliacion = false;
     $scope.idConciliacion = 0;
-
+    let token = $localStorage.userdata.authtoken;
     $scope.cargarPedidos = function (){
-        pedidosService.cargar().then(
+        pedidosService.cargar(token).then(
             function(resp){
                 $scope.data=resp.data;
                 $scope.totalDeItems = $scope.data.length;
             },
             function(err){}
         );
+
     }
 
     $scope.mostrarPaginaPedidos = function(){
@@ -33,8 +39,7 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     }
 
     $scope.cargarConciliacion = function (idPedido){
-
-        pedidosService.cargarConc(idPedido).then(
+        pedidosService.cargarConc(idPedido, token).then(
             function(resp){
                 $scope.mostrarPedidos = false;
                 $scope.mostrarConciliacion = true;
@@ -44,7 +49,7 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             },
             function(err){}
         );
-    }
+}
 
     $scope.cargarPedidos();
 
@@ -66,16 +71,22 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         wsService.stopStompClient();
     });
 
+
+    $scope.cerrarSesion = function (){
+        $localStorage.logged = false;
+        window.location.replace("/login.html");
+    }
 });
 
 moduloPedidos.factory('pedidosService',
     function($http, URL_API_BASE) {
         return {
-            cargar: function() {
-                return $http.get(URL_API_BASE + "ordenes");
+            cargar: function(token) {
+                console.log(URL_API_BASE + "ordenes?xauthtoken="+token)
+                return $http.get(URL_API_BASE + "ordenes?xauthtoken="+token);
             },
-            cargarConc: function(idPedido) {
-                return $http.get(URL_API_BASE + "ordenes/conciliacion/id/" + idPedido);
+            cargarConc: function(idPedido, token) {
+                return $http.get(URL_API_BASE + "ordenes/conciliacion/id/" + idPedido + "?xauthtoken="+token);
             }
         }
     }
