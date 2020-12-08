@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -52,6 +54,11 @@ public class Orden {
 	@JoinColumn(name = "producto_id")
 	@ApiModelProperty(notes = "Producto adquirido en la orden, se ingresa manualmente su código externo", required = true)
 	private Producto producto;
+	
+	@OneToMany(targetEntity=Alarma.class, mappedBy="orden", fetch = FetchType.LAZY)
+	@JsonBackReference
+	@ApiModelProperty(notes = "Lista de todas las alarmas que se activaron durante esta orden", required = false)
+	private List<Alarma> alarmasList;
 	
 	@OneToMany(targetEntity=DetalleOrden.class, mappedBy="ordenAsociada", fetch = FetchType.LAZY)
 	@ApiModelProperty(notes = "Lista de detalles asociados al proceso de carga del camión.", required = true)

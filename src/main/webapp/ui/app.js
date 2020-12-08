@@ -1,18 +1,17 @@
-let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp'])
+let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp', 'oitozero.ngSweetAlert'])
 
     .constant('URL_API_BASE', 'http://localhost:8080/api/v1/')
     .constant('URL_BASE', 'http://localhost:8080/')
     .constant('URL_WS', '/api/v1/ws')
 
 
-moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp){
+moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp, SweetAlert, $http){
 
 
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
 
     $rootScope.stomp = $stomp;
-
 
     $scope.titulo = "Pedidos realizados:";
 
@@ -56,10 +55,24 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     $scope.iniciaWS = function() {
         wsService.initStompClient('/iw3/data', function(payload,
                                                                  headers, res) {
-            //console.log(payload);
-            //$log.log(payload);
-            //$scope.notificar(payload.payload.label,payload.payload.value);
-            //$scope.$apply();
+            if(res!=null){
+                let resSplit = res.toString().split("\n");
+                let respuesta = resSplit[resSplit.length-1];
+                $scope.nroOrden = respuesta.split("orden ")[1].split(" ")[0];
+                $scope.motivoAlarma = respuesta;
+                console.log(respuesta);
+                SweetAlert.swal({
+                        title: "Alerta",
+                        text: respuesta,
+                        type: "error",
+                        showCancelButton: false,
+                        confirmButtonColor: "#FF0000",
+                        confirmButtonText: "Aceptar alarma",
+                        closeOnConfirm: true},
+                    function(){
+                        $scope.aceptarAlarma();
+                    });
+            }
         }, $scope.stomp);
     }
 
@@ -75,6 +88,56 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         $localStorage.logged = false;
         window.location.replace("/login.html");
     }
+
+    let formatearTiempo = function (horas){
+        let segundos = 0;
+        let minutos = 0;
+        minutos = (horas - Math.floor(horas))*60;
+        horas = Math.floor(horas);
+        segundos = Math.floor( (minutos - Math.floor(minutos))*60);
+        minutos = Math.floor(minutos);
+        let tiempoFormateado = "";
+        if(horas>=1)
+            tiempoFormateado += horas+"h ";
+        if(minutos>=1)
+            tiempoFormateado+= minutos+"m ";
+        tiempoFormateado+= segundos+"s";
+
+        return tiempoFormateado;
+    }
+
+    $scope.calcularETA = function(pedido){
+        let horas = (pedido.preset-pedido.masaAcumulada)/pedido.caudal;
+        return formatearTiempo(horas);
+    }
+
+    $scope.calcularTiempoTranscurrido = function(pedido){
+        let fecha = pedido.fechaIProcesoCarga;
+        var horas = (new Date().getTime() - new Date(fecha).getTime())/3600000;
+        return formatearTiempo(horas);
+    }
+
+    $scope.aceptarAlarma = function(){
+        let req = {
+            method: 'POST',
+            url: 'http://localhost:8080/api/v1/alarmas?xauthtoken='+token,
+            headers : { 'Content-Type': 'application/json' },
+            data: {"usuarioQueAcepto":{"id":$localStorage.userdata.idUser},"orden":{"nroOrden":$scope.nroOrden},"motivoAlarma":$scope.motivoAlarma}
+        };
+        $http(req).then(
+            function(resp){
+                if(resp.status===201) {
+                    console.log("Alarma almacenada");
+                }else{
+                    console.log("Error al guardar la alarma.");
+                }
+            },
+            function(respErr){
+                console.log("Error al guardar la alarma.");
+            }
+        );
+    }
+
 });
 
 moduloPedidos.factory('pedidosService',

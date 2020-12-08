@@ -28,8 +28,7 @@ public class OrdenEventListener implements ApplicationListener<OrdenEvent>{
 	}
 	
 	private void manejaEventoExcesoTemperatura(Orden orden) {
-		String mensaje = String.format("La temperatura de carga de la orden '%s' ha excedido el limite, su temperatura actual es de $ %.2f °C",
-				orden.getNroOrden(), orden.getTemperatura());
+		String mensaje = String.format("La temperatura de carga de la orden " + orden.getNroOrden() + " ha excedido el limite, su temperatura actual es de " + orden.getTemperatura() + "°C");
 		
 		wSock.convertAndSend(Constantes.TOPIC_SEND_WEBSOCKET_GRAPH,	mensaje);		
 		
