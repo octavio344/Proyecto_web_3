@@ -54,17 +54,16 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     $scope.cargarPedidos();
 
     $scope.iniciaWS = function() {
-        $log.log("iniciandoWS");
         wsService.initStompClient('/iw3/data', function(payload,
                                                                  headers, res) {
             //console.log(payload);
             //$log.log(payload);
             //$scope.notificar(payload.payload.label,payload.payload.value);
             //$scope.$apply();
-        });
+        }, $scope.stomp);
     }
 
-   //$scope.iniciaWS();
+   $scope.iniciaWS();
 
 
     $scope.$on("$destroy", function() {
@@ -102,31 +101,35 @@ moduloPedidos.factory('wsService',
             });
         };
         return {
-            initStompClient : function(topic, cb) {
+            initStompClient : function(topic, cb, stomp) {
 
-                /*$rootScope.stomp.setDebug(function(args) {
-                    //$log.log(args);
-                    if($rootScope.stomp.sock.readyState > 1) {
+
+                stomp.setDebug(function(args) {
+                    $log.log(args);
+                    if(stomp.sock.readyState > 1) {
 
                         $log.info("Intentando reconexión con WSocket");
                         fnConnect();
                     }
-                });*/
+                });
                 var fnConnect = function() {
-                    //if ($localStorage.logged && $localStorage.userdata) {
-                        $rootScope.stomp.connect(URL_WS/*+"?xauthtoken="+$localStorage.userdata.authtoken*/).then(function(frame) {
-                            $log.info("Stomp: conectado a " + URL_WS);
-                            fnConfig($rootScope.stomp, topic, cb);
+
+                    if ($localStorage.logged && $localStorage.userdata) {
+                        $log.log("iniciandoWS");
+                        $log.log(URL_WS+"?xauthtoken="+$localStorage.userdata.authtoken);
+                        stomp.connect(URL_WS+"?xauthtoken="+$localStorage.userdata.authtoken).then(function(frame) {
+                            console.log("Stomp: conectado a " + URL_WS);
+                            fnConfig(stomp, topic, cb);
                         });
-                    /*} else {
-                        $log.log("No existen credenciales para presentar en WS")
-                    }*/
+                    } else {
+                        console.log("No existen credenciales para presentar en WS")
+                    }
                 };
                 fnConnect();
             },
             stopStompClient: function() {
-                if($rootScope.stomp)
-                    $rootScope.stomp.disconnect();
+                if(stomp)
+                    stomp.disconnect();
             }
         }
 
