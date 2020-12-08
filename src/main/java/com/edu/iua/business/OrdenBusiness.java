@@ -241,8 +241,8 @@ public class OrdenBusiness implements IOrdenBusiness {
 				or.setFechaFProcesoCarga(new Date());
 			}
 			
-			if (o.getTemperatura()>temperaturaMaxima) {
-				generaEvento(o, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
+			if (or.getTemperatura()>temperaturaMaxima) {
+				generaEvento(or, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
 			}
 			
 			ordenDAO.save(or);

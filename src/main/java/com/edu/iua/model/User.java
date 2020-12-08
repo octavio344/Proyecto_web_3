@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,6 +24,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "users")
@@ -61,6 +66,11 @@ public class User implements Serializable, UserDetails {
 			@JoinColumn(name = "id_user", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "id_rol", referencedColumnName = "id") })
 	private Set<Rol> roles;
+	
+	@OneToMany(targetEntity=Alarma.class, mappedBy="usuario", fetch = FetchType.LAZY)
+	@JsonBackReference
+	@ApiModelProperty(notes = "Lista de todas las alarmas que acepto este usuario", required = false)
+	private List<Alarma> alarmasList;
 	
 	@Column(columnDefinition = "tinyint default 1")
 	private boolean accountNonExpired = true;

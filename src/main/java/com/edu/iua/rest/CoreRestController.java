@@ -96,6 +96,7 @@ public class CoreRestController extends BaseRestController{
 			}
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

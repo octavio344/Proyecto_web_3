@@ -3,26 +3,32 @@
         <title>Sistema de carga de gas - IW3 2020</title>
         <meta charset="UTF-8">
 
-        <link rel="stylesheet" href="ui/modules/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="ui/styles/login.css">
-        <script src="ui/modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="ui/modules/jquery/dist/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+        <script src="ui/modules/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="ui/modules/angular-sweetalert/SweetAlert.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+        <script src="ui/login.js"></script>
 
     </head>
-    <body>
-        <div id="login-form">
+    <body ng-app="final-iw3">
+        <div id="login-form" ng-controller="loginController">
             <h1>Inicio de sesion</h1>
             <div class="form-group">
                 <i class="fa fa-user"></i>
-                <input type="text" class="form-control" placeholder="Nombre de usuario" required="required">
+                <input type="text" class="form-control" placeholder="Nombre de usuario" required="required" ng-model="nombreUsuario">
             </div>
             <div class="form-group">
                 <i class="fa fa-lock"></i>
-                <input type="password" class="form-control" placeholder="Contraseña" required="required">
+                <input type="password" class="form-control" placeholder="Contraseña" required="required" ng-model="claveUsuario">
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary btn-block btn-lg" value="Ingresar">
+                <input class="btn btn-primary btn-block btn-lg" value="Ingresar" ng-click="validar()">
             </div>
         </div>
     </body>

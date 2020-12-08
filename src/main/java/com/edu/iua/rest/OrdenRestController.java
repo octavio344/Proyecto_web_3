@@ -33,7 +33,6 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping(value = "/api/v1/ordenes")
 @Api(value = "Ordenes", description = "Operaciones relacionadas con las ordenes", tags = { "Ordenes" })
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class OrdenRestController {
 
 	
