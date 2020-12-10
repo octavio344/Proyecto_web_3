@@ -399,4 +399,20 @@ public class OrdenBusiness implements IOrdenBusiness {
 		appEventPublisher.publishEvent(new OrdenEvent(orden, tipo));
 	}
 
+	@Override
+	public Orden anularOrden(Long id) throws BusinessException, NotFoundException {
+		Optional<Orden> op= ordenDAO.findById(id);
+		
+		
+		if(!op.isPresent()) {
+			throw new NotFoundException("No se encontro la orden con el nro de orden: "+id);
+		}
+		
+		Orden or= op.get();
+		
+		or.setAnulado(true);
+		
+		return ordenDAO.save(or);
+	}
+
 }

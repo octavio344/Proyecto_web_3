@@ -91,6 +91,10 @@ public class Orden {
 	@ApiModelProperty(notes = "Valor del pesaje final del camión al retirarse de la planta", required = true, allowableValues = "Mayor al pesaje inicial")
 	private Double pesajeFinal;
 	
+	@ApiModelProperty(notes = "Valor booleano que indica si la orden esta anulada", required = true, allowableValues = "0 ó 1")
+	@Column(nullable = false,columnDefinition = "TINYINT(1) DEFAULT 0")
+	private Boolean anulado;
+	
 	@ApiModelProperty(notes = "Masa acumulada del producto durante la carga ", required = true, allowableValues = "Mayor a cero")
 	private Double masaAcumulada = 0.0;
 	
@@ -164,6 +168,7 @@ public class Orden {
 	public void setFechaRecepcionPesajeI(Date fechaRecepcionPesajeI) {
 		this.fechaRecepcionPesajeI = fechaRecepcionPesajeI;
 	}
+	
 
 	public Date getFechaIProcesoCarga() {
 		return fechaIProcesoCarga;
@@ -288,6 +293,16 @@ public class Orden {
 
 	public void setCodigoExterno(String codigoExterno) {
 		this.codigoExterno = codigoExterno;
+	}
+	
+	
+
+	public Boolean getAnulado() {
+		return anulado;
+	}
+
+	public void setAnulado(Boolean anulado) {
+		this.anulado = anulado;
 	}
 
 	public Orden(Long nroOrden, Camion camion, Chofer chofer, Cliente cliente, Producto producto, Date fechaRecepcion,
