@@ -165,6 +165,7 @@ public class OrdenRestController {
 			ordenBusiness.updateDetalle(orden);	
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (BusinessException e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);

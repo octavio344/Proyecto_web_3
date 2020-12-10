@@ -5,9 +5,31 @@ body{
     align-content: center;
 }
 
+#maindiv{
+    padding: 0px 20px;
+}
+
 header li{
     display: inline;
 }
-#pedidos .table td, #pedidos .table th{
+#pedidos .table td, #pedidos .table th, #alarmas .table th, #alarmas .table td{
     text-align: center;
+}
+#seccion-filtrar{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#seccion-filtrar select{
+    max-width: 5%;
+    margin-left: 20px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+#seccion-filtrar input {
+    max-width: 8%;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    margin-right: 20px;
 }
