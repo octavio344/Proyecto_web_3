@@ -19,15 +19,16 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
 
     $scope.mostrarPedidos = true;
     $scope.mostrarConciliacion = false;
+    $scope.mostrarAlarmas = false;
     $scope.idConciliacion = 0;
     let token = $localStorage.userdata.authtoken;
     $scope.cargarPedidos = function (){
         pedidosService.cargar(token).then(
-            function(resp){
+        function(resp){
                 $scope.data=resp.data;
                 $scope.totalDeItems = $scope.data.length;
             },
-            function(err){}
+            function(err){window.location.replace("/login.html");}
         );
 
     }
@@ -35,12 +36,14 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     $scope.mostrarPaginaPedidos = function(){
         $scope.mostrarPedidos = true;
         $scope.mostrarConciliacion = false;
+        $scope.mostrarAlarmas = false;
     }
 
     $scope.cargarConciliacion = function (idPedido){
         pedidosService.cargarConc(idPedido, token).then(
             function(resp){
                 $scope.mostrarPedidos = false;
+                $scope.mostrarAlarmas = false;
                 $scope.mostrarConciliacion = true;
                 console.log($scope.mostrarConciliacion);
                 $scope.idConciliacion = idPedido;
@@ -58,13 +61,27 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             if(res!=null){
                 let resSplit = res.toString().split("\n");
                 let respuesta = resSplit[resSplit.length-1];
+                let tipo = respuesta.split("TYPE=")[1];
+                respuesta = respuesta.split("TYPE=")[0];
                 $scope.nroOrden = respuesta.split("orden ")[1].split(" ")[0];
                 $scope.motivoAlarma = respuesta;
+
                 console.log(respuesta);
+                let titulo = "";
+                let logoAlarma = "error";
+                if(tipo=="excesoTemp")
+                    titulo="Exceso de Temperatura detectado"
+                else if(tipo=="90preset"){
+                    logoAlarma="warning";
+                    titulo="90% del preset alcanzado"
+                }
+                else{
+                    titulo="Preset Superado"
+                }
                 SweetAlert.swal({
-                        title: "Alerta",
+                        title: titulo,
                         text: respuesta,
-                        type: "error",
+                        type: logoAlarma,
                         showCancelButton: false,
                         confirmButtonColor: "#FF0000",
                         confirmButtonText: "Aceptar alarma",
@@ -136,6 +153,28 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
                 console.log("Error al guardar la alarma.");
             }
         );
+    }
+
+    $scope.cargarAlarmas = function (){
+        $scope.mostrarAlarmas = true;
+        $scope.mostrarConciliacion = false;
+        $scope.mostrarPedidos = false;
+
+        $http.get("http://localhost:8080/api/v1/alarmas?xauthtoken="+token).then(
+            function(resp){
+                $scope.alarmas=resp.data;
+            },
+            function(err){}
+        );
+
+    }
+
+    $scope.adaptarFecha = function (fecha){
+        fecha = fecha.toString();
+        let dias = fecha.split("T")[0];
+        dias = dias.split("-")[2]+"/"+dias.split("-")[1]+"/"+dias.split("-")[0];
+        horas=fecha.split("T")[1].split(".")[0];
+        return dias+" "+horas;
     }
 
 });

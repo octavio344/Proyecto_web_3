@@ -32,7 +32,7 @@
                         <a class="nav-link" href="#" ng-click="mostrarPaginaPedidos()">Ver pedidos <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ver alarmas</a>
+                        <a class="nav-link" ng-click="cargarAlarmas()">Ver alarmas</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -101,6 +101,20 @@
                 <tr><th>Densidad Promedio:</th><td>{{dataConc.promedioDensidad}}</td></tr>
             </table>
 
+        </div>
+        <div id="alarmas" ng-show="mostrarAlarmas">
+            <br>
+            <h1>Alarmas:</h1>
+            <br>
+            <table class="table table-hover col-md-10">
+                <tr><th>Nro. de Pedido</th><th>Usuario que acept&oacute; la alarma</th><th>Fecha de aceptaci&oacute;n</th><th colspan="2">Motivo de la alarma</th></tr>
+                <tr ng-repeat="alarma in alarmas">
+                    <td>{{alarma.idAlarma}}</td>
+                    <td>{{alarma.usuarioQueAcepto.nombre + " " + alarma.usuarioQueAcepto.apellido}}</td>
+                    <td>{{adaptarFecha(alarma.fechaAceptacion)}}</td>
+                    <td>{{alarma.motivoAlarma}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 

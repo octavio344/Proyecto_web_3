@@ -8,6 +8,6 @@ body{
 header li{
     display: inline;
 }
-#pedidos .table td, #pedidos .table th{
+#pedidos .table td, #pedidos .table th, #alarmas .table th, #alarmas .table td{
     text-align: center;
 }

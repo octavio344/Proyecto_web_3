@@ -234,11 +234,12 @@ public class OrdenBusiness implements IOrdenBusiness {
 			}
 			
 			
+			if(or.getMasaAcumulada()> (or.getPreset()*0.9)) {
+				generaEvento(or, OrdenEvent.Tipo.CAPACIDAD_NOVENTA_PORCIENTO);
+			}
 			
 			if(or.getMasaAcumulada()> or.getPreset()) {
-				or.setMasaAcumulada(or.getPreset());
-				or.setEstado(3);
-				or.setFechaFProcesoCarga(new Date());
+				generaEvento(or, OrdenEvent.Tipo.PRESET_EXCEDIDO);
 			}
 			
 			if (or.getTemperatura()>temperaturaMaxima) {
