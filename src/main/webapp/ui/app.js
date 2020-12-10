@@ -8,6 +8,8 @@ let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp', 'oitozero.
 moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp, SweetAlert, $http){
 
 
+    $scope.orderby = "nroOrden"
+
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
 
@@ -129,9 +131,12 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     }
 
     $scope.calcularTiempoTranscurrido = function(pedido){
-        let fecha = pedido.fechaIProcesoCarga;
-        var horas = (new Date().getTime() - new Date(fecha).getTime())/3600000;
-        return formatearTiempo(horas);
+        if(pedido.estado==2){
+            let fecha = pedido.fechaIProcesoCarga;
+            var horas = (new Date().getTime() - new Date(fecha).getTime())/3600000;
+            return formatearTiempo(horas);
+        }
+        else return 0;
     }
 
     $scope.aceptarAlarma = function(){
@@ -175,6 +180,16 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         dias = dias.split("-")[2]+"/"+dias.split("-")[1]+"/"+dias.split("-")[0];
         horas=fecha.split("T")[1].split(".")[0];
         return dias+" "+horas;
+    }
+
+    $scope.ordenarPor = function (parametro){
+        if($scope.orderby === parametro)
+            $scope.orderby = "-" + parametro;
+        else $scope.orderby = parametro;
+    }
+
+    $scope.filtrarTabla = function (){
+        console.log($scope.selectValue);
     }
 
 });

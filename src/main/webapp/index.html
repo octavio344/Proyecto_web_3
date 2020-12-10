@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Sistema de carga de gas - IW3 2020</title>
@@ -19,7 +20,7 @@
         <link rel="stylesheet" href="ui/styles/index.css">
     </head>
     <body ng-app="final-iw3">
-    <div ng-controller="pedidosController">
+    <div ng-controller="pedidosController" id="maindiv">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Sistema de carga de gas</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,17 +52,29 @@
             <br>
             <h1>{{ titulo }}</h1>
             <br>
+            <div id="seccion-filtrar">
+                <h3>Filtrar por:</h3>
+                <select class="form-control" ng-click="filtrarTabla()" ng-model="selectValue" autocomplete="off">
+                    <option selected="selected">ID</option>
+                    <option>Estado</option>
+                    <option>Fecha</option>
+                </select>
+                <input type="number" class="form-control" min="0" id="number" ng-if="selectValue=='ID' || selectValue=='Estado'">
+                <input type="date" class="form-control" id="date" ng-if="selectValue=='Fecha'">
+                <button type="button" class="btn btn-primary">Filtrar</button>
+            </div>
+            <br>
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th scope="col">Número</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Camión</th>
-                    <th scope="col">Preset</th>
-                    <th scope="col">Carga Actual</th>
-                    <th scope="col">Última Temperatura</th>
-                    <th scope="col">Última Densidad</th>
-                    <th scope="col">Último Caudal</th>
+                    <th scope="col" ng-click="ordenarPor('nroOrden')">Número</th>
+                    <th scope="col" ng-click="ordenarPor('estado')">Estado</th>
+                    <th scope="col" ng-click="ordenarPor('idCamion')">Camión</th>
+                    <th scope="col" ng-click="ordenarPor('preset')">Preset</th>
+                    <th scope="col" ng-click="ordenarPor('masaAcumulada')">Carga Actual</th>
+                    <th scope="col" ng-click="ordenarPor('temperatura')">Última Temperatura</th>
+                    <th scope="col" ng-click="ordenarPor('densidad')">Última Densidad</th>
+                    <th scope="col" ng-click="ordenarPor('caudal')">Último Caudal</th>
                     <th scope="col">Tiempo Transcurrido</th>
                     <th scope="col">ETA</th>
                     <th scope="col">Ver Conciliación</th>
@@ -69,7 +82,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="pedido in data">
+                <tr ng-repeat="pedido in data  | orderBy: orderby">
                     <th scope="row">{{pedido.nroOrden}}</th>
                     <td>{{pedido.estado}}</td>
                     <td>{{pedido.camion.idCamion}}</td>
@@ -80,7 +93,7 @@
                     <td>{{pedido.caudal}}</td>
                     <td><p ng-if="pedido.estado==2&&pedido.masaAcumulada>0">{{calcularTiempoTranscurrido(pedido)}}</p></td>
                     <td><p ng-if="pedido.estado==2&&pedido.masaAcumulada>0">{{calcularETA(pedido)}}</p></td>
-                    <td><button type="button" class="btn btn-primary" ng-if="pedido.estado==4" ng-click="cargarConciliacion(1)">Ver conciliación</button></td>
+                    <td><button type="button" class="btn btn-primary" ng-if="pedido.estado==4" ng-click="cargarConciliacion(pedido.nroOrden)">Ver conciliación</button></td>
                     <td><button type="button" class="btn btn-danger">Anular pedido</button></td>
                 </tr>
                 </tbody>
