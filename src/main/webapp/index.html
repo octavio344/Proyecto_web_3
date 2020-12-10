@@ -82,7 +82,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="pedido in data  | orderBy: orderby">
+                <tr ng-repeat="pedido in data  | orderBy: orderby" ng-if="pedido.anulado==0">
                     <th scope="row">{{pedido.nroOrden}}</th>
                     <td>{{pedido.estado}}</td>
                     <td>{{pedido.camion.idCamion}}</td>
@@ -94,7 +94,7 @@
                     <td><p ng-if="pedido.estado==2&&pedido.masaAcumulada>0">{{calcularTiempoTranscurrido(pedido)}}</p></td>
                     <td><p ng-if="pedido.estado==2&&pedido.masaAcumulada>0">{{calcularETA(pedido)}}</p></td>
                     <td><button type="button" class="btn btn-primary" ng-if="pedido.estado==4" ng-click="cargarConciliacion(pedido.nroOrden)">Ver conciliación</button></td>
-                    <td><button type="button" class="btn btn-danger">Anular pedido</button></td>
+                    <td><button type="button" class="btn btn-danger" ng-click="anularPedido(pedido.nroOrden)">Anular pedido</button></td>
                 </tr>
                 </tbody>
             </table>
