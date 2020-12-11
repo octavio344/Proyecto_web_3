@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -60,6 +61,7 @@ public class Orden {
 	@ApiModelProperty(notes = "Lista de todas las alarmas que se activaron durante esta orden", required = false)
 	private List<Alarma> alarmasList;
 	
+	@JsonIgnore
 	@OneToMany(targetEntity=DetalleOrden.class, mappedBy="ordenAsociada", fetch = FetchType.LAZY)
 	@ApiModelProperty(notes = "Lista de detalles asociados al proceso de carga del camión.", required = true)
 	private List<DetalleOrden> detalleOrdenList;

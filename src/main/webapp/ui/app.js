@@ -73,34 +73,41 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             if(res!=null){
                 let resSplit = res.toString().split("\n");
                 let respuesta = resSplit[resSplit.length-1];
-                let tipo = respuesta.split("TYPE=")[1];
-                respuesta = respuesta.split("TYPE=")[0];
-                $scope.nroOrden = respuesta.split("orden ")[1].split(" ")[0];
-                $scope.motivoAlarma = respuesta;
-
-                console.log(respuesta);
-                let titulo = "";
-                let logoAlarma = "error";
-                if(tipo=="excesoTemp")
-                    titulo="Exceso de Temperatura detectado"
-                else if(tipo=="90preset"){
-                    logoAlarma="warning";
-                    titulo="90% del preset alcanzado"
+                if(respuesta.includes("TYPE=")){
+                    let tipo = respuesta.split("TYPE=")[1];
+                    respuesta = respuesta.split("TYPE=")[0];
+                    $scope.nroOrden = respuesta.split("orden ")[1].split(" ")[0];
+                    $scope.motivoAlarma = respuesta;
+                    let titulo = "";
+                    let logoAlarma = "error";
+                    if(tipo=="excesoTemp")
+                        titulo="Exceso de Temperatura detectado"
+                    else if(tipo=="90preset"){
+                        logoAlarma="warning";
+                        titulo="90% del preset alcanzado"
+                    }
+                    else{
+                        titulo="Preset Superado"
+                    }
+                    SweetAlert.swal({
+                            title: titulo,
+                            text: respuesta,
+                            type: logoAlarma,
+                            showCancelButton: false,
+                            confirmButtonColor: "#FF0000",
+                            confirmButtonText: "Aceptar alarma",
+                            closeOnConfirm: true},
+                        function(){
+                            $scope.aceptarAlarma();
+                        });
                 }
                 else{
-                    titulo="Preset Superado"
+                    $scope.originalData = JSON.parse(respuesta);
+                    console.log("Respuesta\n"+$scope.data);
+                    $scope.filtrarTabla();
+                    $scope.$apply();
                 }
-                SweetAlert.swal({
-                        title: titulo,
-                        text: respuesta,
-                        type: logoAlarma,
-                        showCancelButton: false,
-                        confirmButtonColor: "#FF0000",
-                        confirmButtonText: "Aceptar alarma",
-                        closeOnConfirm: true},
-                    function(){
-                        $scope.aceptarAlarma();
-                    });
+
             }
         }, $scope.stomp);
     }
@@ -115,6 +122,7 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
 
     $scope.cerrarSesion = function (){
         $localStorage.logged = false;
+        $http.get("http://localhost:8080/logout-token?xauthtoken="+token)
         window.location.replace("/login.html");
     }
 
