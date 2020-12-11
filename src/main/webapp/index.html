@@ -54,14 +54,14 @@
             <br>
             <div id="seccion-filtrar">
                 <h3>Filtrar por:</h3>
-                <select class="form-control" ng-click="filtrarTabla()" ng-model="selectValue" autocomplete="off">
-                    <option selected="selected">ID</option>
+                <select id="seleccionarFiltro" class="form-control" ng-model="selectValue" autocomplete="off">
+                    <option selected>ID</option>
                     <option>Estado</option>
-                    <option>Fecha</option>
+                    <option>Fecha de carga</option>
                 </select>
-                <input type="number" class="form-control" min="0" id="number" ng-if="selectValue=='ID' || selectValue=='Estado'">
-                <input type="date" class="form-control" id="date" ng-if="selectValue=='Fecha'">
-                <button type="button" class="btn btn-primary">Filtrar</button>
+                <input type="number" class="form-control" min="0" id="number" ng-if="selectValue=='ID' || selectValue=='Estado'" ng-model="numero">
+                <input type="date" class="form-control" id="date" ng-if="selectValue=='Fecha de carga'" ng-model="fecha">
+                <button type="button" class="btn btn-primary" ng-click="filtrarTabla()">Filtrar</button>
             </div>
             <br>
             <table class="table table-hover">
@@ -69,6 +69,7 @@
                 <tr>
                     <th scope="col" ng-click="ordenarPor('nroOrden')">Número</th>
                     <th scope="col" ng-click="ordenarPor('estado')">Estado</th>
+                    <th scope="col" ng-click="ordenarPor('fechaIProcesoCarga')">Fecha De Carga</th>
                     <th scope="col" ng-click="ordenarPor('idCamion')">Camión</th>
                     <th scope="col" ng-click="ordenarPor('preset')">Preset</th>
                     <th scope="col" ng-click="ordenarPor('masaAcumulada')">Carga Actual</th>
@@ -85,6 +86,7 @@
                 <tr ng-repeat="pedido in data  | orderBy: orderby">
                     <th scope="row">{{pedido.nroOrden}}</th>
                     <td>{{pedido.estado}}</td>
+                    <td>{{adaptarFecha(pedido.fechaIProcesoCarga)}}</td>
                     <td>{{pedido.camion.idCamion}}</td>
                     <td>{{pedido.preset}}</td>
                     <td>{{pedido.masaAcumulada}}</td>
@@ -130,6 +132,5 @@
             </table>
         </div>
     </div>
-
     </body>
 </html>
