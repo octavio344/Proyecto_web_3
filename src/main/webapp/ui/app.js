@@ -23,12 +23,22 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     $scope.mostrarConciliacion = false;
     $scope.mostrarAlarmas = false;
     $scope.idConciliacion = 0;
+
     let token = $localStorage.userdata.authtoken;
+
+    $scope.selectValue = "ID";
+    $scope.numero = "1";
+    $scope.fecha = new Date();
+
     $scope.cargarPedidos = function (){
         pedidosService.cargar(token).then(
         function(resp){
                 $scope.data=resp.data;
                 $scope.totalDeItems = $scope.data.length;
+
+                //Guardo una copia para mantener los datos originales despues de filtrar
+                $scope.originalData = resp.data;
+
             },
             function(err){window.location.replace("/login.html");}
         );
@@ -175,11 +185,19 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     }
 
     $scope.adaptarFecha = function (fecha){
+        if(fecha==undefined)
+            return "";
         fecha = fecha.toString();
-        let dias = fecha.split("T")[0];
-        dias = dias.split("-")[2]+"/"+dias.split("-")[1]+"/"+dias.split("-")[0];
-        horas=fecha.split("T")[1].split(".")[0];
-        return dias+" "+horas;
+        //Si es un date traido de la BD
+        if(fecha.includes("T")){
+            let dias = fecha.split("T")[0];
+            dias = dias.split("-")[2]+"/"+dias.split("-")[1]+"/"+dias.split("-")[0];
+            horas=fecha.split("T")[1].split(".")[0];
+            return dias+" "+horas;
+        }
+        //Si es un date del input type date
+        else return fecha.split("-")[2]+"/"+fecha.split("-")[1]+"/"+fecha.split("-")[0];
+
     }
 
     $scope.ordenarPor = function (parametro){
@@ -189,9 +207,16 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     }
 
     $scope.filtrarTabla = function (){
-        console.log($scope.selectValue);
-    }
-
+        if(($scope.selectValue == "ID" || $scope.selectValue == "Estado") && document.getElementById("number").value == "")
+            $scope.data = $scope.originalData;
+        else if($scope.selectValue=="ID")
+            $scope.data = $scope.originalData.filter(pedido => pedido.nroOrden== document.getElementById("number").value);
+        else if($scope.selectValue == "Estado")
+            $scope.data = $scope.originalData.filter(pedido => pedido.estado== document.getElementById("number").value);
+        else if($scope.selectValue == "Fecha de carga"){
+            $scope.data = $scope.originalData.filter(pedido => $scope.adaptarFecha(pedido.fechaIProcesoCarga).includes($scope.adaptarFecha(document.getElementById("date").value)));
+        }
+      
     $scope.anularPedido = function(nroOrden){
         let req = {
             method: 'PUT',
@@ -212,7 +237,6 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             }
         );
     }
-
 });
 
 moduloPedidos.factory('pedidosService',
@@ -254,10 +278,12 @@ moduloPedidos.factory('wsService',
 
                     if ($localStorage.logged && $localStorage.userdata) {
                         $log.log("iniciandoWS");
+
                         $log.log(URL_WS+"?xauthtoken="+$localStorage.userdata.authtoken);
                         stomp.connect(URL_WS+"?xauthtoken="+$localStorage.userdata.authtoken).then(function(frame) {
                             console.log("Stomp: conectado a " + URL_WS);
                             fnConfig(stomp, topic, cb);
+                            //document.getElementById('seleccionarFiltro').options[1].selected = 'selected';
                         });
                     } else {
                         console.log("No existen credenciales para presentar en WS")
