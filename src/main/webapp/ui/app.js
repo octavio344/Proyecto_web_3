@@ -206,37 +206,39 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         else $scope.orderby = parametro;
     }
 
-    $scope.filtrarTabla = function (){
-        if(($scope.selectValue == "ID" || $scope.selectValue == "Estado") && document.getElementById("number").value == "")
+    $scope.filtrarTabla = function () {
+        if (($scope.selectValue == "ID" || $scope.selectValue == "Estado") && document.getElementById("number").value == "")
             $scope.data = $scope.originalData;
-        else if($scope.selectValue=="ID")
-            $scope.data = $scope.originalData.filter(pedido => pedido.nroOrden== document.getElementById("number").value);
-        else if($scope.selectValue == "Estado")
-            $scope.data = $scope.originalData.filter(pedido => pedido.estado== document.getElementById("number").value);
-        else if($scope.selectValue == "Fecha de carga"){
+        else if ($scope.selectValue == "ID")
+            $scope.data = $scope.originalData.filter(pedido => pedido.nroOrden == document.getElementById("number").value);
+        else if ($scope.selectValue == "Estado")
+            $scope.data = $scope.originalData.filter(pedido => pedido.estado == document.getElementById("number").value);
+        else if ($scope.selectValue == "Fecha de carga") {
             $scope.data = $scope.originalData.filter(pedido => $scope.adaptarFecha(pedido.fechaIProcesoCarga).includes($scope.adaptarFecha(document.getElementById("date").value)));
         }
-      
-    $scope.anularPedido = function(nroOrden){
+    }
+
+    $scope.anularPedido = function(nroOrden) {
         let req = {
             method: 'PUT',
-            url: 'http://localhost:8080/api/v1/ordenes/anularOrden?xauthtoken='+token+'&orden='+nroOrden,
-            headers : { 'Content-Type': 'application/json' },
+            url: 'http://localhost:8080/api/v1/ordenes/anularOrden?xauthtoken=' + token + '&orden=' + nroOrden,
+            headers: {'Content-Type': 'application/json'},
         };
         $http(req).then(
-            function(resp){
-                if(resp.status===200) {
+            function (resp) {
+                if (resp.status === 200) {
                     $scope.cargarPedidos();
                     console.log("Orden anulada");
-                }else{
-                    console.log("Error al anular la orden con id "+nroOrden);
+                } else {
+                    console.log("Error al anular la orden con id " + nroOrden);
                 }
             },
-            function(respErr){
+            function (respErr) {
                 console.log("Error al anular");
             }
         );
     }
+
 });
 
 moduloPedidos.factory('pedidosService',
