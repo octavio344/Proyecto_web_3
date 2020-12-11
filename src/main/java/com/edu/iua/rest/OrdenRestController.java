@@ -7,7 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.iua.business.IOrdenBusiness;
 import com.edu.iua.business.exception.BusinessException;
@@ -284,6 +283,20 @@ public class OrdenRestController {
 			return new ResponseEntity<ConciliacionDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}catch (WrongStateException e) {
 			return new ResponseEntity<ConciliacionDTO>(HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	
+	@PutMapping(value = "/anularOrden", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> pesajeInicial(@RequestParam Long orden) {
+		try {
+			ordenBusiness.anularOrden(orden);	
+			return new ResponseEntity<String>(HttpStatus.OK);
+		} catch (BusinessException e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 		
 	}

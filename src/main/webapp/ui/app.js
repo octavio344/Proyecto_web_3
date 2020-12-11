@@ -216,8 +216,26 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         else if($scope.selectValue == "Fecha de carga"){
             $scope.data = $scope.originalData.filter(pedido => $scope.adaptarFecha(pedido.fechaIProcesoCarga).includes($scope.adaptarFecha(document.getElementById("date").value)));
         }
-
-            //$scope.data = $scope.originalData.filter(pedido => pedido.nroOrden== document.getElementById("number").value);
+      
+    $scope.anularPedido = function(nroOrden){
+        let req = {
+            method: 'PUT',
+            url: 'http://localhost:8080/api/v1/ordenes/anularOrden?xauthtoken='+token+'&orden='+nroOrden,
+            headers : { 'Content-Type': 'application/json' },
+        };
+        $http(req).then(
+            function(resp){
+                if(resp.status===200) {
+                    $scope.cargarPedidos();
+                    console.log("Orden anulada");
+                }else{
+                    console.log("Error al anular la orden con id "+nroOrden);
+                }
+            },
+            function(respErr){
+                console.log("Error al anular");
+            }
+        );
     }
 });
 
