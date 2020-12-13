@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringRunner.class)
 @WebMvcTest(CamionesRestController.class)
 public class CamionRestControllerTest {
-/*
+
 	  @Autowired
 	    private MockMvc mvc;
 
@@ -60,7 +60,7 @@ public class CamionRestControllerTest {
 	    	camion.setCisternado(cisternas);
 	    }
 	    
-	    @Test
+	    /*@Test
 	    public void testListSuccess() throws BusinessException, Exception {
 	    	List<Camion> allCamiones= new ArrayList<Camion>();
 	    	allCamiones.add(camion);
@@ -90,7 +90,7 @@ public class CamionRestControllerTest {
 	    	
 	    	
 	    }
-	    
+	    /*
 	    @Test
 	    public void testLoadByCodigoExternoSuccess() throws BusinessException, Exception {
 	    	Camion camionDescContains = camion;
@@ -105,6 +105,6 @@ public class CamionRestControllerTest {
 	    			.andExpect((ResultMatcher) jsonPath(("$.ce"),  is(camion.getCodigoExterno()), Long.class));
 	    	
 	    	
-	    }
-	*/
+	    }*/
+
 }
