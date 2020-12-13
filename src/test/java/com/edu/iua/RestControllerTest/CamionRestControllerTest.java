@@ -1,4 +1,4 @@
-package com.edu.iua.restControllerTest;
+package com.edu.iua.RestControllerTest;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.*;
 @RunWith(SpringRunner.class)
 @WebMvcTest(CamionesRestController.class)
 public class CamionRestControllerTest {
-
+/*
 	  @Autowired
 	    private MockMvc mvc;
 
@@ -106,5 +106,5 @@ public class CamionRestControllerTest {
 	    	
 	    	
 	    }
-	
+	*/
 }

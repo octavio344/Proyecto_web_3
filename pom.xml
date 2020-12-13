@@ -99,15 +99,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<<<<<<< Updated upstream
-			<dependency>
-=======
 		<dependency>
->>>>>>> Stashed changes
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
-		    <version>5.0.0-M5</version>
-		    <scope>test</scope>
+    		<groupId>org.junit.vintage</groupId>
+    		<artifactId>junit-vintage-engine</artifactId>
+    		<version>5.7.0</version>
+    		<scope>test</scope>
 		</dependency>
 		<dependency>
 		    <groupId>org.mockito</groupId>
