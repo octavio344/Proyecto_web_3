@@ -301,5 +301,15 @@ public class OrdenRestController {
 		
 	}
 	
+	@PutMapping(value = "/cambiarUmbralTemp", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> cambiarUmbralTemperatura(@RequestParam Float temp) {
+		try {
+			ordenBusiness.cambiarUmbralTemperatura(temp);
+			return new ResponseEntity<String>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	
 }

@@ -36,4 +36,6 @@ public interface IOrdenBusiness {
 	
 	public void pushOrderData();
 	
+	public void cambiarUmbralTemperatura(Float temp);
+	
 }
