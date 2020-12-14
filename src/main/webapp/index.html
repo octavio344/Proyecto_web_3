@@ -35,22 +35,15 @@
                     <li class="nav-item">
                         <a class="nav-link" ng-click="cargarAlarmas()">Ver alarmas</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Cuenta
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Modificar datos</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" ng-click="cerrarSesion()">Cerrar sesión</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" ng-click="cerrarSesion()">Cerrar Sesi&oacute;n</a>
                     </li>
                 </ul>
             </div>
         </nav>
         <div id="pedidos" ng-show="mostrarPedidos">
             <br>
-            <h1>{{ titulo }}</h1>
+            <h1>Pedidos Realizados</h1>
             <br>
             <div id="seccion-filtrar">
                 <h3>Filtrar por:</h3>
@@ -58,10 +51,16 @@
                     <option selected>ID</option>
                     <option>Estado</option>
                     <option>Fecha de carga</option>
+                    <option>Anulado</option>
                 </select>
                 <input type="number" class="form-control" min="0" id="number" ng-if="selectValue=='ID' || selectValue=='Estado'" ng-model="numero">
                 <input type="date" class="form-control" id="date" ng-if="selectValue=='Fecha de carga'" ng-model="fecha">
+                <select id="seleccionarAnulado" class="form-control" ng-model="filtrarAnulado" autocomplete="off" ng-show="selectValue=='Anulado'">
+                    <option>Anulado</option>
+                    <option>No anulado</option>
+                </select>
                 <button type="button" class="btn btn-primary" ng-click="filtrarTabla()">Filtrar</button>
+                <button type="button" class="btn btn-danger" ng-click="removerFiltros()">Remover Filtros</button>
             </div>
             <br>
             <table class="table table-hover">
@@ -69,6 +68,7 @@
                 <tr>
                     <th scope="col" ng-click="ordenarPor('nroOrden')">Número</th>
                     <th scope="col" ng-click="ordenarPor('estado')">Estado</th>
+                    <th scope="col" ng-click="ordenarPor('anulado')">Anulado</th>
                     <th scope="col" ng-click="ordenarPor('fechaIProcesoCarga')">Fecha De Carga</th>
                     <th scope="col" ng-click="ordenarPor('idCamion')">Camión</th>
                     <th scope="col" ng-click="ordenarPor('preset')">Preset</th>
@@ -83,9 +83,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="pedido in data  | orderBy: orderby" ng-if="pedido.anulado==0">
+                <tr ng-repeat="pedido in data  | orderBy: orderby" ng-class="{'anulado': pedido.anulado==true}">
                     <th scope="row">{{pedido.nroOrden}}</th>
                     <td>{{pedido.estado}}</td>
+                    <td><p ng-if="pedido.anulado==true">Si</p><p ng-if="pedido.anulado==false">No</p></td>
                     <td>{{adaptarFecha(pedido.fechaIProcesoCarga)}}</td>
                     <td>{{pedido.camion.idCamion}}</td>
                     <td>{{pedido.preset}}</td>
@@ -96,7 +97,7 @@
                     <td><p ng-if="pedido.estado==2&&pedido.masaAcumulada>0">{{calcularTiempoTranscurrido(pedido)}}</p></td>
                     <td><p ng-if="pedido.estado==2&&pedido.masaAcumulada>0">{{calcularETA(pedido)}}</p></td>
                     <td><button type="button" class="btn btn-primary" ng-if="pedido.estado==4" ng-click="cargarConciliacion(pedido.nroOrden)">Ver conciliación</button></td>
-                    <td><button type="button" class="btn btn-danger" ng-click="anularPedido(pedido.nroOrden)">Anular pedido</button></td>
+                    <td><button type="button" class="btn btn-danger" ng-click="anularPedido(pedido.nroOrden)" ng-if="pedido.anulado==false">Anular pedido</button></td>
                 </tr>
                 </tbody>
             </table>
