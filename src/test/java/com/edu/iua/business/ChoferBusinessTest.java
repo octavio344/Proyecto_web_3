@@ -4,7 +4,7 @@ package com.edu.iua.business;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -12,17 +12,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.mockito.Mockito;
 
 import java.util.Optional;
 
-import com.edu.iua.business.ChoferBusiness;
+
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.model.Chofer;
 import com.edu.iua.model.persistence.ChoferRepository;
 
+@WebAppConfiguration
+@ContextConfiguration(classes = { ChoferBusiness.class })
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ChoferBusinessTest {
