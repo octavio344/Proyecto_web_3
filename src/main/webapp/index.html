@@ -125,24 +125,20 @@
                   <tr><th>Densidad Promedio:</th><td>{{dataConc.promedioDensidad}}</td></tr>
               </table>
             </div>
-
-        
-       
-            </div>
-            <div id="alarmas" ng-show="mostrarAlarmas">
-                <br>
-                <h1>Alarmas:</h1>
-                <br>
-                <table class="table table-hover custom-table col-md-10">
-                    <tr><th>Nro. de Pedido</th><th>Usuario que acept&oacute; la alarma</th><th>Fecha de aceptaci&oacute;n</th><th colspan="2">Motivo de la alarma</th></tr>
-                    <tr ng-repeat="alarma in alarmas">
-                        <td>{{alarma.idAlarma}}</td>
-                        <td>{{alarma.usuarioQueAcepto.nombre + " " + alarma.usuarioQueAcepto.apellido}}</td>
-                        <td>{{adaptarFecha(alarma.fechaAceptacion)}}</td>
-                        <td>{{alarma.motivoAlarma}}</td>
-                    </tr>
-                </table>
-            </div>
+        </div>
+        <div id="alarmas" ng-show="mostrarAlarmas">
+            <br>
+            <h1>Alarmas:</h1>
+            <br>
+            <table class="table table-hover custom-table col-md-10">
+                <tr><th>Nro. de Pedido</th><th>Usuario que acept&oacute; la alarma</th><th>Fecha de aceptaci&oacute;n</th><th colspan="2">Motivo de la alarma</th></tr>
+                <tr ng-repeat="alarma in alarmas">
+                    <td>{{alarma.idAlarma}}</td>
+                    <td>{{alarma.usuarioQueAcepto.nombre + " " + alarma.usuarioQueAcepto.apellido}}</td>
+                    <td>{{adaptarFecha(alarma.fechaAceptacion)}}</td>
+                    <td>{{alarma.motivoAlarma}}</td>
+                </tr>
+            </table>
         </div>
     </div>
     </body>

@@ -14,8 +14,6 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
 
-
-
     //Inicializo las variables con sus valores por defecto
 
     $scope.orderby = "nroOrden"
