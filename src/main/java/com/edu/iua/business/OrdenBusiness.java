@@ -53,7 +53,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	@Autowired
 	private CamionRepository camionDAO;
 	
-	private int temperaturaMaxima = 80;
+	private float temperaturaMaxima = 80;
 	
 	@Override
 	public List<Orden> listAll() throws BusinessException {
@@ -236,17 +236,23 @@ public class OrdenBusiness implements IOrdenBusiness {
 				or.setFechaUltimoAlmacenamiento(o.getFechaUltimoAlmacenamiento());
 			}
 			
-			
-			if(or.getMasaAcumulada()> (or.getPreset()*0.9)) {
-				generaEvento(or, OrdenEvent.Tipo.CAPACIDAD_NOVENTA_PORCIENTO);
-			}
-			
-			if(or.getMasaAcumulada()> or.getPreset()) {
-				generaEvento(or, OrdenEvent.Tipo.PRESET_EXCEDIDO);
-			}
-			
-			if (or.getTemperatura()>temperaturaMaxima) {
-				generaEvento(or, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
+			//Si no tiene la alarma encendida, verifico si hay que generar alguna alarma
+			//Si hay una alarma encendida no entro ya que no se pueden generar dos alarmas en simultaneo
+			if(!or.isTieneAlarmaEncendida()) {
+				if(or.getMasaAcumulada()> (or.getPreset()*0.9)) {
+					generaEvento(or, OrdenEvent.Tipo.CAPACIDAD_NOVENTA_PORCIENTO);
+					or.setTieneAlarmaEncendida(true);
+				}
+				
+				if(or.getMasaAcumulada()> or.getPreset()) {
+					generaEvento(or, OrdenEvent.Tipo.PRESET_EXCEDIDO);
+					or.setTieneAlarmaEncendida(true);
+				}
+				
+				if (or.getTemperatura()>temperaturaMaxima) {
+					generaEvento(or, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
+					or.setTieneAlarmaEncendida(true);
+				}
 			}
 			
 			ordenDAO.save(or);
@@ -429,6 +435,11 @@ public class OrdenBusiness implements IOrdenBusiness {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void cambiarUmbralTemperatura(Float temp) {
+		temperaturaMaxima = temp;
 	}
 
 

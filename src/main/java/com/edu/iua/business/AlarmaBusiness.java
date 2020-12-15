@@ -58,8 +58,11 @@ public class AlarmaBusiness implements IAlarmaBusiness{
 			Optional<User> u = userDAO.findById(alarma.getUsuarioQueAcepto().getId());
 			Optional<Orden> o = ordenDAO.findById(alarma.getOrden().getNroOrden());
 			if(u.isPresent() && o.isPresent()) {
+				Orden or = o.get();
+				or.setTieneAlarmaEncendida(false);
+				ordenDAO.save(or);
 				alarma.setUsuarioQueAcepto(u.get());
-				alarma.setOrden(o.get());
+				alarma.setOrden(or);
 				alarma.setFechaAceptacion(new Date());
 				return alarmaDAO.save(alarma);
 			}

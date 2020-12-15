@@ -8,27 +8,32 @@ let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp', 'oitozero.
 moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp, SweetAlert, $http){
 
 
-    $scope.orderby = "nroOrden"
+
+    $rootScope.stomp = $stomp;
+
+    //Verifico si el usuario está logueado, y si no está logueado lo redirecciono a la página de login
 
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
 
-    $rootScope.stomp = $stomp;
 
-    $scope.titulo = "Pedidos realizados:";
+    //Inicializo las variables con sus valores por defecto
 
-    $scope.pedidosPorPagina = 5;
-
+    $scope.orderby = "nroOrden"
     $scope.mostrarPedidos = true;
     $scope.mostrarConciliacion = false;
     $scope.mostrarAlarmas = false;
     $scope.idConciliacion = 0;
-
-    let token = $localStorage.userdata.authtoken;
-
     $scope.selectValue = "ID";
     $scope.numero = "1";
     $scope.fecha = new Date();
+    $scope.filtrarAnulado = "No anulado"
+
+    //Obtengo el token del usuario
+
+    let token = $localStorage.userdata.authtoken;
+
+    //Función encargada de cargar los pedidos desde la API
 
     $scope.cargarPedidos = function (){
         pedidosService.cargar(token).then(
@@ -36,20 +41,29 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
                 $scope.data=resp.data;
                 $scope.totalDeItems = $scope.data.length;
 
-                //Guardo una copia para mantener los datos originales despues de filtrar
+                //Guardo una copia de los datos originales, para que no se pierdan al filtrar
                 $scope.originalData = resp.data;
 
             },
+
+            //Si ocurrio un error, posiblemente un 403, redirecciono a la página de login
             function(err){window.location.replace("/login.html");}
         );
 
     }
+    //Cargo los pedidos ya que se deben cargarse si o si al abrir la página
+
+    $scope.cargarPedidos();
+
+    //Muestra el div de los pedidos y oculta los divs de conciliacion y alarma al presionar "Ver Pedidos" en el menú superior
 
     $scope.mostrarPaginaPedidos = function(){
         $scope.mostrarPedidos = true;
         $scope.mostrarConciliacion = false;
         $scope.mostrarAlarmas = false;
     }
+
+    //Carga la conciliación al apretar el botón "Ver Conciliación" en la tabla de pedidos
 
     $scope.cargarConciliacion = function (idPedido){
         pedidosService.cargarConc(idPedido, token).then(
@@ -63,9 +77,9 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             },
             function(err){}
         );
-}
+    }
 
-    $scope.cargarPedidos();
+    //Inicio el websocket, que se encargará de actualizar la tabla en tiempo real y enviar las alarmas
 
     $scope.iniciaWS = function() {
         wsService.initStompClient('/iw3/data', function(payload,
@@ -73,6 +87,9 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             if(res!=null){
                 let resSplit = res.toString().split("\n");
                 let respuesta = resSplit[resSplit.length-1];
+
+                //Si incluye "TYPE=" es porque es una alarma
+
                 if(respuesta.includes("TYPE=")){
                     let tipo = respuesta.split("TYPE=")[1];
                     respuesta = respuesta.split("TYPE=")[0];
@@ -80,6 +97,8 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
                     $scope.motivoAlarma = respuesta;
                     let titulo = "";
                     let logoAlarma = "error";
+
+                    //Veo de que tipo es la alarma para poner el título y el ícono adecuados
                     if(tipo=="excesoTemp")
                         titulo="Exceso de Temperatura detectado"
                     else if(tipo=="90preset"){
@@ -89,6 +108,8 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
                     else{
                         titulo="Preset Superado"
                     }
+
+                    //Muestro la alarma usando la librería SweetAlert
                     SweetAlert.swal({
                             title: titulo,
                             text: respuesta,
@@ -101,30 +122,34 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
                             $scope.aceptarAlarma();
                         });
                 }
+
+                //Si no es una alarma, es una actualización de tabla, entonces actualizo la misma y aplico filtros por si los había
                 else{
                     $scope.originalData = JSON.parse(respuesta);
-                    console.log("Respuesta\n"+$scope.data);
                     $scope.filtrarTabla();
                     $scope.$apply();
                 }
-
             }
         }, $scope.stomp);
     }
 
-   $scope.iniciaWS();
+    //Inicio el Web Socket para cargar
+    $scope.iniciaWS();
 
-
+    //Función para detener el Web Socket
     $scope.$on("$destroy", function() {
         wsService.stopStompClient();
     });
 
-
+    //Función para cerrar la sesión, borra el Local Storage y la cierra vía la API en el servidor
     $scope.cerrarSesion = function (){
         $localStorage.logged = false;
         $http.get("http://localhost:8080/logout-token?xauthtoken="+token)
         window.location.replace("/login.html");
     }
+
+
+    //Formatea el tiempo a hh:mm:ss
 
     let formatearTiempo = function (horas){
         let segundos = 0;
@@ -143,11 +168,12 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         return tiempoFormateado;
     }
 
+    //Calcula el tiempo estimado para que se complete el llenado
     $scope.calcularETA = function(pedido){
         let horas = (pedido.preset-pedido.masaAcumulada)/pedido.caudal;
         return formatearTiempo(horas);
     }
-
+    //Calcula el tiempo que pasó desde que se comenzó a llenar
     $scope.calcularTiempoTranscurrido = function(pedido){
         if(pedido.estado==2){
             let fecha = pedido.fechaIProcesoCarga;
@@ -156,7 +182,7 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         }
         else return 0;
     }
-
+    //Acepto una alarma, y guardo en el servidor quien la aceptó y cuando
     $scope.aceptarAlarma = function(){
         let req = {
             method: 'POST',
@@ -178,6 +204,7 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         );
     }
 
+    //Cargo todas las alarmas desde la API, muestro el div de mostrar alarmas, y oculto los otros
     $scope.cargarAlarmas = function (){
         $scope.mostrarAlarmas = true;
         $scope.mostrarConciliacion = false;
@@ -191,6 +218,8 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         );
 
     }
+
+    //Adapto la fecha a DD/MM/AAAA
 
     $scope.adaptarFecha = function (fecha){
         if(fecha==undefined)
@@ -208,12 +237,16 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
 
     }
 
+    //Función para ordenar la tabla
     $scope.ordenarPor = function (parametro){
+        //Si ya está ordenada por ese parámetro, se la ordena de forma inversa agregando el "-" adelante del parámetro
         if($scope.orderby === parametro)
             $scope.orderby = "-" + parametro;
         else $scope.orderby = parametro;
     }
 
+
+    //Filtro la tabla en base a los filtros aplicados en el front end
     $scope.filtrarTabla = function () {
         if (($scope.selectValue == "ID" || $scope.selectValue == "Estado") && document.getElementById("number").value == "")
             $scope.data = $scope.originalData;
@@ -224,8 +257,17 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         else if ($scope.selectValue == "Fecha de carga") {
             $scope.data = $scope.originalData.filter(pedido => $scope.adaptarFecha(pedido.fechaIProcesoCarga).includes($scope.adaptarFecha(document.getElementById("date").value)));
         }
+        else if ($scope.selectValue == "Anulado") {
+            console.log("Filtrando Anulado " + $scope.filtrarAnulado);
+            if($scope.filtrarAnulado == "Anulado")
+                $scope.data = $scope.originalData.filter(pedido => pedido.anulado == true);
+            else if($scope.filtrarAnulado == "No anulado")
+                $scope.data = $scope.originalData.filter(pedido => pedido.anulado == false);
+        }
+
     }
 
+    //Función para anular un pedido mediante la API
     $scope.anularPedido = function(nroOrden) {
         let req = {
             method: 'PUT',
@@ -247,8 +289,13 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         );
     }
 
-});
+    //Función para remover filtros y restaurar los datos originales
+    $scope.removerFiltros = function(){
+        $scope.data = $scope.originalData;
+    }
 
+});
+//Módulo encargado de gestionar la interacción con la API referida a los pedidos
 moduloPedidos.factory('pedidosService',
     function($http, URL_API_BASE) {
         return {
@@ -263,6 +310,7 @@ moduloPedidos.factory('pedidosService',
     }
 );
 
+//Módulo encargado de gestionar el Web Socket
 moduloPedidos.factory('wsService',
     function($rootScope, URL_WS, $timeout, $interval, $log, $localStorage) {
 
