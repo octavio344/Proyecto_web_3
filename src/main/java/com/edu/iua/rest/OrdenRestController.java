@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.iua.business.IOrdenBusiness;
 import com.edu.iua.business.exception.BusinessException;
+import com.edu.iua.business.exception.CanceledOrderException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
 import com.edu.iua.model.ConciliacionDTO;
@@ -144,6 +145,8 @@ public class OrdenRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}	catch (WrongStateException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		} catch (CanceledOrderException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -170,6 +173,8 @@ public class OrdenRestController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		} catch (WrongStateException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}catch (CanceledOrderException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -198,6 +203,8 @@ public class OrdenRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}catch (WrongStateException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}catch (CanceledOrderException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -223,6 +230,8 @@ public class OrdenRestController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}	catch (WrongStateException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}catch (CanceledOrderException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		

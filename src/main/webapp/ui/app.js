@@ -14,6 +14,10 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
 
+    //Verifico que tema usar
+
+    if($localStorage.theme == 'dark')
+        activarModoOscuro();
 
     //Inicializo las variables con sus valores por defecto
 
@@ -289,23 +293,33 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         $scope.data = $scope.originalData;
     }
 
+    var theme = document.getElementById('estilo');
+    var imgIcon= document.getElementById('iconP');
+    var imgIconMoon= document.getElementById('moon');
+    var swTheme= document.getElementById('switchTheme');
+
+    let activarModoClaro = function(){
+        theme.setAttribute('href', 'ui/styles/index.css');
+        imgIconMoon.setAttribute('src','ui/moonicon.png');
+        imgIcon.setAttribute('src','ui/iconl.png');
+        swTheme.setAttribute('class','light-button');
+        $localStorage.theme = 'light';
+    }
+
+    let activarModoOscuro = function(){
+        theme.setAttribute('href', 'ui/styles/darktheme.css');
+        imgIconMoon.setAttribute('src','ui/mooniconDark.png');
+        imgIcon.setAttribute('src','ui/icon.png');
+        swTheme.setAttribute('class','dark-button');
+        $localStorage.theme = 'dark';
+    }
+
     $scope.toggleTheme = function() {
 
-        var theme = document.getElementById('estilo');
-        var imgIcon= document.getElementById('iconP');
-        var imgIconMoon= document.getElementById('moon');
-        var swTheme= document.getElementById('switchTheme');
-
         if (theme.getAttribute('href') == 'ui/styles/index.css') {
-            theme.setAttribute('href', 'ui/styles/darktheme.css');
-            imgIconMoon.setAttribute('src','ui/mooniconDark.png');
-            imgIcon.setAttribute('src','ui/icon.png');
-            swTheme.setAttribute('class','dark-button');
+            activarModoOscuro();
         } else {
-            theme.setAttribute('href', 'ui/styles/index.css');
-            imgIconMoon.setAttribute('src','ui/moonicon.png');
-            imgIcon.setAttribute('src','ui/iconl.png');
-            swTheme.setAttribute('class','light-button');
+            activarModoClaro();
         }
     }
 

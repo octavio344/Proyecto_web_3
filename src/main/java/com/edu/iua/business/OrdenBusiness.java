@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.edu.iua.business.exception.BusinessException;
+import com.edu.iua.business.exception.CanceledOrderException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
 import com.edu.iua.eventos.OrdenEvent;
@@ -140,7 +141,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	// Tirar exc si los datos estan mal
 	
 	@Override
-	public Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException, WrongStateException {
+	public Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException, WrongStateException, CanceledOrderException {
 		
 		Optional<Orden> opOrden;
 		if(o.getCodigoExterno()!=null)
@@ -152,7 +153,9 @@ public class OrdenBusiness implements IOrdenBusiness {
 				throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
 			else throw new NotFoundException("No se encuentra la orden con el ID = " + o.getNroOrden());
 		}else {
-			Orden or = opOrden.get();			
+			Orden or = opOrden.get();
+			if(or.getAnulado())
+				throw new CanceledOrderException("No se pueden actualizar órdenes anuladas");
 			if(or.getEstado()==1) {
 				if(o.getPesajeInicial()!= null || o.getPesajeInicial()>0) {
 					or.setPesajeInicial(o.getPesajeInicial());
@@ -172,7 +175,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	}
 
 	@Override
-	public Orden updateDetalle(Orden o) throws BusinessException, NotFoundException, WrongStateException {
+	public Orden updateDetalle(Orden o) throws BusinessException, NotFoundException, WrongStateException, CanceledOrderException {
 		
 		o.setFechaUltimoAlmacenamiento(new Date());
 		
@@ -196,6 +199,9 @@ public class OrdenBusiness implements IOrdenBusiness {
 	    
 	    else try {
 	    	Orden or = op.get();
+	    	
+	    	if(or.getAnulado())
+				throw new CanceledOrderException("No se pueden actualizar órdenes anuladas");
 	    	
 	    	if(or.getEstado()!=2) {
 	    		throw new WrongStateException("La orden debe estar en estado 2 para utilizar este servicio");
@@ -251,7 +257,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	}
 
 	@Override
-	public Orden cerrarOrden(Orden o) throws BusinessException, NotFoundException, WrongStateException {
+	public Orden cerrarOrden(Orden o) throws BusinessException, NotFoundException, WrongStateException, CanceledOrderException {
 	
 		Optional<Orden> optional;
 		if(o.getCodigoExterno()!=null)
@@ -266,6 +272,9 @@ public class OrdenBusiness implements IOrdenBusiness {
 			
 		Orden or = optional.get();
 		
+		if(or.getAnulado())
+			throw new CanceledOrderException("No se pueden actualizar órdenes anuladas");
+		
 		if(or.getEstado()==2) {
 			
 			or.setEstado(3);
@@ -279,7 +288,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	}
 
 	@Override
-	public ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException, WrongStateException {
+	public ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException, WrongStateException, CanceledOrderException {
 		// TODO Auto-generated method stub
 
 		Optional<Orden> op;
@@ -294,6 +303,9 @@ public class OrdenBusiness implements IOrdenBusiness {
 		}
 		
 		Orden or= op.get(); 
+		
+		if(or.getAnulado())
+			throw new CanceledOrderException("No se pueden actualizar órdenes anuladas");
 		
 		if(or.getEstado()==3 && o.getPesajeFinal()!=null && o.getPesajeFinal()>or.getPesajeInicial()) {
 			
