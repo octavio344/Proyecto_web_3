@@ -22,9 +22,12 @@ import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.model.User;
 
+import io.swagger.annotations.Api;
+
 
 @RestController
 @RequestMapping(value = Constantes.URL_USER)
+@Api(value = "Usuarios", description = "Operaciones relacionadas con la creacion,modifiacion y eliminacion de usuarios", tags = { "Autenticación" })
 public class UserRestController {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());

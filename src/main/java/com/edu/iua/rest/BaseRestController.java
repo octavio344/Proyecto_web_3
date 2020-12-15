@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.iua.authtoken.IAuthTokenBusiness;
 import com.edu.iua.model.User;
+
+import io.swagger.annotations.Api;
+
 import org.slf4j.Logger;
 import com.edu.iua.authtoken.AuthToken;
 import com.edu.iua.business.exception.BusinessException;
