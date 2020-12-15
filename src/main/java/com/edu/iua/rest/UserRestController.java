@@ -29,8 +29,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 
+
 @RestController
 @RequestMapping(value = Constantes.URL_USER)
+@Api(value = "Usuarios", description = "Operaciones relacionadas con la creacion,modifiacion y eliminacion de usuarios", tags = { "Autenticación" })
 public class UserRestController {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -39,7 +40,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {		
 		auth.userDetailsService(persistenceUserDetailService);
 	}
+	
+	private static final String[] AUTH_WHITELIST = {
+	        "/swagger-resources/**",
+	        "/swagger-ui.html",
+	        "/v2/api-docs",
+	        "/webjars/**"
+	};
 
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+	    web.ignoring().antMatchers(AUTH_WHITELIST);
+	}
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -48,6 +61,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/api/v1/users").anonymous()
 		.antMatchers("/admin/**").hasRole("ADMIN")
 		.antMatchers("/anonymous*").anonymous()
+		.antMatchers("/swagger-ui/").anonymous()
+		.antMatchers("/swagger-ui/*").anonymous()
+		.antMatchers("/swagger-resources/*").anonymous()
 		.antMatchers("/login*").permitAll()
 		.antMatchers("/logout*").permitAll()
 		.antMatchers("/").permitAll()
