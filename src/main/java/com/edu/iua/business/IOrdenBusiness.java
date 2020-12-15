@@ -3,6 +3,7 @@ package com.edu.iua.business;
 import java.util.List;
 
 import com.edu.iua.business.exception.BusinessException;
+import com.edu.iua.business.exception.CanceledOrderException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
 import com.edu.iua.model.ConciliacionDTO;
@@ -14,17 +15,15 @@ public interface IOrdenBusiness {
 	
 	Orden findById(Long id)throws NotFoundException, BusinessException;
 	
-	void delete(Long id) throws BusinessException, NotFoundException;
-	
 	Orden add(Orden o) throws BusinessException, IllegalArgumentException;
 	
-	Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException,WrongStateException;
+	Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException,WrongStateException, CanceledOrderException;
 	
-	Orden updateDetalle(Orden o) throws BusinessException, NotFoundException,WrongStateException;
+	Orden updateDetalle(Orden o) throws BusinessException, NotFoundException,WrongStateException, CanceledOrderException;
 	
-	Orden cerrarOrden(Orden o) throws BusinessException, NotFoundException,WrongStateException;
+	Orden cerrarOrden(Orden o) throws BusinessException, NotFoundException,WrongStateException, CanceledOrderException;
 	
-	ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException,WrongStateException;
+	ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException,WrongStateException, CanceledOrderException;
 	
 	Orden findByCodigoExterno(String p)throws NotFoundException, BusinessException;
 	

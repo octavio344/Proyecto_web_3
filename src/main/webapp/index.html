@@ -3,7 +3,7 @@
     <head>
         <title>Sistema de carga de gas - IW3 2020</title>
         <meta charset="UTF-8">
-        <link rel="stylesheet" href="/dark-theme.css">
+
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link href="ui/modules/sweetalert/dist/sweetalert.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -15,34 +15,10 @@
         <script type="text/javascript" src="ui/modules/sweetalert/dist/sweetalert.min.js"></script>
         <script type="text/javascript" src="ui/modules/angular-sweetalert/SweetAlert.min.js"></script>
         <script src="ui/modules/ng-stomp/dist/ng-stomp.standalone.min.js"></script>
-        
 
         <script src="ui/app.js"></script>
-       
         <link rel="stylesheet" href="ui/styles/index.css"  type="text/css" id="estilo">
-        <script> 
-            function toggleTheme() { 
-                
-                var theme = document.getElementById('estilo'); 
-                var imgIcon= document.getElementById('iconP');
-                var imgIconMoon= document.getElementById('moon');
-                var swTheme= document.getElementById('switchTheme');
 
-                console.log(theme);
-
-                if (theme.getAttribute('href') == 'ui/styles/index.css') { 
-                    theme.setAttribute('href', 'ui/styles/darktheme.css'); 
-                    imgIconMoon.setAttribute('src','ui/mooniconDark.png');
-                    imgIcon.setAttribute('src','ui/icon.png');
-                    swTheme.setAttribute('class','dark-button');
-                } else { 
-                    theme.setAttribute('href', 'ui/styles/index.css'); 
-                    imgIconMoon.setAttribute('src','ui/moonicon.png');
-                    imgIcon.setAttribute('src','ui/iconl.png');
-                    swTheme.setAttribute('class','light-button'); 
-                } 
-            } 
-        </script> 
     </head>
     <body ng-app="final-iw3">
     <div ng-controller="pedidosController" id="maindiv">
@@ -54,7 +30,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              
+
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="#" ng-click="mostrarPaginaPedidos()">Ver pedidos <span class="sr-only">(current)</span></a>
@@ -68,7 +44,7 @@
                     </li>
                 </ul>
                 <span class="Label Label--large Label--success v-align-text-top" title="Label: Beta">Beta</span>
-                <button class="light-button" onclick=toggleTheme() id="switchTheme"><img src="ui/moonicon.png" id="moon" width="30" height="30"></button>
+                <button class="light-button" ng-click=toggleTheme() id="switchTheme"><img src="ui/moonicon.png" id="moon" width="30" height="30"></button>
             </div>
         </nav>
 
@@ -149,24 +125,20 @@
                   <tr><th>Densidad Promedio:</th><td>{{dataConc.promedioDensidad}}</td></tr>
               </table>
             </div>
-
-        
-       
-            </div>
-            <div id="alarmas" ng-show="mostrarAlarmas">
-                <br>
-                <h1>Alarmas:</h1>
-                <br>
-                <table class="table table-hover custom-table col-md-10">
-                    <tr><th>Nro. de Pedido</th><th>Usuario que acept&oacute; la alarma</th><th>Fecha de aceptaci&oacute;n</th><th colspan="2">Motivo de la alarma</th></tr>
-                    <tr ng-repeat="alarma in alarmas">
-                        <td>{{alarma.idAlarma}}</td>
-                        <td>{{alarma.usuarioQueAcepto.nombre + " " + alarma.usuarioQueAcepto.apellido}}</td>
-                        <td>{{adaptarFecha(alarma.fechaAceptacion)}}</td>
-                        <td>{{alarma.motivoAlarma}}</td>
-                    </tr>
-                </table>
-            </div>
+        </div>
+        <div id="alarmas" ng-show="mostrarAlarmas">
+            <br>
+            <h1>Alarmas:</h1>
+            <br>
+            <table class="table table-hover custom-table col-md-10">
+                <tr><th>Nro. de Pedido</th><th>Usuario que acept&oacute; la alarma</th><th>Fecha de aceptaci&oacute;n</th><th colspan="2">Motivo de la alarma</th></tr>
+                <tr ng-repeat="alarma in alarmas">
+                    <td>{{alarma.idAlarma}}</td>
+                    <td>{{alarma.usuarioQueAcepto.nombre + " " + alarma.usuarioQueAcepto.apellido}}</td>
+                    <td>{{adaptarFecha(alarma.fechaAceptacion)}}</td>
+                    <td>{{alarma.motivoAlarma}}</td>
+                </tr>
+            </table>
         </div>
     </div>
     </body>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.edu.iua.business.IOrdenBusiness;
 import com.edu.iua.business.exception.BusinessException;
+import com.edu.iua.business.exception.CanceledOrderException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.business.exception.WrongStateException;
 import com.edu.iua.model.ConciliacionDTO;
@@ -144,6 +145,8 @@ public class OrdenRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}	catch (WrongStateException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		} catch (CanceledOrderException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -170,6 +173,8 @@ public class OrdenRestController {
 		} catch (NotFoundException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		} catch (WrongStateException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}catch (CanceledOrderException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
@@ -198,6 +203,8 @@ public class OrdenRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}catch (WrongStateException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}catch (CanceledOrderException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -224,30 +231,12 @@ public class OrdenRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}	catch (WrongStateException e) {
 			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}catch (CanceledOrderException e) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 		
 	}
-	
-	@ApiOperation(value="Borrar una orden indicando su ID", response = Orden.class)
 
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
-			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
-			@ApiResponse(code = 500, message = "Error interno del servidor") 
-	})
-	
-	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-		try {
-			ordenBusiness.delete(id);
-			return new ResponseEntity<String>(HttpStatus.OK);
-		} catch (BusinessException e) {
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-		} catch (NotFoundException e) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		}
-	}
-	
 	@ApiOperation(value="Obtener la conciliación de una orden", response = Orden.class)
 
 	@ApiResponses(value = { 
@@ -272,6 +261,15 @@ public class OrdenRestController {
 		
 	}
 	
+	@ApiOperation(value="Obtener la conciliación de una orden por código externo", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = "/conciliacion/ce/{ce}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("ce") String ce) {
 		
@@ -287,6 +285,13 @@ public class OrdenRestController {
 		
 	}
 	
+	@ApiOperation(value="Anular una orden", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PutMapping(value = "/anularOrden", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> pesajeInicial(@RequestParam Long orden) {
@@ -300,6 +305,13 @@ public class OrdenRestController {
 		}
 		
 	}
+	
+	@ApiOperation(value="Cambiar el umbral de temperatura en el cual se activa la alarma", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PutMapping(value = "/cambiarUmbralTemp", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> cambiarUmbralTemperatura(@RequestParam Float temp) {

@@ -5,9 +5,7 @@ let moduloPedidos=angular.module('final-iw3',['ngStorage', 'ngStomp', 'oitozero.
     .constant('URL_WS', '/api/v1/ws')
 
 
-moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $log, $localStorage, pedidosService, wsService, $stomp, SweetAlert, $http){
-
-
+moduloPedidos.controller('pedidosController', function($scope, $rootScope, $timeout, $interval, $localStorage, pedidosService, wsService, $stomp, SweetAlert, $http){
 
     $rootScope.stomp = $stomp;
 
@@ -15,7 +13,6 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
 
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
-
 
     //Inicializo las variables con sus valores por defecto
 
@@ -71,7 +68,6 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
                 $scope.mostrarPedidos = false;
                 $scope.mostrarAlarmas = false;
                 $scope.mostrarConciliacion = true;
-                console.log($scope.mostrarConciliacion);
                 $scope.idConciliacion = idPedido;
                 $scope.dataConc=resp.data;
             },
@@ -258,7 +254,6 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             $scope.data = $scope.originalData.filter(pedido => $scope.adaptarFecha(pedido.fechaIProcesoCarga).includes($scope.adaptarFecha(document.getElementById("date").value)));
         }
         else if ($scope.selectValue == "Anulado") {
-            console.log("Filtrando Anulado " + $scope.filtrarAnulado);
             if($scope.filtrarAnulado == "Anulado")
                 $scope.data = $scope.originalData.filter(pedido => pedido.anulado == true);
             else if($scope.filtrarAnulado == "No anulado")
@@ -278,13 +273,12 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
             function (resp) {
                 if (resp.status === 200) {
                     $scope.cargarPedidos();
-                    console.log("Orden anulada");
                 } else {
                     console.log("Error al anular la orden con id " + nroOrden);
                 }
             },
             function (respErr) {
-                console.log("Error al anular");
+                console.log("Error al anular la orden con id " + nroOrden);
             }
         );
     }
@@ -294,13 +288,48 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         $scope.data = $scope.originalData;
     }
 
+    var theme = document.getElementById('estilo');
+    var imgIcon= document.getElementById('iconP');
+    var imgIconMoon= document.getElementById('moon');
+    var swTheme= document.getElementById('switchTheme');
+
+    let activarModoClaro = function(){
+        theme.setAttribute('href', 'ui/styles/index.css');
+        imgIconMoon.setAttribute('src','ui/moonicon.png');
+        imgIcon.setAttribute('src','ui/iconl.png');
+        swTheme.setAttribute('class','light-button');
+        $localStorage.theme = 'light';
+    }
+
+    let activarModoOscuro = function(){
+        theme.setAttribute('href', 'ui/styles/darktheme.css');
+        imgIconMoon.setAttribute('src','ui/mooniconDark.png');
+        imgIcon.setAttribute('src','ui/icon.png');
+        swTheme.setAttribute('class','dark-button');
+        $localStorage.theme = 'dark';
+    }
+
+    //Verifico que tema usar
+
+    if($localStorage.theme == 'dark')
+        activarModoOscuro();
+
+    $scope.toggleTheme = function() {
+
+        if (theme.getAttribute('href') == 'ui/styles/index.css') {
+            activarModoOscuro();
+        } else {
+            activarModoClaro();
+        }
+    }
+
 });
+
 //Módulo encargado de gestionar la interacción con la API referida a los pedidos
 moduloPedidos.factory('pedidosService',
     function($http, URL_API_BASE) {
         return {
             cargar: function(token) {
-                console.log(URL_API_BASE + "ordenes?xauthtoken="+token)
                 return $http.get(URL_API_BASE + "ordenes?xauthtoken="+token);
             },
             cargarConc: function(idPedido, token) {
@@ -312,10 +341,9 @@ moduloPedidos.factory('pedidosService',
 
 //Módulo encargado de gestionar el Web Socket
 moduloPedidos.factory('wsService',
-    function($rootScope, URL_WS, $timeout, $interval, $log, $localStorage) {
+    function($rootScope, URL_WS, $timeout, $interval, $localStorage) {
 
         var fnConfig = function(stomp, topic, cb) {
-            $log.info("Stomp: suscribiendo a " + topic);
             stomp.subscribe(topic, function(payload, headers, res) {
                 cb(payload, headers, res);
             });
@@ -325,23 +353,16 @@ moduloPedidos.factory('wsService',
 
 
                 stomp.setDebug(function(args) {
-                    $log.log(args);
-                    if(stomp.sock.readyState > 1) {
 
-                        $log.info("Intentando reconexión con WSocket");
+                    if(stomp.sock.readyState > 1) {
                         fnConnect();
                     }
                 });
                 var fnConnect = function() {
 
                     if ($localStorage.logged && $localStorage.userdata) {
-                        $log.log("iniciandoWS");
-
-                        $log.log(URL_WS+"?xauthtoken="+$localStorage.userdata.authtoken);
                         stomp.connect(URL_WS+"?xauthtoken="+$localStorage.userdata.authtoken).then(function(frame) {
-                            console.log("Stomp: conectado a " + URL_WS);
                             fnConfig(stomp, topic, cb);
-                            //document.getElementById('seleccionarFiltro').options[1].selected = 'selected';
                         });
                     } else {
                         console.log("No existen credenciales para presentar en WS")
