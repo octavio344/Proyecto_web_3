@@ -227,27 +227,7 @@ public class OrdenRestController {
 		}
 		
 	}
-	
-	@ApiOperation(value="Borrar una orden indicando su ID", response = Orden.class)
 
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Operación exitosa"),
-			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
-			@ApiResponse(code = 500, message = "Error interno del servidor") 
-	})
-	
-	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-		try {
-			ordenBusiness.delete(id);
-			return new ResponseEntity<String>(HttpStatus.OK);
-		} catch (BusinessException e) {
-			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-		} catch (NotFoundException e) {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
-		}
-	}
-	
 	@ApiOperation(value="Obtener la conciliación de una orden", response = Orden.class)
 
 	@ApiResponses(value = { 

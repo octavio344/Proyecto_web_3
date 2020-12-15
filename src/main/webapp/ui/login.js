@@ -5,9 +5,13 @@ let moduloLogin=angular.module('final-iw3',['ngStorage', 'oitozero.ngSweetAlert'
     .constant('URL_BASE', 'http://localhost:8080/')
     .constant('URL_WS', '/api/v1/ws')
 
-moduloLogin.controller('loginController', function($scope, $rootScope, $localStorage, $http, $log, SweetAlert){
+moduloLogin.controller('loginController', function($scope, $localStorage, $http){
 
+    //Si se llegó al login, me aseguro que se borren los datos del localstorage ya que no hay nadie logueado
+    delete $localStorage.userdata;
+    $localStorage.logged=false;
 
+    //Valido cuando se presiona el botón para iniciar sesión
     $scope.validar = function (){
       if($scope.nombreUsuario.length>=4 && $scope.claveUsuario.length>=2){
          let user={name:$scope.nombreUsuario,password:$scope.claveUsuario};
@@ -17,7 +21,7 @@ moduloLogin.controller('loginController', function($scope, $rootScope, $localSto
               url: 'http://localhost:8080/login-user?username='+user.name+'&password='+user.password,
               headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
           };
-          console.log('Por loguearse');
+
           let login = function () {
               $http(req).then(
                   function(resp){
@@ -27,8 +31,6 @@ moduloLogin.controller('loginController', function($scope, $rootScope, $localSto
                           $localStorage.logged=true;
                           window.location.replace("http://localhost:8080");
                       }else{
-                          delete $localStorage.userdata;
-                          $localStorage.logged=false;
                           console.log("No se pudo loguear.");
                           alert("Los datos ingresados son incorrectos.");
                       }

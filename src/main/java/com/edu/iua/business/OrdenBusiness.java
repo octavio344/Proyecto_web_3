@@ -83,18 +83,6 @@ public class OrdenBusiness implements IOrdenBusiness {
 	}
 
 	@Override
-	public void delete(Long id) throws BusinessException, NotFoundException {
-		try {		
-			ordenDAO.deleteById(id);
-			}catch (EmptyResultDataAccessException e1) {
-				throw new NotFoundException("No se encuentra la orden con el identificador:" + id);
-				}
-			catch(Exception e) {
-				throw new BusinessException(e);
-			}
-	}
-
-	@Override
 	public Orden add(Orden o) throws BusinessException,IllegalArgumentException {
 		try {
 			Optional<Chofer> opChofer;
@@ -164,7 +152,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 				throw new NotFoundException("No se encuentra la orden con el codigo externo =" + o.getCodigoExterno());
 			else throw new NotFoundException("No se encuentra la orden con el ID = " + o.getNroOrden());
 		}else {
-			Orden or = opOrden.get();
+			Orden or = opOrden.get();			
 			if(or.getEstado()==1) {
 				if(o.getPesajeInicial()!= null || o.getPesajeInicial()>0) {
 					or.setPesajeInicial(o.getPesajeInicial());
@@ -177,7 +165,6 @@ public class OrdenBusiness implements IOrdenBusiness {
 				return or;
 				
 			}else {
-				
 				throw new WrongStateException("La orden debe estar en estado 1 para utilizar este endpoint.");
 			}
 		}

@@ -14,8 +14,6 @@ public interface IOrdenBusiness {
 	
 	Orden findById(Long id)throws NotFoundException, BusinessException;
 	
-	void delete(Long id) throws BusinessException, NotFoundException;
-	
 	Orden add(Orden o) throws BusinessException, IllegalArgumentException;
 	
 	Orden setearPesajeInicial(Orden o) throws BusinessException, NotFoundException,WrongStateException;
