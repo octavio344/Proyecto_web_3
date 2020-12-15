@@ -17,7 +17,7 @@
 								"id": "5e5815fd-fc5f-4c32-aab5-4803d6e7e6ac",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);\r",
-									"pm.globals.set(\"token\", jsonData.token);"
+									"pm.globals.set(\"token\", jsonData.authtoken);"
 								],
 								"type": "text/javascript"
 							}
