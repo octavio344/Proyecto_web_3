@@ -34,4 +34,8 @@ public interface IOrdenBusiness {
 	
 	Orden anularOrden(Long id) throws BusinessException,NotFoundException;
 	
+	public void pushOrderData();
+	
+	public void cambiarUmbralTemperatura(Float temp);
+	
 }

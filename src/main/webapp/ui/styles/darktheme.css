@@ -3,31 +3,33 @@ body{
     height: 100%;
     justify-content: center;
     align-content: center;
+    color: #c9d1d9;
+    background-color: #06090f;
 }
 
 #bodyCu{
     padding: 0px 20px;
 }
 
-header li{
-    display: inline;
+#navbarSupportedContent{
+    background-color: #161b22;
 }
 
-#pedidos .table td, #pedidos .table th, #alarmas .table th, #alarmas .table td{
-    text-align: center;
-}
-#seccion-filtrar{
-    display: flex;
-    flex-wrap: wrap;
+.navbar-custom{
+    width: 100%;
+    background-color: #161b22;
+    color: #c9d1d9;
 }
 a{
-    color: #0d1117;
+    color: #c9d1d9;
 }
 
-.navbar{
-    width: 100%;
-    background-color: gainsboro!important;
-    color: #0d1117!important;
+.custom-table{
+    background-image: linear-gradient(180deg,transparent 60%,#0d1117),linear-gradient(70deg,rgba(56,139,253,0.1) 32%,rgba(46,160,67,0.1));
+    color: #c9d1d9;
+    border-radius: 15px!important;
+    background-color: #0d1117;
+    border-radius: 4.5px;
 }
 
 .dark-button{
@@ -40,10 +42,39 @@ a{
 .light-button{
     background-color: whitesmoke;
     margin: 0.5%;
-    border: 1px solid #0d1117;
-    border-radius: 4.5px;
+    border: 1px solid rgba(56,139,253,0.1);
 }
 
+p{
+    vertical-align: middle;
+    text-align: center;
+    margin-block-end: 0px;
+}
+.navbar-brand{
+    margin-left: 10px;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    color: #388bfd;
+  }
+.table th{
+    padding-top: 0.5%;
+}
+
+header li{
+    display: inline;
+}
+#pedidos .table td, #pedidos .table th, #alarmas .table th, #alarmas .table td{
+    text-align: right;
+    vertical-align: middle;
+}
+
+.table td,.table th{
+    border-top: transparent;  
+}
+
+.table th{
+    border-bottom: 2px solid #30363d!important;
+}
 #seleccionarFiltro{
     max-width: 8%;
     margin-left: 20px;
@@ -58,7 +89,10 @@ a{
     margin-right: 20px;
 }
 
-
+#seccion-filtrar{
+    display: flex;
+    flex-wrap: wrap;
+}
 .anulado{
     color: #b00;
 }
@@ -66,6 +100,7 @@ a{
 #seccion-filtrar button{
     margin-right:20px;
 }
+
 
 .Label--large {
     padding-right: 10px;

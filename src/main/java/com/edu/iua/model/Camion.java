@@ -5,8 +5,12 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -41,13 +45,15 @@ public class Camion implements Serializable {
 	@ApiModelProperty(notes = "Descripción del camión, ingresada manualmente", required = false)
 	private String descripcion;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinTable(name = "camiones_cisternas",
 	        joinColumns = @JoinColumn(name = "id_camion", referencedColumnName="idCamion"),
 	        inverseJoinColumns = @JoinColumn(name = "id_cisterna", referencedColumnName="idCisterna"))
 	private List<Cisterna> cisternadoList;
 	
-	@OneToMany(targetEntity=Orden.class, mappedBy="camion", fetch = FetchType.LAZY)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany(targetEntity=Orden.class, mappedBy="camion")
 	@JsonBackReference
 	@ApiModelProperty(notes = "Lista de todas las órdenes en las que se utilizó el camión", required = false)
 	private List<Orden> ordenList;

@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -60,6 +61,7 @@ public class Orden {
 	@ApiModelProperty(notes = "Lista de todas las alarmas que se activaron durante esta orden", required = false)
 	private List<Alarma> alarmasList;
 	
+	@JsonIgnore
 	@OneToMany(targetEntity=DetalleOrden.class, mappedBy="ordenAsociada", fetch = FetchType.LAZY)
 	@ApiModelProperty(notes = "Lista de detalles asociados al proceso de carga del camión.", required = true)
 	private List<DetalleOrden> detalleOrdenList;
@@ -113,6 +115,9 @@ public class Orden {
 	@ApiModelProperty(notes = "Clave de identificación del sistema externo", required = true)
 	private String psswd;
 
+	@ApiModelProperty(notes = "Bandera que indica si ya hay una alarma encendida, para no enviar multiples alarmas", required = false)
+	private boolean tieneAlarmaEncendida = false;
+	
 	public Long getNroOrden() {
 		return nroOrden;
 	}
@@ -303,6 +308,14 @@ public class Orden {
 
 	public void setAnulado(Boolean anulado) {
 		this.anulado = anulado;
+	}
+
+	public boolean isTieneAlarmaEncendida() {
+		return tieneAlarmaEncendida;
+	}
+
+	public void setTieneAlarmaEncendida(boolean tieneAlarmaEncendida) {
+		this.tieneAlarmaEncendida = tieneAlarmaEncendida;
 	}
 
 	public Orden(Long nroOrden, Camion camion, Chofer chofer, Cliente cliente, Producto producto, Date fechaRecepcion,

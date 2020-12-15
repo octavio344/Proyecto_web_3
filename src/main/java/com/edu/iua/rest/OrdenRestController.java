@@ -165,6 +165,7 @@ public class OrdenRestController {
 			ordenBusiness.updateDetalle(orden);	
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (BusinessException e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (NotFoundException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
@@ -298,6 +299,16 @@ public class OrdenRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 		
+	}
+	
+	@PutMapping(value = "/cambiarUmbralTemp", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> cambiarUmbralTemperatura(@RequestParam Float temp) {
+		try {
+			ordenBusiness.cambiarUmbralTemperatura(temp);
+			return new ResponseEntity<String>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	

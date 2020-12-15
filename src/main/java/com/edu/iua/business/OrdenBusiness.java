@@ -1,13 +1,16 @@
 package com.edu.iua.business;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.edu.iua.business.exception.BusinessException;
@@ -50,7 +53,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 	@Autowired
 	private CamionRepository camionDAO;
 	
-	private int temperaturaMaxima = 80;
+	private float temperaturaMaxima = 80;
 	
 	@Override
 	public List<Orden> listAll() throws BusinessException {
@@ -233,16 +236,23 @@ public class OrdenBusiness implements IOrdenBusiness {
 				or.setFechaUltimoAlmacenamiento(o.getFechaUltimoAlmacenamiento());
 			}
 			
-			
-			
-			if(or.getMasaAcumulada()> or.getPreset()) {
-				or.setMasaAcumulada(or.getPreset());
-				or.setEstado(3);
-				or.setFechaFProcesoCarga(new Date());
-			}
-			
-			if (or.getTemperatura()>temperaturaMaxima) {
-				generaEvento(or, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
+			//Si no tiene la alarma encendida, verifico si hay que generar alguna alarma
+			//Si hay una alarma encendida no entro ya que no se pueden generar dos alarmas en simultaneo
+			if(!or.isTieneAlarmaEncendida()) {
+				if(or.getMasaAcumulada()> (or.getPreset()*0.9)) {
+					generaEvento(or, OrdenEvent.Tipo.CAPACIDAD_NOVENTA_PORCIENTO);
+					or.setTieneAlarmaEncendida(true);
+				}
+				
+				if(or.getMasaAcumulada()> or.getPreset()) {
+					generaEvento(or, OrdenEvent.Tipo.PRESET_EXCEDIDO);
+					or.setTieneAlarmaEncendida(true);
+				}
+				
+				if (or.getTemperatura()>temperaturaMaxima) {
+					generaEvento(or, OrdenEvent.Tipo.TEMPERATURA_MAXIMA);
+					or.setTieneAlarmaEncendida(true);
+				}
 			}
 			
 			ordenDAO.save(or);
@@ -414,5 +424,23 @@ public class OrdenBusiness implements IOrdenBusiness {
 		
 		return ordenDAO.save(or);
 	}
+	
+	@Autowired
+	private SimpMessagingTemplate wSock;
+
+	@Override
+	public void pushOrderData() {
+		try {
+			wSock.convertAndSend(Constantes.TOPIC_SEND_WEBSOCKET_GRAPH, ordenDAO.findAll());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void cambiarUmbralTemperatura(Float temp) {
+		temperaturaMaxima = temp;
+	}
+
 
 }
