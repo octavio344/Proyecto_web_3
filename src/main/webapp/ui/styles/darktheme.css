@@ -75,19 +75,20 @@ header li{
     flex-wrap: wrap;
 }
 
-#seccion-filtrar select{
+#seleccionarFiltro{
     max-width: 8%;
     margin-left: 20px;
     border-bottom-right-radius: 0px;
     border-top-right-radius: 0px;
 }
 
-#seccion-filtrar input {
+#seccion-filtrar input, #seleccionarAnulado {
     max-width: 8%;
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
     margin-right: 20px;
 }
+
 
 #seccion-filtrar button{
     margin-right:20px;
