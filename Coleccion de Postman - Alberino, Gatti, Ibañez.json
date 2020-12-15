@@ -1,10 +1,149 @@
 {
 	"info": {
-		"_postman_id": "67030896-3981-4cb6-b5be-54a45c52ec65",
+		"_postman_id": "07eeaa7d-282d-4bd3-b4c2-3093f15722fa",
 		"name": "Proyecto Integrador Web 3",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5e5815fd-fc5f-4c32-aab5-4803d6e7e6ac",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.globals.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/login-user?username=pepe12&password=pepe1234",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login-user"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "pepe12"
+								},
+								{
+									"key": "password",
+									"value": "pepe1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4dcfa1a0-20ad-4480-a922-3ffd0e68576e",
+								"exec": [
+									"pm.globals.set(\"token\", responseBody);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/login-token?username=pepe12&password=pepe1234",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login-token"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "pepe12"
+								},
+								{
+									"key": "password",
+									"value": "pepe1234"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth-info?token={{token}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth-info"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/logout-token?token={{token}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"logout-token"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
 		{
 			"name": "POSTs y PUTs para los Endpoints",
 			"item": [
@@ -15,7 +154,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtF\",\n    \"camion\":{\"codigoExterno\":\"c3svZYkLJF\"},\n    \"chofer\":{\"codigoExterno\":\"zdgy2xpHlZ\"},\n    \"cliente\":{\"codigoExterno\":\"rSDQMmUYaL\"},\n    \"producto\":{\"codigoExterno\":\"6A7iBCfLQE\"},\n    \"preset\":550,\n    \"fechaRecepcionPesajeI\":\"2020-11-13T18:56:56.447+00:00\"\n}",
+							"raw": "{\n    \"codigoExterno\":\"{{codigoExterno}}\",\n    \"camion\":{\"codigoExterno\":\"c3svZYkLJF\"},\n    \"chofer\":{\"codigoExterno\":\"zdgy2xpHlZ\"},\n    \"cliente\":{\"codigoExterno\":\"rSDQMmUYaL\"},\n    \"producto\":{\"codigoExterno\":\"6A7iBCfLQ7\"},\n    \"anulado\": 0,\n    \"preset\":550,\n    \"fechaRecepcionPesajeI\":\"2020-11-13T18:56:56.447+00:00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,7 +162,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/crear",
+							"raw": "http://localhost:8080/api/v1/ordenes/crear?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -34,6 +173,12 @@
 								"v1",
 								"ordenes",
 								"crear"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -46,7 +191,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtF\",\n    \"camion\":{\"idCamion\":\"3\"},\n    \"chofer\":{\"idChofer\":\"1\"},\n    \"cliente\":{\"idCliente\":\"1\"},\n    \"producto\":{\"id\":\"1\"},\n    \"preset\":550,\n    \"fechaRecepcionPesajeI\":\"2020-11-13T18:56:56.447+00:00\"\n}",
+							"raw": "{\n    \"codigoExterno\":\"{{codigoExterno}}\",\n    \"camion\":{\"idCamion\":\"3\"},\n    \"chofer\":{\"idChofer\":\"1\"},\n    \"cliente\":{\"idCliente\":\"1\"},\n    \"producto\":{\"id\":\"1\"},\n    \"preset\":550,\n    \"fechaRecepcionPesajeI\":\"2020-11-13T18:56:56.447+00:00\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -54,7 +199,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/crear",
+							"raw": "http://localhost:8080/api/v1/ordenes/crear?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -65,6 +210,12 @@
 								"v1",
 								"ordenes",
 								"crear"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -77,7 +228,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\",\n    \"pesajeInicial\":\"1200\"\n}",
+							"raw": "{\n    \"codigoExterno\":\"{{codigoExterno}}\",\n    \"pesajeInicial\":\"1200\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,7 +236,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/pesajeInicial",
+							"raw": "http://localhost:8080/api/v1/ordenes/pesajeInicial?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -96,6 +247,12 @@
 								"v1",
 								"ordenes",
 								"pesajeInicial"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -108,7 +265,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\",\n    \"masaAcumulada\":270,\n    \"densidad\":0.8,\n    \"temperatura\":38,\n    \"caudal\":25\n}",
+							"raw": "{\n    \"codigoExterno\":\"{{codigoExterno}}\",\n    \"masaAcumulada\":510,\n    \"densidad\":0.8,\n    \"temperatura\":38,\n    \"caudal\":25\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -116,7 +273,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/actualizarDetalle",
+							"raw": "http://localhost:8080/api/v1/ordenes/actualizarDetalle?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -127,6 +284,12 @@
 								"v1",
 								"ordenes",
 								"actualizarDetalle"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -139,7 +302,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\"\n}",
+							"raw": "{\n    \"codigoExterno\":\"{{codigoExterno}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -147,7 +310,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/cerrar",
+							"raw": "http://localhost:8080/api/v1/ordenes/cerrar?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -158,6 +321,12 @@
 								"v1",
 								"ordenes",
 								"cerrar"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -170,7 +339,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"d6PbHPmKtg\",\n    \"pesajeFinal\":1500\n}",
+							"raw": "{\n    \"codigoExterno\":\"{{codigoExterno}}\",\n    \"pesajeFinal\":1500\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -178,7 +347,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/pesajeFinal",
+							"raw": "http://localhost:8080/api/v1/ordenes/pesajeFinal?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -189,6 +358,53 @@
 								"v1",
 								"ordenes",
 								"pesajeFinal"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Anular orden",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/ordenes/anularOrden?token={{token}}&orden=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"ordenes",
+								"anularOrden"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "orden",
+									"value": "2"
+								}
 							]
 						}
 					},
@@ -199,7 +415,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "4dd49a72-7251-4ed9-aacf-a520d9350278",
+						"id": "f786f661-044d-411e-a4a7-6db1a8c90d3a",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -209,7 +425,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4e50f4e5-2da8-4080-9658-d16a61ddcd4a",
+						"id": "f8258fd2-4417-41b4-9f40-0583a1614078",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -228,7 +444,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes",
+							"raw": "http://localhost:8080/api/v1/ordenes?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -238,6 +454,12 @@
 								"api",
 								"v1",
 								"ordenes"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -249,7 +471,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/1",
+							"raw": "http://localhost:8080/api/v1/ordenes/1?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -260,6 +482,12 @@
 								"v1",
 								"ordenes",
 								"1"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -271,7 +499,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/ce/d6PbHPmKtg",
+							"raw": "http://localhost:8080/api/v1/ordenes/ce/d6PbHPmKtg?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -283,6 +511,12 @@
 								"ordenes",
 								"ce",
 								"d6PbHPmKtg"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -306,7 +540,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/conciliacion/ce/d6PbHPmKtg",
+							"raw": "http://localhost:8080/api/v1/ordenes/conciliacion/ce/d6PbHPmKtg?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -319,6 +553,12 @@
 								"conciliacion",
 								"ce",
 								"d6PbHPmKtg"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -342,7 +582,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/ordenes/conciliacion/id/1",
+							"raw": "http://localhost:8080/api/v1/ordenes/conciliacion/id/1?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -355,6 +595,12 @@
 								"conciliacion",
 								"id",
 								"1"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -370,7 +616,14 @@
 					"name": "Insertar un camión",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"patente\":\"FLQ324\",\n    \"codigoExterno\":\"c3svZYkLJF\",\n    \"descripcion\":\"Camion Ford\",\n    \"cisternado\":[{\"codigoExterno\":\"fyHGuO7XBh\"}, {\"codigoExterno\":\"LgsSbx1UJd\"}]\n}",
@@ -381,7 +634,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/camiones",
+							"raw": "http://localhost:8080/api/v1/camiones?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -391,6 +644,12 @@
 								"api",
 								"v1",
 								"camiones"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -411,7 +670,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/choferes",
+							"raw": "http://localhost:8080/api/v1/choferes?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -421,6 +680,12 @@
 								"api",
 								"v1",
 								"choferes"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -441,7 +706,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/clientes",
+							"raw": "http://localhost:8080/api/v1/clientes?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -451,6 +716,12 @@
 								"api",
 								"v1",
 								"clientes"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -471,7 +742,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/productos",
+							"raw": "http://localhost:8080/api/v1/productos?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -481,6 +752,12 @@
 								"api",
 								"v1",
 								"productos"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -493,7 +770,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigoExterno\":\"fyHGuO7XBh\",\n    \"capacidad\":500\n}",
+							"raw": "{\n    \"codigoExterno\":\"LgsSbx1UJd\",\n    \"capacidad\":500\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -501,7 +778,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/cisternas",
+							"raw": "http://localhost:8080/api/v1/cisternas?token={{token}}",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -511,6 +788,12 @@
 								"api",
 								"v1",
 								"cisternas"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
 							]
 						}
 					},
@@ -522,7 +805,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "a57e38aa-173e-4c61-ba65-c975cff16d01",
+						"id": "1445c714-8ad0-40a9-8432-9103e3c98697",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -532,7 +815,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "db45256a-ae60-4fca-9f6d-b2bdc3479563",
+						"id": "8c6340a7-ee33-4c1a-9bb6-0a255e8f9199",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -554,7 +837,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/camiones",
+									"raw": "http://localhost:8080/api/v1/camiones?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -564,6 +847,12 @@
 										"api",
 										"v1",
 										"camiones"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -575,7 +864,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/choferes",
+									"raw": "http://localhost:8080/api/v1/choferes?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -585,6 +874,12 @@
 										"api",
 										"v1",
 										"choferes"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -608,7 +903,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/v1/cisternas",
+									"raw": "http://localhost:8080/api/v1/cisternas?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -618,6 +913,12 @@
 										"api",
 										"v1",
 										"cisternas"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -629,7 +930,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/clientes",
+									"raw": "http://localhost:8080/api/v1/clientes?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -639,6 +940,12 @@
 										"api",
 										"v1",
 										"clientes"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -662,7 +969,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/v1/productos",
+									"raw": "http://localhost:8080/api/v1/productos?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -672,6 +979,12 @@
 										"api",
 										"v1",
 										"productos"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -690,7 +1003,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/camiones/1",
+									"raw": "http://localhost:8080/api/v1/camiones/1?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -701,6 +1014,12 @@
 										"v1",
 										"camiones",
 										"1"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -712,7 +1031,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/choferes/1",
+									"raw": "http://localhost:8080/api/v1/choferes/1?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -723,6 +1042,12 @@
 										"v1",
 										"choferes",
 										"1"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -746,7 +1071,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/v1/cisternas/1",
+									"raw": "http://localhost:8080/api/v1/cisternas/1?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -757,6 +1082,12 @@
 										"v1",
 										"cisternas",
 										"1"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -768,7 +1099,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/clientes/1",
+									"raw": "http://localhost:8080/api/v1/clientes/1?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -779,6 +1110,12 @@
 										"v1",
 										"clientes",
 										"1"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -790,7 +1127,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/productos/1",
+									"raw": "http://localhost:8080/api/v1/productos/1?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -801,6 +1138,12 @@
 										"v1",
 										"productos",
 										"1"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -819,7 +1162,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/camiones/ce/c3svZYkLJF",
+									"raw": "http://localhost:8080/api/v1/camiones/ce/c3svZYkLJF?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -831,6 +1174,12 @@
 										"camiones",
 										"ce",
 										"c3svZYkLJF"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -842,7 +1191,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/choferes/ce/zdgy2xpHlZ",
+									"raw": "http://localhost:8080/api/v1/choferes/ce/zdgy2xpHlZ?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -854,6 +1203,12 @@
 										"choferes",
 										"ce",
 										"zdgy2xpHlZ"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -865,7 +1220,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/clientes/ce/rSDQMmUYaL",
+									"raw": "http://localhost:8080/api/v1/clientes/ce/rSDQMmUYaL?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -877,6 +1232,12 @@
 										"clientes",
 										"ce",
 										"rSDQMmUYaL"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -888,7 +1249,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:8080/api/v1/productos/ce/6A7iBCfLQE",
+									"raw": "http://localhost:8080/api/v1/productos/ce/6A7iBCfLQE?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -900,6 +1261,12 @@
 										"productos",
 										"ce",
 										"6A7iBCfLQE"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -923,7 +1290,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/api/v1/cisternas/ce/fyHGuO7XBh",
+									"raw": "http://localhost:8080/api/v1/cisternas/ce/fyHGuO7XBh?token={{token}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -935,6 +1302,12 @@
 										"cisternas",
 										"ce",
 										"fyHGuO7XBh"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{token}}"
+										}
 									]
 								}
 							},
@@ -949,7 +1322,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "3c58aa2e-4868-4b5d-a7fe-5d8a072112f2",
+						"id": "598bf8ef-d16c-4217-86ba-3414729eea09",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -959,7 +1332,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "358c9977-8cf9-4c2e-943b-d1ad585bec52",
+						"id": "d506cfb2-e96d-4a26-b6cf-6a15415791fe",
 						"type": "text/javascript",
 						"exec": [
 							""
