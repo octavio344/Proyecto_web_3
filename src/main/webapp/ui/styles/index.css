@@ -5,19 +5,43 @@ body{
     align-content: center;
 }
 
-#maindiv{
+#bodyCu{
     padding: 0px 20px;
 }
 
 header li{
     display: inline;
 }
+
 #pedidos .table td, #pedidos .table th, #alarmas .table th, #alarmas .table td{
     text-align: center;
 }
 #seccion-filtrar{
     display: flex;
     flex-wrap: wrap;
+}
+a{
+    color: #0d1117;
+}
+
+.navbar{
+    width: 100%;
+    background-color: gainsboro!important;
+    color: #0d1117!important;
+}
+
+.dark-button{
+    background-color: #0d1117;
+    margin: 0.5%;
+    border: 1px solid #c9d1d9;
+    border-radius: 4.5px;
+}
+
+.light-button{
+    background-color: whitesmoke;
+    margin: 0.5%;
+    border: 1px solid #0d1117;
+    border-radius: 4.5px;
 }
 
 #seccion-filtrar select{

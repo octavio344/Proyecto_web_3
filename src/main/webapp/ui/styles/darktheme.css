@@ -1,0 +1,90 @@
+body{
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-content: center;
+    color: #c9d1d9;
+    background-color: #06090f;
+}
+
+#bodyCu{
+    padding: 0px 20px;
+}
+
+#navbarSupportedContent{
+    background-color: #161b22;
+}
+
+.navbar-custom{
+    width: 100%;
+    background-color: #161b22;
+    color: #c9d1d9;
+}
+a{
+    color: #c9d1d9;
+}
+
+.custom-table{
+    background-image: linear-gradient(180deg,transparent 60%,#0d1117),linear-gradient(70deg,rgba(56,139,253,0.1) 32%,rgba(46,160,67,0.1));
+    color: #c9d1d9;
+    border-radius: 15px!important;
+    background-color: #0d1117;
+    border-radius: 4.5px;
+}
+
+.dark-button{
+    background-color: #0d1117;
+    margin: 0.5%;
+    border: 1px solid #c9d1d9;
+    border-radius: 4.5px;
+}
+
+.light-button{
+    background-color: whitesmoke;
+    margin: 0.5%;
+    border: 1px solid rgba(56,139,253,0.1);
+}
+
+.navbar-brand{
+    margin-left: 10px;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    color: #388bfd;
+  }
+.table th{
+    padding-top: 0.5%;
+}
+
+header li{
+    display: inline;
+}
+#pedidos .table td, #pedidos .table th, #alarmas .table th, #alarmas .table td{
+    text-align: right;
+    vertical-align: middle;
+}
+
+.table td,.table th{
+    border-top: transparent;  
+}
+
+.table th{
+    border-bottom: 2px solid #30363d!important;
+}
+#seccion-filtrar{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#seccion-filtrar select{
+    max-width: 8%;
+    margin-left: 20px;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+#seccion-filtrar input {
+    max-width: 8%;
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+    margin-right: 20px;
+}
