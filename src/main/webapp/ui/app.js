@@ -14,10 +14,7 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
     if($localStorage.logged!=true)
         window.location.replace("/login.html");
 
-    //Verifico que tema usar
 
-    if($localStorage.theme == 'dark')
-        activarModoOscuro();
 
     //Inicializo las variables con sus valores por defecto
 
@@ -313,6 +310,11 @@ moduloPedidos.controller('pedidosController', function($scope, $rootScope, $time
         swTheme.setAttribute('class','dark-button');
         $localStorage.theme = 'dark';
     }
+
+    //Verifico que tema usar
+
+    if($localStorage.theme == 'dark')
+        activarModoOscuro();
 
     $scope.toggleTheme = function() {
 
