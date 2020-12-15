@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,41 +15,27 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import com.edu.iua.SpringFoxConfig;
 import com.edu.iua.authtoken.AuthToken;
-import com.edu.iua.business.CamionBusiness;
-import com.edu.iua.business.UserBusiness;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
 import com.edu.iua.model.Camion;
 import com.edu.iua.model.Cisterna;
 import com.edu.iua.model.Rol;
 import com.edu.iua.model.User;
-import com.edu.iua.model.persistence.CamionRepository;
 import com.edu.iua.rest.CamionesRestController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
@@ -68,7 +53,8 @@ public class CamionRestControllerTest {
 	    private static Camion camion;
 	    private static Cisterna cisterna;
 	    
-	    @BeforeClass
+	    @SuppressWarnings("deprecation")
+		@BeforeClass
 	    public static void setup() throws NotFoundException, BusinessException {
 	    	
 	    	cisterna= new Cisterna();
@@ -139,7 +125,8 @@ public class CamionRestControllerTest {
 	    	
 	    }
 	    
-	    private String getToken() {
+	    @SuppressWarnings("deprecation")
+		private String getToken() {
 	    	Rol admin = new Rol(1, "Admin", "Administrador del sistema");
 	    	User u = new User(new Long(1), "Alan", "Alberino", "alanalberino@gmail.com", "123", "alanalberino", admin, true);
 	    	u.setRoles(new HashSet<Rol>());
@@ -148,7 +135,6 @@ public class CamionRestControllerTest {
 	    	UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(u, null,
 					u.getAuthorities());
 	    	
-	    	System.out.println("Autoridades = "+u.getAuthorities());
 	    	
 	    	SecurityContextHolder.getContext().setAuthentication(auth);
 	    	
@@ -160,7 +146,7 @@ public class CamionRestControllerTest {
 			String token = newToken.encodeCookieValue();
 	    	token = token.replace("[", "").replace("]", "");
 	    	
-	    	System.out.println("Token = "+token);
+	    	
 	    	
 	    	return token;
 	    }
