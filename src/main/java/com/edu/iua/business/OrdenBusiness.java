@@ -293,7 +293,7 @@ public class OrdenBusiness implements IOrdenBusiness {
 
 	@Override
 	public ConciliacionDTO finalizar(Orden o) throws BusinessException, NotFoundException, WrongStateException {
-		// TODO Auto-generated method stub
+		
 
 		Optional<Orden> op;
 		if(o.getCodigoExterno()!=null)	
