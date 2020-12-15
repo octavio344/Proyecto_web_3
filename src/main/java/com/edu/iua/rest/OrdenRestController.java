@@ -261,6 +261,15 @@ public class OrdenRestController {
 		
 	}
 	
+	@ApiOperation(value="Obtener la conciliación de una orden por código externo", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
+			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
+	
 	@GetMapping(value = "/conciliacion/ce/{ce}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ConciliacionDTO> getConciliacion(@PathVariable("ce") String ce) {
 		
@@ -276,6 +285,13 @@ public class OrdenRestController {
 		
 	}
 	
+	@ApiOperation(value="Anular una orden", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 404, message = "No se encuentra la orden"), 
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PutMapping(value = "/anularOrden", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> pesajeInicial(@RequestParam Long orden) {
@@ -289,6 +305,13 @@ public class OrdenRestController {
 		}
 		
 	}
+	
+	@ApiOperation(value="Cambiar el umbral de temperatura en el cual se activa la alarma", response = Orden.class)
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Operación exitosa"),
+			@ApiResponse(code = 500, message = "Error interno del servidor") 
+	})
 	
 	@PutMapping(value = "/cambiarUmbralTemp", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> cambiarUmbralTemperatura(@RequestParam Float temp) {

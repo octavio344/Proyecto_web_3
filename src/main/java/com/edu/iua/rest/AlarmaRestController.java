@@ -39,7 +39,7 @@ private Logger log = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private IAlarmaBusiness alarmaBusiness;
 	
-	@ApiOperation(value="Obtener un alarma mediante su ID", response = Alarma.class)
+	@ApiOperation(value="Obtener una alarma mediante su ID", response = Alarma.class)
 
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Operación exitosa"),
@@ -59,7 +59,7 @@ private Logger log = LoggerFactory.getLogger(this.getClass());
 		}
 	}
 	
-	@ApiOperation(value="Obtener todos los alarmaes almacenados en la base de datos", response = Alarma.class)
+	@ApiOperation(value="Obtener todas los alarmas almacenadas en la base de datos", response = Alarma.class)
 
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Operación exitosa"),
@@ -76,10 +76,10 @@ private Logger log = LoggerFactory.getLogger(this.getClass());
 		}
 	}
 	
-	@ApiOperation(value="Guardar un nuevo alarma en la base de datos", response = Alarma.class)
+	@ApiOperation(value="Guardar una nueva alarma en la base de datos", response = Alarma.class)
 
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Alarma creado exitosamente"),
+			@ApiResponse(code = 201, message = "Alarma creada exitosamente"),
 			@ApiResponse(code = 400, message = "Algun valor ingresado es incorrecto"),
 			@ApiResponse(code = 500, message = "Error interno del servidor") 
 	})
@@ -99,7 +99,7 @@ private Logger log = LoggerFactory.getLogger(this.getClass());
 		}
 	}
 	
-	@ApiOperation(value="Actualizar los datos de un alarma", response = Alarma.class)
+	@ApiOperation(value="Actualizar los datos de una alarma", response = Alarma.class)
 
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Operación exitosa"),
@@ -118,7 +118,7 @@ private Logger log = LoggerFactory.getLogger(this.getClass());
 		}
 	}
 	
-	@ApiOperation(value="Borrar un alarma indicando su ID", response = Alarma.class)
+	@ApiOperation(value="Borrar una alarma indicando su ID", response = Alarma.class)
 
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Operación exitosa"),
