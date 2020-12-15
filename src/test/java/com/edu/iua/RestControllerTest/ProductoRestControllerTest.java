@@ -1,5 +1,14 @@
 package com.edu.iua.RestControllerTest;
 
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.HashSet;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,105 +29,74 @@ import com.edu.iua.SpringFoxConfig;
 import com.edu.iua.authtoken.AuthToken;
 import com.edu.iua.business.exception.BusinessException;
 import com.edu.iua.business.exception.NotFoundException;
-import com.edu.iua.model.Camion;
-import com.edu.iua.model.Cisterna;
+import com.edu.iua.model.Producto;
 import com.edu.iua.model.Rol;
 import com.edu.iua.model.User;
 import com.edu.iua.rest.CamionesRestController;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import static org.mockito.Mockito.when;
-import static org.hamcrest.Matchers.*;
-
+import com.edu.iua.rest.ProductoRestController;
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
 @WebMvcTest(CamionesRestController.class)
 @ContextConfiguration(classes = { SpringFoxConfig.class })
-public class CamionRestControllerTest {
-		
+
+public class ProductoRestControllerTest {
+
 	   
 	   	@Autowired
 		private MockMvc mvc;
 	   
 		@MockBean
-		private CamionesRestController camionMock; 
+		private ProductoRestController productoMock;
+
 	   
-	    private static Camion camion;
-	    private static Cisterna cisterna;
+	    private static Producto producto;
 	    
 	    @BeforeClass
 	    public static void setup() throws NotFoundException, BusinessException {
 	    	
-	    	cisterna= new Cisterna();
-	    	cisterna.setCodigoExterno("fyHGuO7XBh");
-	    	cisterna.setCapacidad( (double) 500);
-	    	List<Cisterna> cisternas = new ArrayList<Cisterna>();
-	        cisternas.add(cisterna);
-	    	camion= new Camion();
-	    	camion.setIdCamion(new Long(1));
-	    	camion.setPatente("AAA000");
-	    	camion.setCodigoExterno("c3svZYkLJF");
-	    	camion.setDescripcion("Camion Ford");
-	    	camion.setCisternado(cisternas);
+	    	producto= new Producto();
+	    	producto.setCodigoExterno("c3svZYkLJF");
+	    	producto.setId(new Long(1));
+	    	producto.setNombre("Gas Butano");
+	    	producto.setDescripcion("Gas Butano para llenado de tanques a domicilio.");
+	    	producto.setPrecio((long)1000);
 	    	
 	    }
 	  
-	    @Test
-	    public void testListSuccess() throws BusinessException, Exception {
-	    	
-	    	String token = getToken();
-	    	
-	    	List<Camion> allCamiones= new ArrayList<Camion>();
-	    	allCamiones.add(camion);
-	    	
-	    	 when(camionMock.list()).thenReturn(ResponseEntity.ok(allCamiones));
-	    	 
-	    	 mvc.perform(get("/api/v1/camiones")
-			 .param("xauthtoken", token)
-             .contentType(MediaType.APPLICATION_JSON))
-             .andExpect(status().isOk())
-             .andExpect(jsonPath("$[0].idCamion", is(Integer.parseInt(camion.getIdCamion().toString()))));
-	    }
-	    
+	
 
 	    @Test
 	    public void testLoadByidSuccess() throws BusinessException, Exception {
 	    	String token = getToken();
 	    	
-	    	Camion camionDescContains = camion;
+	    	Producto productoDescContains= producto;
 	    	Long id = (long) 1;
 	    	
-	    	when(camionMock.load(id)).thenReturn(ResponseEntity.ok(camionDescContains));
+	    	when(productoMock.load(id)).thenReturn(ResponseEntity.ok(productoDescContains));
 	    	
-	    	mvc.perform(get("/api/v1/camiones/"+id)
+	    	mvc.perform(get("/api/v1/productos/"+id)
 	    			.param("xauthtoken", token)
 	    			.contentType(MediaType.APPLICATION_JSON))
 	    			.andDo(print())
 	    			.andExpect(status().isOk())
-	    			.andExpect(jsonPath(("$.idCamion"),  is(camion.getIdCamion()), Long.class));
+	    			.andExpect(jsonPath(("$.id"),  is(producto.getId()), Long.class));
 	    	
 	    }
+	     
+	
 	    
-
 	    @Test
 	    public void testLoadByCodigoExternoSuccess() throws BusinessException, Exception {
 	    	
 	    	String token = getToken();
 	    	
-	    	Camion camionDescContains = camion;
+	    	Producto productoDescContains= producto;
 	    	String codigoExterno = "c3svZYkLJF";
 	    	
-	    	when(camionMock.findByCodigoExterno(codigoExterno)).thenReturn(ResponseEntity.ok(camionDescContains));
+	    	when(productoMock.findByCodigoExterno(codigoExterno)).thenReturn(ResponseEntity.ok(productoDescContains));
 	    	
-	    	mvc.perform(get("/api/v1/camiones/ce/"+codigoExterno)
+	    	mvc.perform(get("/api/v1/productos/ce/"+codigoExterno)
 	    			.param("xauthtoken", token)
 	    			.contentType(MediaType.APPLICATION_JSON))
 	    			.andExpect(status().isOk());
@@ -151,5 +129,6 @@ public class CamionRestControllerTest {
 	    	
 	    	return token;
 	    }
+
 
 }
